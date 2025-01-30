@@ -40,7 +40,7 @@ jobs:
           VITE_CLIENT_ID: ${{secrets.CLIENT_ID}}
           VITE_SS_CAMBIO: ${{secrets.VITE_SS_CAMBIO}}
           VITE_SS_CLIENTES: ${{secrets.VITE_SS_CLIENTES}}
-          VITE_SS_EMPLEADOS: ${{secrets.VITE_SS_CLIENTES}}
+          VITE_SS_EMPLEADOS: ${{secrets.VITE_SS_EMPLEADOS}}
           VITE_SS_GESTORIAS: ${{secrets.VITE_SS_GESTORIA}}
           VITE_SS_UNIDADES_GROSS: ${{secrets.VITE_SS_UNIDADES_GROSS}}
           
