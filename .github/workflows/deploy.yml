@@ -38,10 +38,11 @@ jobs:
         env:
           VITE_API_KEY: ${{secrets.API_KEY}}
           VITE_CLIENT_ID: ${{secrets.CLIENT_ID}}
-          VITE_SS_CAMBIO: ${{secrets.SS_CAMBIO}}
-          VITE_SS_CLIENTES: ${{secrets.SS_CLIENTES}}
-          VITE_SS_EMPLEADOS: ${{secrets.SS_EMPLEADOS}}
-          VITE_SS_GESTORIAS: ${{secrets.SS_GESTORIA}}
+          VITE_SS_CAMBIO: ${{secrets.VITE_SS_CAMBIO}}
+          VITE_SS_CLIENTES: ${{secrets.VITE_SS_CLIENTES}}
+          VITE_SS_EMPLEADOS: ${{secrets.VITE_SS_CLIENTES}}
+          VITE_SS_GESTORIAS: ${{secrets.VITE_SS_GESTORIA}}
+          VITE_SS_UNIDADES_GROSS: ${{secrets.VITE_SS_UNIDADES_GROSS}}
           
         run: npm run build
 
