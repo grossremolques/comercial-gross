@@ -25,13 +25,10 @@ export const AuthContextProvider = ({children}) => {
         setAuth(getAuth);
       };
       const getUser = async () => {
-        console.log('getUser');
         try {
           const emailAddress = await Email.getEmail();
-          console.log(emailAddress);
           try {
             const empleado = await ss_empleados.getDataById('email_empresa', emailAddress)
-            console.log(empleado);
             setUser(empleado);
           }
           catch (e) {
