@@ -31,6 +31,7 @@ export const AuthContextProvider = ({children}) => {
           console.log(emailAddress);
           try {
             const empleado = await ss_empleados.getDataById('email_empresa', emailAddress)
+            console.log(empleado);
             setUser(empleado);
           }
           catch (e) {
