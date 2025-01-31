@@ -6,7 +6,9 @@ import Button from "../components/Buttons";
 import { useForm } from "react-hook-form";
 import { FunnelIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function Solicitudes() {
+  const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -49,11 +51,13 @@ export default function Solicitudes() {
     },
     {
       name: "Registrado por",
+      width: "180px",
       selector: (row) => row.registrado_por,
       sortable: true,
     },
     {
       name: "Status",
+      width: "120px",
       selector: (row) => row.status,
       sortable: true,
     },
@@ -101,8 +105,11 @@ export default function Solicitudes() {
         item.modelo.toLowerCase().includes(data.modeloQuery.toLowerCase())
       }))
   };
+  const openSolicitud = (data) => {
+    navigate(`/solicitud/${data.id}`, {state: {solicitudData: data}} )
+  }
   return (
-    <div className="w-full mx-auto px-20">
+    <div className="w-full mx-auto">
     <h1 className="font-medium text-3xl text-center text-gray-700 mb-10">
       Solicitudes de Cambio
     </h1>
@@ -133,7 +140,7 @@ export default function Solicitudes() {
       <TableComponent
         data={dataFiltered}
         columns={columns}
-        handleOnRowClick={(data) => console.log(data)}
+        handleOnRowClick={openSolicitud}
         conditionalRowStyles={conditionalRowStyles}
       />
     </div>

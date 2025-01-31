@@ -18,7 +18,6 @@ const options = {
   rangeSeparatorText: "de",
 } 
 export default function TableComponent({columns, data, handleOnRowClick, conditionalRowStyles}) {
-  //const { darkTheme } = useGlobal();
   return (
     <DataTable
       className="custom-element"

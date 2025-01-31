@@ -257,24 +257,24 @@ export function PDF() {
                     </View>
                     <View style={[styles.row, { border: "none" }]}>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Nombre_____________________
+                        Nombre___________________________
                       </Text>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Nombre_____________________
+                        Nombre___________________________
                       </Text>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Nombre_____________________
+                        Nombre___________________________
                       </Text>
                     </View>
                     <View style={[styles.row, { border: "none" }]}>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Firma______________________
+                        Firma______________________________
                       </Text>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                      Firma______________________
+                      Firma______________________________
                       </Text>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                      Firma______________________
+                      Firma______________________________
                       </Text>
                     </View>
                   </View>
