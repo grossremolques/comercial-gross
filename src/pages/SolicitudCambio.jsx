@@ -125,13 +125,15 @@ export function SolicitudCambio() {
   /* Fin de Consultas */
 
   const onSubmit = async (data) => {
+
     handleModalShow("loadModalSave");
     data.trazabilidad = Number(
       data.trazabilidadStr.replace(".", "").replace("-", "")
     );
     data["registrado_por"] = user.alias;
     try {
-      data["id"] = (await ss_registro.getLastId()) + 1;
+      const lastId = await ss_registro.getLastId();
+      data["id"] = lastId + 1;
       try {
         const { result, status } = await ss_registro.postData(data);
         if (status === 200) {

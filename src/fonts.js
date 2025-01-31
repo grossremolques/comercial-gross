@@ -1,17 +1,15 @@
 import { Font } from "@react-pdf/renderer";
+import ChakraPetchRegular from './assets/fonts/ChakraPetch-Regular.ttf'
+import ChakraPetchBold from './assets/fonts/ChakraPetch-Bold.ttf'
 
 // 🔥 Registrar la fuente con la ruta correcta
 Font.register({
   family: "ChakraPetch",
-  src: "/fonts/ChakraPetch-Regular.ttf",
+  src: ChakraPetchRegular,
   fontWeight: "regular",
 });
 Font.register({
     family: "ChakraPetch",
-    src: "/fonts/ChakraPetch-Bold.ttf",
+    src: ChakraPetchBold,
     fontWeight: "bold",
-  });
-  Font.register({
-    family: "Cairo",
-    src: "/fonts/Cairo-VariableFont_slnt,wght.ttf",
   });

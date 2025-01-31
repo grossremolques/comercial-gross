@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   page: {
     padding: 15,
     fontFamily: "ChakraPetch",
-    fontSize: 12,
+    fontSize: 11,
     color: "#333",
   },
   header: {
@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
     lineHeight: "20px",
   },
   headerTitle: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "700",
   },
   title: {
     color: "#333",
-    fontSize: 13,
+    fontSize: 12,
     marginTop: "20px",
     textDecoration: "underline",
     textAlign: "center",
@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
   subtitle: {
     marginTop: "20px",
     marginBottom: "15px",
-    fontSize: "13px",
+    fontSize: 13,
     fontWeight: "bold",
   },
   table: {
     display: "flex",
     flexDirection: "column",
     width: "100%",
-    fontSize: 11,
+    fontSize: 10,
   },
   row: {
     flexDirection: "row",
@@ -95,27 +95,27 @@ const styles = StyleSheet.create({
   cellHeaderRight: {
     flex: 1, // Distribuir espacio equitativamente
     padding: 8,
-    fontSize: 10,
+    fontSize: 9,
     textAlign: "center",
     borderRight: "1px solid gray",
   },
   cellHeaderNone: {
     flex: 1, // Distribuir espacio equitativamente
     padding: 8,
-    fontSize: 10,
+    fontSize: 9,
     textAlign: "center",
   },
   cellRight: {
     flex: 1, // Distribuir espacio equitativamente
     padding: 5,
-    fontSize: 10,
+    fontSize: 9,
     textAlign: "center",
     borderBottom: "1px solid gray",
   },
   cellNone: {
     flex: 1, // Distribuir espacio equitativamente
     padding: 5,
-    fontSize: 10,
+    fontSize: 9,
     textAlign: "center",
     borderBottom: "1px solid gray",
   },
@@ -257,24 +257,24 @@ export function PDF() {
                     </View>
                     <View style={[styles.row, { border: "none" }]}>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Nombre__________________________
+                        Nombre_____________________
                       </Text>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Nombre__________________________
+                        Nombre_____________________
                       </Text>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Nombre__________________________
+                        Nombre_____________________
                       </Text>
                     </View>
                     <View style={[styles.row, { border: "none" }]}>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Firma_____________________________
+                        Firma______________________
                       </Text>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Firma_____________________________
+                      Firma______________________
                       </Text>
                       <Text style={[styles.cell, { fontSize: 10 }]}>
-                        Firma_____________________________
+                      Firma______________________
                       </Text>
                     </View>
                   </View>
