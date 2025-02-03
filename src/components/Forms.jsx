@@ -2,7 +2,7 @@ import React from "react";
 
 export const Input = React.forwardRef(
   (
-    { onChange, onBlur, name, placeholder, onClick, type = "text", onInput },
+    { onChange, onBlur, name, placeholder, onClick, type = "text", onInput, readOnly },
     ref
   ) => {
     return (
@@ -15,6 +15,7 @@ export const Input = React.forwardRef(
         onClick={onClick}
         type={type}
         onInput={onInput}
+        readOnly={readOnly}
         className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
       />
     );
