@@ -2,7 +2,7 @@ import LogoGrossBlanco from "../assets/Logos/LogoGrossBlanco.png";
 import { NavLink } from "react-router-dom";
 export function NavBar() {
   return (
-    <nav className="bg-gray-800 shadow">
+    <nav className="fixed top-0 w-full bg-gray-800 shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
@@ -37,6 +37,26 @@ export function NavBar() {
               }
             >
               Crear Solicitudes
+            </NavLink>
+            <NavLink
+              to="/proforma"
+              className={({ isActive }) =>
+                `px-1.5 rounded ${
+                  isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
+                }`
+              }
+            >
+              Proforma
+            </NavLink>
+            <NavLink
+              to="/pdf-proforma"
+              className={({ isActive }) =>
+                `px-1.5 rounded ${
+                  isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
+                }`
+              }
+            >
+              PDF
             </NavLink>
           </div>
         </div>

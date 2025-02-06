@@ -16,9 +16,9 @@ export default function Layout() {
     <>
       {auth && user && (
         <>
-          <div className="bg-gray-100 h-screen">
+          <div className="bg-gray-100">
             <NavBar />
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 h-3/4">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 min-h-screen">
               <Outlet />
             </div>
             

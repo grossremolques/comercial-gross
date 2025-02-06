@@ -3,7 +3,7 @@ import ReactLoading from "react-loading";
 import { Input, Label, Select, TextInvalidate } from "../components/Forms";
 import { useEffect, useState } from "react";
 import GoogleSheet from "google-sheet-package";
-import { Modal } from "../components/Modal";
+import { Modal, ModalLoading } from "../components/Modal";
 import { useModal } from "../context/ModalContext";
 import { BuscarCliente } from "../templates/BuscarClientes";
 import {
@@ -13,13 +13,13 @@ import {
   UserGroupIcon,
   ExclamationCircleIcon,
   MagnifyingGlassCircleIcon,
-  ArchiveBoxIcon,
   CheckBadgeIcon,
 } from "@heroicons/react/24/outline";
 import Button from "../components/Buttons";
 import Image from "../assets/archivo.png";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Card } from "../components/Cards";
 export function SolicitudCambio() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -93,7 +93,7 @@ export function SolicitudCambio() {
     setAtributos(res);
   };
   const handleData = async () => {
-    handleModalShow("loadModal");
+    handleModalShow("loading-save");
     try {
       const trazabilidad = watch("trazabilidadStr");
       const id = Number(trazabilidad.replace(".", "").replace("-", ""));
@@ -125,7 +125,6 @@ export function SolicitudCambio() {
   /* Fin de Consultas */
 
   const onSubmit = async (data) => {
-
     handleModalShow("loadModalSave");
     data.trazabilidad = Number(
       data.trazabilidadStr.replace(".", "").replace("-", "")
@@ -135,7 +134,7 @@ export function SolicitudCambio() {
       const lastId = await ss_registro.getLastId();
       data["id"] = lastId + 1;
       try {
-        const { result, status } = await ss_registro.postData(data);
+        const { result, status } = await ss_registro.postData(data, user);
         if (status === 200) {
           data.datosCambio.map(async (item) => {
             item["id_orden"] = data.id;
@@ -198,7 +197,7 @@ export function SolicitudCambio() {
         {errors.trazabilidadStr && (
           <TextInvalidate message={errors.trazabilidadStr.message} />
         )}
-        <article className="mt-5 rounded-xl bg-white p-4 sm:p-4 lg:p-6 flex gap-6 justify-between items-center">
+        <Card className={'flex gap-6 justify-between items-center mt-4'}>
           <div className="bg-gray-200 p-4 rounded-md">
             <img
               src={Image}
@@ -226,7 +225,7 @@ export function SolicitudCambio() {
               <span className="">{data?.vendedor}</span>
             </li>
           </ul>
-        </article>
+          </Card>
         <div className="mt-2">
           <Label label={"Seleccionar cliente"} htmlFor={"cliente"} />
           <Input
@@ -421,21 +420,7 @@ export function SolicitudCambio() {
           />
         </div>
       </Modal>
-      <Modal
-        modalId={"loadModalSave"}
-        variant="primary"
-        title={"Guardadon Información"}
-        icon={<ArchiveBoxIcon width={"24px"} />}
-        disableXButton={true}
-      >
-        <div className="mx-auto mt-4">
-          <ReactLoading
-            type={"spin"}
-            color=""
-            className="mx-auto fill-indigo-500"
-          />
-        </div>
-      </Modal>
+      <ModalLoading title={"Guardado información"} id={"loading-save"} />
       <Modal
         modalId={"successModal"}
         variant="success"
@@ -457,7 +442,7 @@ export function SolicitudCambio() {
           variant="success"
           onClick={() => {
             handleModalClose();
-            navigate('/pdf', {state: {pdfData: data}})
+            navigate('/pdf-cambio', {state: {pdfData: data}})
           }}
         >
           Imprimir Solicitud

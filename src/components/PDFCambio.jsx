@@ -126,12 +126,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export function PDF() {
+export function PDFCambio() {
     const location = useLocation();
   const { pdfData } = location.state || {};
   return (
     <>
-    <div className="w-full text-center mt-5 mb-20">
+    <div className="w-full text-center mt-5 mb-10">
       <Button className="" variant={'primaryOutline'}>
         <NavLink to={'/solicitudes'}>Ir al inicio</NavLink>
       </Button>

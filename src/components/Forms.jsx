@@ -2,7 +2,7 @@ import React from "react";
 
 export const Input = React.forwardRef(
   (
-    { onChange, onBlur, name, placeholder, onClick, type = "text", onInput, readOnly },
+    { onChange, onBlur, name, placeholder, onClick, type = "text", onInput, readOnly , className},
     ref
   ) => {
     return (
@@ -16,13 +16,14 @@ export const Input = React.forwardRef(
         type={type}
         onInput={onInput}
         readOnly={readOnly}
-        className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
+        className={`mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm read-only:bg-gray-100 ${className}`}
       />
     );
   }
 );
+
 export const Select = React.forwardRef(
-  ({ onChange, onBlur, name, placeholder, onClick, onInput, children},
+  ({ onChange, onBlur, name, placeholder, onClick, onInput, disabled, children},
     ref) => {
     return (
       <select
@@ -33,7 +34,8 @@ export const Select = React.forwardRef(
         placeholder={placeholder}
         onClick={onClick}
         onInput={onInput}
-        className="mt-1 w-full rounded-md border-gray-200 text-gray-700 sm:text-sm shadow-sm"
+        disabled={disabled}
+        className="mt-1 w-full rounded-md border-gray-200 text-gray-700 sm:text-sm shadow-sm disabled:bg-gray-100"
       >
         <option value=''>{placeholder}</option>
         {children}

@@ -11,6 +11,8 @@ import {
 } from "@heroicons/react/24/solid";
 import Button from "../components/Buttons";
 import { useNavigate } from "react-router-dom";
+import { Card } from "../components/Cards";
+import { DataField } from "../components/DataField";
 export function SolcitudID() {
   const navigate = useNavigate();
   const [cambios, setCambios] = useState([]);
@@ -46,70 +48,42 @@ export function SolcitudID() {
     solicitudData["trazabilidadStr"] = solicitudData.trazabilidad
       .toString()
       .replace(/(\d{1})(\d{4})(\d{2})/, "$1.$2-$3");
-    navigate("/pdf", { state: { pdfData: solicitudData } });
+    navigate("/pdf-cambio", { state: { pdfData: solicitudData } });
   };
   return (
     <>
       {cambios.length > 0 && (
         <div className=" lg:w-3/4 xl:w-1/2 mx-auto">
-          <article className="mt-5 rounded-xl bg-white p-4 sm:p-4 lg:p-6">
+          <Card className={'px-6 mb-4'}>
             <h2 className="font-medium text-xl mb-5">Datos de la Orden</h2>
-            <div className="flex justify-between mb-2 gap-4">
-              <span className="w-60 flex items-center">
-                <ClipboardDocumentIcon
-                  width={"16px"}
-                  className="text-gray-700 mr-1"
-                />
-                ID:{" "}
-              </span>
-              <span className="bg-gray-100 rounded px-5 py-0.5 w-full text-right">
-                {solicitudData.id}
-              </span>
-            </div>
-            <div className="flex justify-between mb-2 gap-4">
-              <span className="w-60 flex items-center">
-                <UserIcon width={"16px"} className="text-gray-700 mr-1" />
-                Cliente:{" "}
-              </span>
-              <span className="bg-gray-100 rounded px-5 py-0.5 w-full text-right">
-                {solicitudData.cliente}
-              </span>
-            </div>
-            <div className="flex justify-between mb-2 gap-4">
-              <span className="w-60 flex items-center">
-                <TruckIcon width={"16px"} className="text-gray-700 mr-1" />
-                Trazabilidad:{" "}
-              </span>
-              <span className="bg-gray-100 rounded px-5 py-0.5 w-full text-right">
-                {solicitudData.trazabilidad
-                  .toString()
-                  .replace(/(\d{1})(\d{4})(\d{2})/, "$1.$2-$3")}
-              </span>
-            </div>
-            <div className="flex justify-between mb-2 gap-4">
-              <span className="w-60 flex items-center">
-                <ArchiveBoxIcon width={"16px"} className="text-gray-700 mr-1" />
-                Modelo:{" "}
-              </span>
-              <span className="bg-gray-100 rounded px-5 py-0.5 w-full text-right">
-                {solicitudData.modelo}
-              </span>
-            </div>
-            <div className="flex justify-between mb-2 gap-4">
-              <span className="w-60 flex items-center">
-                <CalendarDaysIcon
-                  width={"16px"}
-                  className="text-gray-700 mr-1"
-                />
-                Fecha de Creación:{" "}
-              </span>
-              <span className="bg-gray-100 rounded px-5 py-0.5 w-full text-right">
-                {solicitudData.fecha_creacion}
-              </span>
-            </div>
-          </article>
-          <article className="mt-5 rounded-xl bg-white p-4 sm:p-4 lg:p-6">
-          <h2 className="font-medium text-xl mb-5">Modificaciones</h2>
+            <DataField
+              icon={<ClipboardDocumentIcon width={"16px"} />}
+              label={"ID"}
+              value={solicitudData.id}
+            />
+            <DataField
+              icon={<UserIcon width={"16px"} />}
+              label={"Cliente"}
+              value={solicitudData.cliente}
+            />
+            <DataField
+              icon={<TruckIcon width={"16px"} />}
+              label={"Trazabilidad"}
+              value={solicitudData.trazabilidad}
+            />
+            <DataField
+              icon={<ArchiveBoxIcon width={"16px"} />}
+              label={"Modelo"}
+              value={solicitudData.modelo}
+            />
+            <DataField
+              icon={<CalendarDaysIcon width={"16px"} />}
+              label={"Fecha de Creación"}
+              value={solicitudData.fecha_creacion}
+            />
+          </Card>
+          <Card className={'px-6'}>
+            <h2 className="font-medium text-xl mb-5">Modificaciones</h2>
             <div className="overflow-x-auto rounded-lg border border-gray-200">
               <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
                 <thead className="ltr:text-left rtl:text-right">
@@ -145,7 +119,7 @@ export function SolcitudID() {
                 </tbody>
               </table>
             </div>
-          </article>
+          </Card>
           <Button
             className={"mt-4 float-end"}
             type={"submit"}
