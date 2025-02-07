@@ -38,15 +38,25 @@ export function NavBar() {
             >
               Crear Solicitudes
             </NavLink>
-            <NavLink
-              to="/proforma"
+            {/* <NavLink
+              to="/proformas"
               className={({ isActive }) =>
                 `px-1.5 rounded ${
                   isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
                 }`
               }
             >
-              Proforma
+              Proformas
+            </NavLink>
+            <NavLink
+              to="/new-proforma"
+              className={({ isActive }) =>
+                `px-1.5 rounded ${
+                  isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
+                }`
+              }
+            >
+              Crear Proforma
             </NavLink>
             <NavLink
               to="/pdf-proforma"
@@ -57,7 +67,7 @@ export function NavBar() {
               }
             >
               PDF
-            </NavLink>
+            </NavLink> */}
           </div>
         </div>
       </div>

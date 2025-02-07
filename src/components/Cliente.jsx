@@ -5,13 +5,15 @@ import { useState, useEffect } from "react";
 import { Modal } from "./Modal";
 import { useModal } from "../context/ModalContext";
 import GoogleSheet from "google-sheet-package";
+import { useClientes } from "../context/ClientesContext";
 import Button from "./Buttons";
 export function Cliente({ register, errors, setValue, setSelectClient }) {
-  const [clientes, setClientes] = useState([]);
+  const { clientes, getClientes } = useClientes();
+  //const [clientes, setClientes] = useState([]);
   //const [selectClient, setSelectClient] = useState({});
   const { handleModalShow, handleModalClose } = useModal();
 
-  const ss_clientes = new GoogleSheet({
+  /* const ss_clientes = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_CLIENTES,
     rowHead: 1,
     nameSheet: "Registro",
@@ -19,9 +21,9 @@ export function Cliente({ register, errors, setValue, setSelectClient }) {
   const getClients = async () => {
     const res = await ss_clientes.getData();
     setClientes(res);
-  };
+  }; */
   useEffect(() => {
-    getClients();
+    getClientes();
   }, []);
   
   const handleAddClient = () => {

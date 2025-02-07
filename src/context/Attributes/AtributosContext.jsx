@@ -58,6 +58,8 @@ export function AtributosProvider({ children }) {
               obj[item.atributo] = {
                 value: item.default_value,
                 type: item.type,
+                isInProforma: item.proforma,
+                clasification: item.clasificacion
               };
             }
           });

@@ -7,9 +7,15 @@ import { ModalContextProvider } from "./context/ModalContext";
 import { PDFCambio } from "./components/PDFCambio";
 import Solicitudes from "./pages/Solicitudes";
 import { SolcitudID } from "./pages/SolicitudID";
-import Proforma from "./pages/Proforma";
 import { AtributosProvider } from "./context/Attributes/AtributosContext";
 import { PDFProforma } from "./PDF/PDFProforma";
+
+import { ClientesContextProvider } from "./context/ClientesContext";
+
+/* 📂 Proforma */
+import { NewProforma } from "./pages/Proforma/NewProforma";
+import Proformas from "./pages/Proforma/Proformas";
+import { ProformaID } from "./pages/Proforma/ProformaID";
 
 function App() {
   const router = createHashRouter([
@@ -18,28 +24,32 @@ function App() {
       element: <Layout />,
       children: [
         { path: "/", element: <h1>Home</h1> },
-        { path: "/pdf-cambio", element: <PDFCambio/> },
+        { path: "/pdf-cambio", element: <PDFCambio /> },
         { path: "/solicitudes", element: <Solicitudes /> },
+        { path: "/proformas", element: <Proformas /> },
         { path: "/solicitar-cambio", element: <SolicitudCambio /> },
         { path: "/solicitud/:id", element: <SolcitudID /> },
+        { path: "/proforma/:id", element: <ProformaID /> },
         {
-          path: "/proforma",
-          element: <Proforma />,
+          path: "/new-proforma",
+          element: <NewProforma />,
         },
-        { path: "/pdf-proforma", element: <PDFProforma/> },
+        { path: "/pdf-proforma", element: <PDFProforma /> },
       ],
     },
-    
+
     { path: "*", element: <h1>Error</h1> },
   ]);
   return (
     <>
       <AuthContextProvider>
-        <ModalContextProvider>
-          <AtributosProvider>
-            <RouterProvider router={router} />
-          </AtributosProvider>
-        </ModalContextProvider>
+        <ClientesContextProvider>
+          <ModalContextProvider>
+            <AtributosProvider>
+              <RouterProvider router={router} />
+            </AtributosProvider>
+          </ModalContextProvider>
+        </ClientesContextProvider>
       </AuthContextProvider>
     </>
   );
