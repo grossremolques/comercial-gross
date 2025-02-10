@@ -38,7 +38,7 @@ export function NavBar() {
             >
               Crear Solicitudes
             </NavLink>
-            {/* <NavLink
+            <NavLink
               to="/proformas"
               className={({ isActive }) =>
                 `px-1.5 rounded ${
@@ -67,7 +67,7 @@ export function NavBar() {
               }
             >
               PDF
-            </NavLink> */}
+            </NavLink>
           </div>
         </div>
       </div>

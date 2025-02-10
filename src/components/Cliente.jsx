@@ -34,12 +34,12 @@ export function Cliente({ register, errors, setValue, setSelectClient }) {
   };
   return (
     <>
-      <Label label={"Seleccionar cliente"} htmlFor={"cliente"} />
+      <Label label={"Seleccionar cliente"} htmlFor={"razon_social"} />
       <div className="flex gap-1">
       <Input
         placeholder={"Buscar Cliente"}
         onClick={() => handleModalShow("findClients")}
-        {...register("cliente", {
+        {...register("razon_social", {
           required: {
             value: "Debe seleccionar un cliente",
             message: "Debe seleccionar un cliente",
@@ -58,7 +58,7 @@ export function Cliente({ register, errors, setValue, setSelectClient }) {
         <PencilIcon width={"20px"} />
       </Button>
       </div>
-      {errors.cliente && <TextInvalidate message={errors.cliente.message} />}
+      {errors.razon_social && <TextInvalidate message={errors.razon_social.message} />}
       <Modal
         modalId={"findClients"}
         title={"Buscar Cliente"}

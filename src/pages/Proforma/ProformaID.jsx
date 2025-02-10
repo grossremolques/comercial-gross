@@ -1,15 +1,16 @@
 import { useLocation } from "react-router-dom";
 import GoogleSheet from "google-sheet-package";
 import { useEffect, useState } from "react";
-import { InfoProducto } from "../../templates/DatosProdProforma";
+import { InfoProducto } from "../../templates/InfoProducto";
 import Button from "../../components/Buttons";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { InfoCliente } from "../../templates/InfoCliente";
 import { InfoPago } from "../../templates/InfoPago";
 export function ProformaID() {
+  
   const [selectClient, setSelectClient] = useState({});
-  const [dataModelo, setDataModelo] = useState();
+  //const [dataModelo, setDataModelo] = useState();
   const navigate = useNavigate();
   const [cambios, setCambios] = useState([]);
   const location = useLocation();
@@ -45,27 +46,9 @@ export function ProformaID() {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      largo: "",
-      ancho: "",
-      alto: "",
-      puerta_trasera: "",
-      capacidad: "",
-      piso: "",
-      espesor: "",
-      cumbrera_lateral: "",
-      cant_puertas_laterales: "",
-      altura_baranda: "",
-      cajon: "",
-      cilindro: "",
-      tara: "",
-      traba_puerta: "",
-      pricio: "",
-      iva: "",
-      total: "",
-    },
+    defaultValues: proformaData,
   });
-  useEffect(() => {
+  /* useEffect(() => {
     setSelectClient(proformaData.cliente);
     reset({
       largo: proformaData?.largo,
@@ -89,7 +72,7 @@ export function ProformaID() {
     console.log(watch())
     getDetalles(id);
     // eslint-disable-next-line
-  }, [proformaData]);
+  }, [proformaData]); */
   const handleOpenPDF = () => {
     proformaData["datosCambio"] = cambios;
     proformaData["trazabilidadStr"] = proformaData.trazabilidad
@@ -107,15 +90,14 @@ export function ProformaID() {
             register={register}
             errors={errors}
             setValue={setValue}
-            setSelectClient={setSelectClient}
-            selectClient={selectClient}
+            data={proformaData}
           />
-          <InfoProducto
+          {/* <InfoProducto
             register={register}
             errors={errors}
             watch={watch}
-            setDataModelo={setDataModelo}
-            dataModelo={dataModelo}
+            reset={reset}
+            data={proformaData}
           />
           <InfoPago
             register={register}
@@ -123,7 +105,8 @@ export function ProformaID() {
             watch={watch}
             control={control}
             setValue={setValue}
-          />
+            
+          /> */}
         </>
       )}
     </>

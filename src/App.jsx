@@ -16,6 +16,7 @@ import { ClientesContextProvider } from "./context/ClientesContext";
 import { NewProforma } from "./pages/Proforma/NewProforma";
 import Proformas from "./pages/Proforma/Proformas";
 import { ProformaID } from "./pages/Proforma/ProformaID";
+import { InfoProducto } from "./templates/InfoProducto";
 
 function App() {
   const router = createHashRouter([
@@ -34,7 +35,7 @@ function App() {
           path: "/new-proforma",
           element: <NewProforma />,
         },
-        { path: "/pdf-proforma", element: <PDFProforma /> },
+        { path: "/pdf-proforma", element: <PDFProforma /> }
       ],
     },
 

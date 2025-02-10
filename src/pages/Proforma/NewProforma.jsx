@@ -8,12 +8,15 @@ import { ModalLoading, Modal } from "../../components/Modal";
 import { useModal } from "../../context/ModalContext";
 import { useAuth } from "../../context/AuthContext";
 import { ss_formas_pago, ss_proforma } from "../../API/backend";
-import { InfoProducto } from "../../templates/DatosProdProforma";
+import { InfoProducto } from "../../templates/InfoProducto";
 import { InfoPago } from "../../templates/InfoPago";
 export function NewProforma() {
+  const STORAGE_KEY = "data-new-proforma";
+  const dataLocalStorage = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  console.log(dataLocalStorage)
   const [data, setData] = useState({});
   const { handleModalShow, handleModalClose } = useModal();
-  const [dataModelo, setDataModelo] = useState();
+  //const [dataModelo, setDataModelo] = useState();
   const { user } = useAuth();
 
   const {
@@ -25,26 +28,12 @@ export function NewProforma() {
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      largo: "",
-      ancho: "",
-      alto: "",
-      puerta_trasera: "",
-      capacidad: "",
-      piso: "",
-      espesor: "",
-      cumbrera_lateral: "",
-      cant_puertas_laterales: "",
-      altura_baranda: "",
-      cajon: "",
-      cilindro: "",
-      tara: "",
-      traba_puerta: "",
-      pricio: "",
-      iva: "",
-      total: "",
-    },
+    defaultValues: dataLocalStorage,
   });
+  const watchedValues = watch();
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(watchedValues));
+  }, [watchedValues]);
   const onSubmit = async (data) => {
     handleModalShow("loading-save");
     try {
@@ -71,13 +60,15 @@ export function NewProforma() {
   const onError = (data) => {
     console.error(data);
   };
-  const [selectClient, setSelectClient] = useState({});
-  useEffect(() => {
-    setValue("cliente", selectClient.razon_social);
-    setValue("id_cliente", selectClient.id);
-  }, [selectClient]);
+  //const [selectClient, setSelectClient] = useState({});
+  /* useEffect(() => {
+    console.log(selectClient)
+    setValue("cliente", selectClient);
+    setValue("razon_social", selectClient?.razon_social);
+    setValue("id_cliente", selectClient?.id);
+  }, [selectClient]); */
 
-  useEffect(() => {
+  /* useEffect(() => {
     reset({
       largo: dataModelo?.largo.value,
       ancho: dataModelo?.ancho.value,
@@ -96,7 +87,7 @@ export function NewProforma() {
       cliente: selectClient.razon_social,
       id_cliente: selectClient.id,
     });
-  }, [dataModelo]);
+  }, [dataModelo]); */
 
   return (
     <div className="">
@@ -108,23 +99,23 @@ export function NewProforma() {
           register={register}
           errors={errors}
           setValue={setValue}
-          setSelectClient={setSelectClient}
-          selectClient={selectClient}
+          data={dataLocalStorage}
         />
-        <InfoProducto
+         <InfoProducto
           register={register}
           errors={errors}
           watch={watch}
-          setDataModelo={setDataModelo}
-          dataModelo={dataModelo}
+          data={dataLocalStorage}
+          reset={reset}
         />
-        <InfoPago
+        {/*<InfoPago
           register={register}
           errors={errors}
           watch={watch}
           control={control}
           setValue={setValue}
-        />
+          
+        /> */}
         <div className="fixed bottom-0 left-0 w-full flex items-end px-10 py-3 bg-gray-800/70">
           <Button
             className="ml-auto w-50"
