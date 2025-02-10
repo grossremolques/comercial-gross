@@ -2,16 +2,45 @@ import { CardToggle } from "../components/Cards";
 import { Label, Input, Select, TextInvalidate } from "../components/Forms";
 import { useAtrubutos } from "../context/Attributes/AtributosContext";
 import { useEffect, useState } from "react";
+import { Modelo } from "../components/Modelo";
 export const InfoProducto = ({
   register,
   errors,
+  setValue,
   watch,
   reset,
   data,
-  //setDataModelo,
-  //dataModelo,
 }) => {
-  const [dataModelo, setDataModelo] = useState();
+  const {} = register("dataModelo");
+  const [selectModelo, setSelectModelo] = useState(data.dataModelo);
+  const attr = [
+    "largo",
+    "ancho",
+    "alto",
+    "capacidad",
+    "cant_puertas_laterales",
+    "altura_baranda",
+    "puerta_trasera",
+    "piso",
+    "espesor",
+    "cumbrera_lateral",
+    "cajon",
+    "tara",
+    "traba_puerta",
+    "cilindro",
+  ];
+  useEffect(() => {
+    setValue("dataModelo", selectModelo);
+    setValue("modelo", selectModelo.modelo.value);
+    attr.forEach((item) => {
+      setValue(
+        item,
+        selectModelo?.[item].type === "Fijo"
+          ? selectModelo[item].value
+          : data[item]
+      );
+    });
+  }, [selectModelo]);
   const {
     getPuertasTraseras,
     puertasTraseras,
@@ -38,55 +67,19 @@ export const InfoProducto = ({
     getMecanismo();
     getCilindro();
   }, []);
-  useEffect(() => {
-    const res = modelos.find((item) => item.modelo.value === watch("modelo"));
-    setDataModelo(res);
-  }, [watch("modelo")]);
-  useEffect(() => {
-    reset({
-      largo: dataModelo?.largo.value ? dataModelo.largo.value : data.largo,
-      ancho: dataModelo?.ancho.value ?dataModelo.ancho.value : data.ancho,
-      alto: dataModelo?.alto.value ? dataModelo.alto.value : data.alto,
-      puerta_trasera: dataModelo?.puerta_trasera.value ? dataModelo.puerta_trasera.value : data.puerta_trasera,
-      capacidad: dataModelo?.capacidad.value ? dataModelo.capacidad.value : data.capacidad,
-      piso: dataModelo?.piso.value ? dataModelo.piso.value : data.piso,
-      espesor: dataModelo?.espesor.value ? dataModelo.espesor.value : data.espesor,
-      cumbrera_lateral: dataModelo?.cumbrera_lateral.value ? dataModelo.cumbrera_lateral.value : data.cumbrera_lateral,
-      cant_puertas_laterales: dataModelo?.cant_puertas_laterales.value? dataModelo.cant_puertas_laterales.value : data.cant_puertas_laterales,
-      altura_baranda: dataModelo?.altura_baranda.value ? dataModelo.altura_baranda.value : data.altura_baranda,
-      cajon: dataModelo?.cajon.value ? dataModelo.cajon.value : data.cajon,
-      cilindro: dataModelo?.cilindro.value ? dataModelo.cilindro.value : data.cilindro,
-      tara: dataModelo?.tara.value ? dataModelo.tara.value : data.tara,
-      traba_puerta: dataModelo?.traba_puerta.value ? dataModelo.traba_puerta.value : data.traba_puerta
-    });
-  }, [dataModelo]);
   return (
     <>
-    {}
+      {}
       {modelos.length > 0 && puertasTraseras.length > 0 && (
         <CardToggle
           className={"lg:max-w-[1000px] mx-auto mb-5"}
           title={"Datos del Producto"}
         >
-          <Label label={"Modelo"} htmlFor={"modelo"} />
-          <Select
-            placeholder={"Seleccione un modelo"}
-            {...register("modelo", {
-              required: {
-                value: "true",
-                message: "Debe seleccionar un modelo",
-              },
-            })}
-          >
-            {modelos.map(
-              (item) =>
-                item.activo.value === "Sí" && (
-                  <option key={item.modelo.value} value={item.modelo.value}>
-                    {item.modelo.value}
-                  </option>
-                )
-            )}
-          </Select>
+          <Modelo
+            register={register}
+            errors={errors}
+            setSelectModelo={setSelectModelo}
+          />
           {errors.modelo && <TextInvalidate message={errors.modelo.message} />}
           <h3 className="font-medium text-lg mt-4 mb-2 text-gray-700">
             Medidas
@@ -95,7 +88,7 @@ export const InfoProducto = ({
             <div>
               <Label label={"Largo"} htmlFor={"largo"} />
               <Input
-                readOnly={dataModelo?.largo.type === "Fijo"}
+                readOnly={selectModelo?.largo.type === "Fijo"}
                 type="number"
                 {...register("largo", { required: true })}
               />
@@ -103,7 +96,7 @@ export const InfoProducto = ({
             <div>
               <Label label={"Ancho"} htmlFor={"ancho"} />
               <Input
-                readOnly={dataModelo?.ancho.type === "Fijo"}
+                readOnly={selectModelo?.ancho.type === "Fijo"}
                 type="number"
                 {...register("ancho", { required: true })}
               />
@@ -111,7 +104,7 @@ export const InfoProducto = ({
             <div>
               <Label label={"Alto"} htmlFor={"alto"} />
               <Input
-                readOnly={dataModelo?.alto.type === "Fijo"}
+                readOnly={selectModelo?.alto.type === "Fijo"}
                 type="number"
                 {...register("alto", { required: true })}
               />
@@ -119,7 +112,7 @@ export const InfoProducto = ({
             <div>
               <Label label={"Capacidad"} htmlFor={"capacidad"} />
               <Select
-                disabled={dataModelo?.capacidad.type === "Fijo"}
+                disabled={selectModelo?.capacidad.type === "Fijo"}
                 {...register("capacidad", { required: true })}
               >
                 {capacidad.map((item) => (
@@ -141,20 +134,20 @@ export const InfoProducto = ({
               />
               <Input
                 type="number"
-                readOnly={dataModelo?.cant_puertas_laterales.type === "Fijo"}
+                readOnly={selectModelo?.cant_puertas_laterales.type === "Fijo"}
                 {...register("cant_puertas_laterales", { required: true })}
               />
 
               <Label label={"Altura de baranda"} htmlFor={"altura_baranda"} />
               <Input
                 type="number"
-                readOnly={dataModelo?.altura_baranda.type === "Fijo"}
+                readOnly={selectModelo?.altura_baranda.type === "Fijo"}
                 {...register("altura_baranda", { required: true })}
               />
 
               <Label label={"Puerta trasera"} htmlFor={"puerta_trasera"} />
               <Select
-                disabled={dataModelo?.puerta_trasera.type === "Fijo"}
+                disabled={selectModelo?.puerta_trasera.type === "Fijo"}
                 {...register("puerta_trasera", { required: true })}
               >
                 {puertasTraseras.map(
@@ -168,7 +161,7 @@ export const InfoProducto = ({
               </Select>
               <Label label={"Piso"} htmlFor={"piso"} />
               <Select
-                disabled={dataModelo?.piso.type === "Fijo"}
+                disabled={selectModelo?.piso.type === "Fijo"}
                 {...register("piso", { required: true })}
               >
                 {[...new Set(piso.map((item) => item.descripcion))].map(
@@ -181,7 +174,7 @@ export const InfoProducto = ({
               </Select>
               <Label label={"Espesor"} htmlFor={"espesor"} />
               <Select
-                disabled={dataModelo?.espesor.type === "Fijo"}
+                disabled={selectModelo?.espesor.type === "Fijo"}
                 {...register("espesor", { required: true })}
               >
                 {piso.map((item) => (
@@ -194,7 +187,7 @@ export const InfoProducto = ({
             <div className="columns-5 mt-3">
               <Label label={"Cumbrera lateral"} htmlFor={"cumbrera_lateral"} />
               <Select
-                disabled={dataModelo?.cumbrera_lateral.type === "Fijo"}
+                disabled={selectModelo?.cumbrera_lateral.type === "Fijo"}
                 {...register("cumbrera_lateral", { required: true })}
               >
                 {cumbrera.map((item) => (
@@ -206,21 +199,21 @@ export const InfoProducto = ({
 
               <Label label={"Cajon de herramientas"} htmlFor={"cajon"} />
               <Input
-                readOnly={dataModelo?.cajon.type === "Fijo"}
+                readOnly={selectModelo?.cajon.type === "Fijo"}
                 type="number"
                 {...register("cajon", { required: true })}
               />
 
               <Label label={"Tara"} htmlFor={"tara"} />
               <Input
-                readOnly={dataModelo?.tara?.type === "Fijo"}
+                readOnly={selectModelo?.tara?.type === "Fijo"}
                 type="number"
                 {...register("tara", { required: true })}
               />
 
               <Label label={"Traba de puerta"} htmlFor={"traba_puerta"} />
               <Select
-                disabled={dataModelo?.traba_puerta.type === "Fijo"}
+                disabled={selectModelo?.traba_puerta.type === "Fijo"}
                 {...register("traba_puerta", { required: true })}
               >
                 {mecanismo.map((item) => (
@@ -232,7 +225,7 @@ export const InfoProducto = ({
 
               <Label label={"Cilindro"} htmlFor={"cilindro"} />
               <Select
-                disabled={dataModelo?.cilindro.type === "Fijo"}
+                disabled={selectModelo?.cilindro.type === "Fijo"}
                 {...register("cilindro", { required: true })}
               >
                 {cilindro.map((item) => (

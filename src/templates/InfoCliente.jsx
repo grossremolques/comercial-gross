@@ -21,7 +21,7 @@ export const InfoCliente = ({
   const [selectClient, setSelectClient] = useState(data.cliente);
   useEffect(() => {
     setValue('cliente', selectClient)
-    setValue('razon_social' , selectClient.razon_social);
+    setValue('razon_social' , selectClient?.razon_social);
   },[selectClient])
   return (
     <CardToggle
@@ -32,7 +32,6 @@ export const InfoCliente = ({
         <Cliente
           register={register}
           errors={errors}
-          setValue={setValue}
           setSelectClient={setSelectClient}
         />
         <div className="mt-4 columns-2">

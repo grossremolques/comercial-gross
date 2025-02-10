@@ -7,7 +7,7 @@ import { useModal } from "../context/ModalContext";
 import GoogleSheet from "google-sheet-package";
 import { useClientes } from "../context/ClientesContext";
 import Button from "./Buttons";
-export function Cliente({ register, errors, setValue, setSelectClient }) {
+export function Cliente({ register, errors, setSelectClient }) {
   const { clientes, getClientes } = useClientes();
   //const [clientes, setClientes] = useState([]);
   //const [selectClient, setSelectClient] = useState({});

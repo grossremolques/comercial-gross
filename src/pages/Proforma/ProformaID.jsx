@@ -21,22 +21,7 @@ export function ProformaID() {
     console.log(id);
   }
   /* Consultas */
-  const ss_detalles = new GoogleSheet({
-    sheetId: import.meta.env.VITE_SS_CAMBIO,
-    rowHead: 1,
-    nameSheet: "Detalle",
-  });
-  const getDetalles = async (id) => {
-    try {
-      const res = await ss_detalles.getData();
-      const detalles = res.filter((item) => {
-        return item.id_orden == id;
-      });
-      setCambios(detalles);
-    } catch (err) {
-      console.error("Error al obtener detalles:", err);
-    }
-  };
+  
   const {
     register,
     handleSubmit,
@@ -92,14 +77,15 @@ export function ProformaID() {
             setValue={setValue}
             data={proformaData}
           />
-          {/* <InfoProducto
+           <InfoProducto
             register={register}
             errors={errors}
             watch={watch}
             reset={reset}
             data={proformaData}
+            setValue={setValue}
           />
-          <InfoPago
+          {/*<InfoPago
             register={register}
             errors={errors}
             watch={watch}

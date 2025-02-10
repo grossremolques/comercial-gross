@@ -8,8 +8,10 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ss_proforma } from "../../API/backend";
 import { useClientes } from "../../context/ClientesContext";
+import { useAtrubutos } from "../../context/Attributes/AtributosContext";
 export default function Proformas() {
   const { clientes, getClientes } = useClientes();
+  const {modelos, getModelos} = useAtrubutos();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm({
     defaultValues: {},
@@ -63,8 +65,10 @@ export default function Proformas() {
     try {
       const dataProformas = await ss_proforma.getData();
       const clients = [];
+      const models = []
       dataProformas.map((item) => {
         clients.push(clientes.find((cliente) => cliente.id == item.id_cliente));
+        models.push(modelos.find((modelo) => modelo.modelo.value === item.modelo))
       });
       clients.map((cliente) => {
         dataProformas.map((proforma) => {
@@ -73,6 +77,13 @@ export default function Proformas() {
           }
         });
       });
+      models.map((modelo) => {
+        dataProformas.map((proforma) => {
+          if (modelo.modelo.value == proforma.modelo) {
+            proforma["dataModelo"] = modelo;
+          }
+        });
+      })
       setProformas(dataProformas.reverse());
       setDataFiltered(dataProformas.reverse());
     } catch (e) {
@@ -81,6 +92,7 @@ export default function Proformas() {
   };
   useEffect(() => {
     getClientes();
+    getModelos();
   }, []);
   useEffect(() => {
     if (clientes.length > 0) getProformas();

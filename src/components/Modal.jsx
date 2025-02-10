@@ -36,6 +36,7 @@ export const Modal = ({
             <strong className="block font-medium"> {title} </strong>
           </div>
           <button
+          type="button"
             className={`text-gray-500 transition hover:text-red-600 cursor-pointer ${
               disableXButton && "hidden"
             }`}

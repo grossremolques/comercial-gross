@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { InfoCliente } from "../../templates/InfoCliente";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
-import { useAtrubutos } from "../../context/Attributes/AtributosContext";
 import Button from "../../components/Buttons";
 import { ModalLoading, Modal } from "../../components/Modal";
 import { useModal } from "../../context/ModalContext";
@@ -13,7 +12,6 @@ import { InfoPago } from "../../templates/InfoPago";
 export function NewProforma() {
   const STORAGE_KEY = "data-new-proforma";
   const dataLocalStorage = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-  console.log(dataLocalStorage)
   const [data, setData] = useState({});
   const { handleModalShow, handleModalClose } = useModal();
   //const [dataModelo, setDataModelo] = useState();
@@ -104,18 +102,19 @@ export function NewProforma() {
          <InfoProducto
           register={register}
           errors={errors}
-          watch={watch}
+          setValue={setValue}
           data={dataLocalStorage}
+          watch={watch}
           reset={reset}
         />
-        {/*<InfoPago
+        <InfoPago
           register={register}
           errors={errors}
           watch={watch}
           control={control}
           setValue={setValue}
           
-        /> */}
+        />
         <div className="fixed bottom-0 left-0 w-full flex items-end px-10 py-3 bg-gray-800/70">
           <Button
             className="ml-auto w-50"
