@@ -9,15 +9,20 @@ import { useNavigate } from "react-router-dom";
 import { ss_proforma } from "../../API/backend";
 import { useClientes } from "../../context/ClientesContext";
 import { useAtrubutos } from "../../context/Attributes/AtributosContext";
+import { ss_formas_pago } from "../../API/backend";
+
 export default function Proformas() {
   const { clientes, getClientes } = useClientes();
   const {modelos, getModelos} = useAtrubutos();
+  const [pagos, setPagos] = useState([]);
+
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm({
     defaultValues: {},
   });
   const [dataFiltered, setDataFiltered] = useState([]);
   const [proformas, setProformas] = useState([]);
+  
   const columns = [
     {
       name: "Id",
@@ -60,29 +65,47 @@ export default function Proformas() {
       sortable: true,
     },
   ];
-
+  const getPagos = async () => {
+    try {
+      const dataPagos = await ss_formas_pago.getData();
+      setPagos(dataPagos);
+    } catch (e) {
+      console.log(e);
+    }
+  }
   const getProformas = async () => {
     try {
       const dataProformas = await ss_proforma.getData();
       const clients = [];
-      const models = []
+      const models = [];
+      const formaPago = [];
       dataProformas.map((item) => {
         clients.push(clientes.find((cliente) => cliente.id == item.id_cliente));
-        models.push(modelos.find((modelo) => modelo.modelo.value === item.modelo))
+        models.push(modelos.find((modelo) => modelo.modelo.value === item.modelo));
+        formaPago.push(pagos.filter((pago) => pago.id_factura === item.id));
+        
       });
       clients.map((cliente) => {
         dataProformas.map((proforma) => {
-          if (cliente.id == proforma.id_cliente) {
+          if (cliente?.id == proforma.id_cliente) {
             proforma["cliente"] = cliente;
           }
         });
       });
       models.map((modelo) => {
         dataProformas.map((proforma) => {
-          if (modelo.modelo.value == proforma.modelo) {
+          if (modelo?.modelo.value == proforma.modelo) {
             proforma["dataModelo"] = modelo;
           }
         });
+      })
+      
+      formaPago.map((pago) => {
+        dataProformas.map((proforma) => {
+         if(pago.length > 0 && pago[0].id_factura == proforma.id) {
+          proforma["formaPago"] = pago}
+
+        })
       })
       setProformas(dataProformas.reverse());
       setDataFiltered(dataProformas.reverse());
@@ -93,6 +116,7 @@ export default function Proformas() {
   useEffect(() => {
     getClientes();
     getModelos();
+    getPagos();
   }, []);
   useEffect(() => {
     if (clientes.length > 0) getProformas();

@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { InfoCliente } from "../../templates/InfoCliente";
 import { InfoPago } from "../../templates/InfoPago";
+import { DocumentIcon } from "@heroicons/react/24/solid";
 export function ProformaID() {
-  
   const [selectClient, setSelectClient] = useState({});
   //const [dataModelo, setDataModelo] = useState();
   const navigate = useNavigate();
@@ -16,12 +16,9 @@ export function ProformaID() {
   const location = useLocation();
   const { proformaData } = location.state || {};
   const id = location.pathname.replace("/proforma/", "");
-  //console.log(proformaData);
   if (!proformaData) {
     console.log(id);
   }
-  /* Consultas */
-  
   const {
     register,
     handleSubmit,
@@ -33,66 +30,64 @@ export function ProformaID() {
   } = useForm({
     defaultValues: proformaData,
   });
-  /* useEffect(() => {
-    setSelectClient(proformaData.cliente);
-    reset({
-      largo: proformaData?.largo,
-      ancho: proformaData?.ancho,
-      alto: proformaData?.alto,
-      puerta_trasera: proformaData?.puerta_trasera,
-      capacidad: proformaData?.capacidad,
-      piso: proformaData?.piso,
-      espesor: proformaData?.espesor,
-      cumbrera_lateral: proformaData?.cumbrera_lateral,
-      cant_puertas_laterales: proformaData?.cant_puertas_laterales,
-      altura_baranda: proformaData?.altura_baranda,
-      cajon: proformaData?.cajon,
-      cilindro: proformaData?.cilindro,
-      tara: proformaData?.tara,
-      traba_puerta: proformaData?.traba_puerta,
-      cliente: proformaData.cliente.razon_social,
-      id_cliente: proformaData.cliente.id,
-      modelo: proformaData?.modelo,
-    });
-    console.log(watch())
-    getDetalles(id);
-    // eslint-disable-next-line
-  }, [proformaData]); */
   const handleOpenPDF = () => {
-    proformaData["datosCambio"] = cambios;
-    proformaData["trazabilidadStr"] = proformaData.trazabilidad
-      .toString()
-      .replace(/(\d{1})(\d{4})(\d{2})/, "$1.$2-$3");
-    navigate("/pdf-cambio", { state: { pdfData: proformaData } });
+    navigate("/pdf-proforma", { state: { pdfData: proformaData } });
   };
-  useEffect(() => {},[])
+  useEffect(() => {}, []);
   return (
     <>
-    {console.log(proformaData)}
       {proformaData && (
         <>
-          <InfoCliente
-            register={register}
-            errors={errors}
-            setValue={setValue}
-            data={proformaData}
-          />
-           <InfoProducto
-            register={register}
-            errors={errors}
-            watch={watch}
-            reset={reset}
-            data={proformaData}
-            setValue={setValue}
-          />
-          {/*<InfoPago
-            register={register}
-            errors={errors}
-            watch={watch}
-            control={control}
-            setValue={setValue}
-            
-          /> */}
+          <div
+            className=" overflow-y-auto"
+            style={{ height: "calc(100vh - 10rem)" }}
+          >
+            <InfoCliente
+              register={register}
+              errors={errors}
+              setValue={setValue}
+              data={proformaData}
+            />
+            <InfoProducto
+              register={register}
+              errors={errors}
+              watch={watch}
+              reset={reset}
+              data={proformaData}
+              setValue={setValue}
+            />
+            <InfoPago
+              register={register}
+              errors={errors}
+              watch={watch}
+              control={control}
+              setValue={setValue}
+              data={proformaData}
+            />
+          </div>
+          <div className="fixed bottom-0 left-0 w-full flex px-10 py-3 bg-gray-800/70">
+            <div className="flex gap-2 ml-auto">
+              <Button
+                className="ml-auto w-50"
+                variant={"primary"}
+                type="submit"
+                //onSubmit={handleSubmit(onSubmit, onError)}
+              >
+                Guardar
+              </Button>
+              <Button
+                className="ml-auto w-50"
+                variant={"rose"}
+                type="button"
+                onClick={handleOpenPDF}
+                //onSubmit={handleSubmit(onSubmit, onError)}
+              >
+                <div className="flex gap-1 justify-center">
+                  <DocumentIcon className="w-5" /> Imprimir
+                </div>
+              </Button>
+            </div>
+          </div>
         </>
       )}
     </>

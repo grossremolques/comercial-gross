@@ -197,8 +197,8 @@ export function SolicitudCambio() {
         {errors.trazabilidadStr && (
           <TextInvalidate message={errors.trazabilidadStr.message} />
         )}
-        <Card className={'flex gap-6 justify-between items-center mt-4'}>
-          <div className="bg-gray-200 p-4 rounded-md">
+        <Card className={'flex justify-between items-center mt-4'}>
+          <div className="bg-gray-200 p-4 rounded-md mr-4">
             <img
               src={Image}
               alt="Icono grafico de Archivo"

@@ -1,27 +1,14 @@
 import { Input, Label, TextInvalidate } from "./Forms";
 import { BuscarCliente } from "../templates/BuscarClientes";
 import { UserGroupIcon, PlusIcon, PencilIcon } from "@heroicons/react/24/solid";
-import { useState, useEffect } from "react";
 import { Modal } from "./Modal";
 import { useModal } from "../context/ModalContext";
-import GoogleSheet from "google-sheet-package";
 import { useClientes } from "../context/ClientesContext";
 import Button from "./Buttons";
+import { useEffect } from "react";
 export function Cliente({ register, errors, setSelectClient }) {
   const { clientes, getClientes } = useClientes();
-  //const [clientes, setClientes] = useState([]);
-  //const [selectClient, setSelectClient] = useState({});
   const { handleModalShow, handleModalClose } = useModal();
-
-  /* const ss_clientes = new GoogleSheet({
-    sheetId: import.meta.env.VITE_SS_CLIENTES,
-    rowHead: 1,
-    nameSheet: "Registro",
-  });
-  const getClients = async () => {
-    const res = await ss_clientes.getData();
-    setClientes(res);
-  }; */
   useEffect(() => {
     getClientes();
   }, []);

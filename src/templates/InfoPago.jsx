@@ -6,17 +6,18 @@ import { CardToggle } from "../components/Cards";
 import { Label, Input,Select, TextInvalidate } from "../components/Forms";
 import Button from "../components/Buttons";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
-export const InfoPago = ({ register, watch, errors, control, setValue }) => {
+export const InfoPago = ({ register, watch, errors, control, setValue, data }) => {
   const { getFormaPago, formaPago, getMedioPago, mediosPago } = useAtrubutos();
   useEffect(() => {
     getFormaPago();
     getMedioPago();
   }, []);
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(data.precio);
   useEffect(() => {
     setValue("precio", price);
     setValue("iva", price * 0.21);
     setValue("total", price * 1.21);
+    setValue("priceInpu", price);
   }, [price]);
   const { fields, append, remove } = useFieldArray({
     control,
@@ -47,7 +48,9 @@ export const InfoPago = ({ register, watch, errors, control, setValue }) => {
               intlConfig={{ locale: "es-AR", currency: "ARS" }}
               decimalSeparator="."
               groupSeparator=","
+              decimalScale={2}
               {...register("priceInput", { required: true })}
+              value={price}
               onValueChange={(value) => {
                 setPrice(Number(value));
               }}
@@ -63,6 +66,7 @@ export const InfoPago = ({ register, watch, errors, control, setValue }) => {
               decimalScale={2}
               value={price * 0.21}
               readOnly={true}
+              {...register("ivaInput", { required: true })}
             />
             <span className="ml-2 font-medium text-indigo-500 self-center">
               Total
@@ -75,6 +79,7 @@ export const InfoPago = ({ register, watch, errors, control, setValue }) => {
               decimalScale={2}
               value={price * 1.21}
               readOnly={true}
+              {...register("totalInput", { required: true })}
             />
           </span>
         </div>
@@ -84,7 +89,7 @@ export const InfoPago = ({ register, watch, errors, control, setValue }) => {
         <div className="flex gap-1">
           <Select
             placeholder={"Seleccione una formas de pago"}
-            {...register("selectFormaPago", { required: true })}
+            {...register("selectFormaPago")}
           >
             {formaPago.map((item) => (
               <option key={item["descripcion"]} value={item["descripcion"]}>

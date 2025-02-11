@@ -15,54 +15,11 @@ import Button from "../components/Buttons";
 import { NavLink } from "react-router-dom";
 import { useAtrubutos } from "../context/Attributes/AtributosContext";
 import { useEffect, useState } from "react";
-const pdfData = {
-  largo: 10300,
-  ancho: 2500,
-  alto: 1900,
-  ejes: "D2-D2",
-  puerta_trasera: "N/A",
-  capacidad: "N/A",
-  piso: "N/A",
-  espesor: 0,
-  cumbrera_lateral: "Cumbrera p/destape",
-  cant_puertas_laterales: 0,
-  altura_baranda: 0,
-  cajon: 0,
-  cilindro: "N/A",
-  tara: 0,
-  traba_puerta: "N/A",
-  cliente: "ZAGO MARINO FERNANDO",
-  id_cliente: 9,
-  modelo: "Acoplado D2-D2 Tolva",
-  fecha_estimada: "20/02/2025",
-  vencimiento: "06/03/2025",
-  selectFormaPago: "a 150 días",
-  precio: 12350000,
-  iva: 2593500,
-  total: 14943500,
-  formaPago: [
-    {
-      forma_pago: "Contado",
-      metodo_pago: "Efectivo",
-      id_factura: 4,
-      fecha_creacion: "06/02/2025",
-    },
-    {
-      forma_pago: "a 150 días",
-      metodo_pago: "e-Cheq",
-      id_factura: 4,
-      fecha_creacion: "06/02/2025",
-    },
-  ],
-  id: 4,
-  registrado_por: "KATHE",
-  fecha_creacion: "06/02/2025",
-};
 const styles = StyleSheet.create({
   page: {
     padding: 15,
     fontFamily: "ChakraPetch",
-    fontSize: 11,
+    fontSize: 10,
     color: "#333",
   },
   header: {
@@ -92,11 +49,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   tableSubtitle: {
-    fontSize: 14,
+    fontSize: 11,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 3,
+    marginTop: 7,
   },
-  rowClientes: { display: "flex", flexDirection: "row", gap: 10, marginBottom: 5 },
+  rowClientes: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 5,
+  },
   cellData: {
     flex: 1,
     borderBottom: "1px solid #ddd",
@@ -104,14 +67,15 @@ const styles = StyleSheet.create({
   rowCaracteristics: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "baseline",
-    marginBottom: 10,
+    marginBottom: 2,
+    gap: 6,
   },
   precio: {
     display: "flex",
     flexDirection: "column",
-    gap: 10,
+    gap: 5,
     marginBottom: 20,
   },
   row: {
@@ -121,6 +85,12 @@ const styles = StyleSheet.create({
     alignItems: "baseline",
   },
   spacing: { flex: 1, borderBottom: "1px dotted #666", marginHorizontal: 4 },
+  clausula: {
+    fontSize: 9,
+    marginRight: 40,
+    marginLeft: 40,
+    marginBottom: 10,
+  },
   footer: {
     textAlign: "center",
     fontSize: 9,
@@ -130,25 +100,22 @@ const styles = StyleSheet.create({
 });
 
 export function PDFProforma() {
-  const { modelos, getModelos } = useAtrubutos();
-  const [modelo, setModelo] = useState({});
-  const [test, setTest] = useState([]);
+  const location = useLocation();
+  const { pdfData } = location.state || {};
+  const [proformaValues, setProformaValues] = useState([]);
+
   useEffect(() => {
-    getModelos();
+    getProformaValues();
   }, []);
-  useEffect(() => {
-    setModelo(modelos.find((item) => item.modelo.value === pdfData.modelo));
-    getDefinitions();
-  }, [modelos]);
-  function getDefinitions() {
+  function getProformaValues() {
     let arr = [];
-    for (let item in modelo) {
-      if (modelo[item].isInProforma) {
-        modelo[item]["attr"] = item;
-        arr.push(modelo[item]);
+    for (let item in pdfData.dataModelo) {
+      if (pdfData.dataModelo[item].isInProforma) {
+        pdfData.dataModelo[item]["attr"] = item;
+        arr.push(pdfData.dataModelo[item]);
       }
     }
-    setTest(arr);
+    setProformaValues(arr);
   }
   const Paragrap = () => {
     return (
@@ -156,10 +123,12 @@ export function PDFProforma() {
         Un{" "}
         <Text
           style={{ fontWeight: "bold" }}
-        >{`${modelo.tipo.value} ${modelo.carrozado.value}`}</Text>
+        >{`${pdfData.dataModelo.tipo.value} ${pdfData.dataModelo.carrozado.value}`}</Text>
         , nuevo, marca GROSS, material COMÚN; con configuración de ejes{" "}
-        <Text style={{ fontWeight: "bold" }}>{modelo.ejes.value}</Text>, ejes
-        tubulares, mazas tipo disco, y campanas de freno de 8 pulgadas;{" "}
+        <Text style={{ fontWeight: "bold" }}>
+          {pdfData.dataModelo.ejes.value}
+        </Text>
+        , ejes tubulares, mazas tipo disco, y campanas de freno de 8 pulgadas;{" "}
         <Text style={{ fontWeight: "bold" }}>
           17 llantas de ACERO de 9.00 × 22.5 pulgadas
         </Text>
@@ -170,12 +139,9 @@ export function PDFProforma() {
       </Text>
     );
   };
-  //const location = useLocation();
-  //location.state || {};
   return (
     <>
-      {" "}
-      {test.length > 0 && (
+      {proformaValues.length > 0 && (
         <>
           <div className="w-full text-center mt-5 mb-10">
             <Button className="" variant={"primaryOutline"}>
@@ -189,183 +155,204 @@ export function PDFProforma() {
                   <Image src={Logo} style={styles.logo} />
                   <Image src={LogoISO} style={styles.logo} />
                 </View>
-
                 <View style={styles.body}>
                   <Text style={styles.title}>FACTURA PROFORMA</Text>
-                  <View style={{ marginBottom: 20 }}>
-                    {/* Cliente */}
+                  {/* Cliente */}
+                  <View style={{ marginBottom: 15 }}>
                     <Text style={styles.tableSubtitle}>Datos del Cliente:</Text>
                     <View style={styles.rowClientes}>
                       <Text style={{ marginRight: "10px" }}>Razón Social:</Text>
-                      <Text
-                        style={styles.cellData}
-                      >
-                        {pdfData.cliente}
+                      <Text style={styles.cellData}>
+                        {pdfData.cliente.razon_social}
                       </Text>
                     </View>
                     <View
-                      style={{ display: "flex", flexDirection: "row", gap: 0, width: '100%' }}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 0,
+                        width: "100%",
+                      }}
                     >
                       <View style={[styles.rowClientes, { width: "50%" }]}>
-                        <Text style={{}}>
-                          CUIT:
-                        </Text>
-                        <Text
-                          style={styles.cellData}
-                        >
-                          {'20-12345679-5'}
+                        <Text style={{}}>CUIT:</Text>
+                        <Text style={styles.cellData}>
+                          {pdfData.cliente.cuit}
                         </Text>
                       </View>
                       <View style={[styles.rowClientes, { width: "50%" }]}>
-                        <Text style={{}}>
-                          Código postal:
-                        </Text>
-                        <Text
-                          style={styles.cellData}
-                        >
-                          {3900}
+                        <Text style={{}}>Código postal:</Text>
+                        <Text style={styles.cellData}>
+                          {pdfData.cliente.cod_postal}
                         </Text>
                       </View>
                     </View>
                     <View style={styles.rowClientes}>
                       <Text style={{ marginRight: "10px" }}>Domicilio:</Text>
-                      <Text
-                        style={styles.cellData}
-                      >
-                        {'Villa Fontana 1574'}
+                      <Text style={styles.cellData}>
+                        {`${pdfData.cliente.calle} ${pdfData.cliente.num}`}
                       </Text>
                     </View>
                     <View
-                      style={{ display: "flex", flexDirection: "row", gap: 0, width: '100%' }}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 0,
+                        width: "100%",
+                      }}
                     >
                       <View style={[styles.rowClientes, { width: "50%" }]}>
-                        <Text style={{}}>
-                          Localidad:
-                        </Text>
-                        <Text
-                          style={styles.cellData}
-                        >
-                          {'Parana'}
+                        <Text style={{}}>Localidad:</Text>
+                        <Text style={styles.cellData}>
+                          {pdfData.cliente.localidad}
                         </Text>
                       </View>
                       <View style={[styles.rowClientes, { width: "50%" }]}>
-                        <Text style={{}}>
-                          Provincia:
-                        </Text>
-                        <Text
-                          style={styles.cellData}
-                        >
-                          {'Entre Ríos'}
+                        <Text style={{}}>Provincia:</Text>
+                        <Text style={styles.cellData}>
+                          {pdfData.cliente.provincia}
                         </Text>
                       </View>
                     </View>
                     <View
-                      style={{ display: "flex", flexDirection: "row", gap: 0, width: '100%' }}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: 0,
+                        width: "100%",
+                      }}
                     >
                       <View style={[styles.rowClientes, { width: "50%" }]}>
-                        <Text style={{}}>
-                          Telefono:
-                        </Text>
-                        <Text
-                          style={styles.cellData}
-                        >
-                          {'343-492-0056'}
+                        <Text style={{}}>Telefono:</Text>
+                        <Text style={styles.cellData}>
+                          {pdfData.cliente.tel}
                         </Text>
                       </View>
                       <View style={[styles.rowClientes, { width: "50%" }]}>
-                        <Text style={{}}>
-                          Email:
-                        </Text>
-                        <Text
-                          style={styles.cellData}
-                        >
-                          {'stertz@stertz.com.ar'}
+                        <Text style={{}}>Email:</Text>
+                        <Text style={styles.cellData}>
+                          {pdfData.cliente.email}
                         </Text>
                       </View>
                     </View>
                   </View>
-                  <View style={{ marginBottom: 20 }}>
-                    {/* Unidad */}
+                  <View style={{ marginBottom: 15 }}>
                     {<Paragrap />}
-                    <View>
-                      <Text style={styles.tableSubtitle}>Medidas:</Text>
-                      {test.map(
-                        (item) =>
-                          item.clasification === "medidas" &&
-                          pdfData[item.attr] != "N/A" &&
-                          pdfData[item.attr] != 0 && (
-                            <View style={styles.rowCaracteristics}>
-                              <Text style={{ textTransform: "capitalize" }}>
-                                {item.attr}
-                              </Text>
-                              <Text>{pdfData[item.attr]}</Text>
-                            </View>
-                          )
-                      )}
-                    </View>
-                    <View>
-                      <Text style={styles.tableSubtitle}>Características:</Text>
-                      {test.length > 0 &&
-                        test.map(
+                    <Text style={styles.tableSubtitle}>Características:</Text>
+                    <View style={{ display: "flex", flexDirection: 'row', flexWrap: "wrap"}}>
+                    {proformaValues.map(
                           (item) =>
-                            item.clasification === "caracteristicas" &&
                             pdfData[item.attr] != "N/A" &&
                             pdfData[item.attr] != 0 && (
-                              <View style={styles.rowCaracteristics}>
-                                <Text style={{ textTransform: "capitalize" }}>
-                                  {item.attr}
+                              <View
+                                style={[styles.rowCaracteristics, { width: "50%" }]}
+                                key={item.attr}
+                              >
+                                <Text
+                                  style={{
+                                    textTransform: "capitalize",
+                                    width: 150,
+                                  }}
+                                >
+                                  {item.attr.replace(/_/g, " ")}:
                                 </Text>
-                                <Text>{pdfData[item.attr]}</Text>
+                                <Text style={{ fontWeight: "bold" }}>
+                                  {pdfData[item.attr]}
+                                </Text>
                               </View>
                             )
                         )}
                     </View>
                   </View>
-                  {/* Precio y forma de pago */}
                   <View style={styles.precio}>
                     <View style={styles.row}>
                       <Text>Precio:</Text>
                       <Text style={styles.spacing}></Text>
-                      <Text>$ {pdfData.precio}</Text>
+                      <Text>
+                        {pdfData.precio.toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                        })}
+                      </Text>
                     </View>
                     <View style={styles.row}>
                       <Text>I.V.A:</Text>
                       <Text style={styles.spacing}></Text>
-                      <Text>$ {pdfData.iva}</Text>
+                      <Text>
+                        {pdfData.iva.toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                        })}
+                      </Text>
                     </View>
                     <View style={[styles.row, { fontWeight: "bold" }]}>
                       <Text>Total:</Text>
                       <Text style={styles.spacing}></Text>
-                      <Text>$ {pdfData.total}</Text>
+                      <Text>
+                        {pdfData.total.toLocaleString("es-AR", {
+                          style: "currency",
+                          currency: "ARS",
+                        })}
+                      </Text>
+                    </View>
+                    <View>
+                      <Text style={styles.tableSubtitle}>Forma de Pago:</Text>
+                      {pdfData.formaPago.map((item) =>
+                        item.forma_pago != "Unidad usada" ? (
+                          <View
+                            key={item.id_factura}
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              gap: 10,
+                            }}
+                          >
+                            <View
+                              key={item.id_factura}
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                gap: 10,
+                              }}
+                            >
+                              <Text>Forma de Pago: </Text>
+                              <Text style={{ fontWeight: "bold" }}>
+                                {item.forma_pago}
+                              </Text>
+                            </View>
+                            <View
+                              key={item.id_factura}
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                gap: 10,
+                              }}
+                            >
+                              <Text>Metodo de pago:</Text>
+                              <Text style={{ fontWeight: "bold" }}>
+                                {item.metodo_pago}
+                              </Text>
+                            </View>
+                          </View>
+                        ) : (
+                          <View
+                            key={item.id_factura}
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              gap: 10,
+                            }}
+                          >
+                            <Text>Toma Unidad usada: </Text>
+                            <Text style={{ fontWeight: "bold" }}>
+                              {item.unidad_usada}
+                            </Text>
+                          </View>
+                        )
+                      )}
                     </View>
                   </View>
-                  {/* Clausulas */}
-                  <View style={styles.clausula}>
-                    {/* clausula */}
-                    <Text style={{ fontWeight: "bold", marginBottom: 15 }}>
-                      El origen del bien consignado en la presente factura
-                      proforma responde al requisito de origen nacional en
-                      virtud de lo dispuesto en la resolución Nº 94/2004
-                      articulo Nº 5 del Ministerio de economía y Producción –
-                      Subsecretaria de la pequeña y mediana empresa y desarrollo
-                      social
-                    </Text>
-                    <Text style={{ marginBottom: 5 }}>
-                      - Hacemos constar, con carácter de declaración jurada, que
-                      los bienes detallados en el presente documento son de
-                      Producción Nacional.
-                    </Text>
-                    <Text style={{ marginBottom: 5 }}>
-                      - Los formularios para la inscripción de la unidad, no
-                      están incluidos en el valor arriba detallado
-                    </Text>
-                    <Text>
-                      - Esta unidad quedará congelado al momento del pago total
-                      de la misma, el valor podrá variar sin previo aviso
-                    </Text>
-                  </View>
                 </View>
-                {/* Pie de Página */}
                 <View
                   style={{
                     position: "absolute",
@@ -374,6 +361,29 @@ export function PDFProforma() {
                     width: "100%",
                   }}
                 >
+                  <View style={styles.clausula}>
+                    <Text style={{ fontWeight: "bold", marginBottom: 6 }}>
+                      El origen del bien consignado en la presente factura
+                      proforma responde al requisito de origen nacional en
+                      virtud de lo dispuesto en la resolución Nº 94/2004
+                      articulo Nº 5 del Ministerio de economía y Producción –
+                      Subsecretaria de la pequeña y mediana empresa y desarrollo
+                      social
+                    </Text>
+                    <Text style={{ marginBottom: 3 }}>
+                      - Hacemos constar, con carácter de declaración jurada, que
+                      los bienes detallados en el presente documento son de
+                      Producción Nacional.
+                    </Text>
+                    <Text style={{ marginBottom: 3 }}>
+                      - Los formularios para la inscripción de la unidad, no
+                      están incluidos en el valor arriba detallado
+                    </Text>
+                    <Text style={{ marginBottom: 3 }}>
+                      - Esta unidad quedará congelado al momento del pago total
+                      de la misma, el valor podrá variar sin previo aviso
+                    </Text>
+                  </View>
                   <View style={styles.footer}>
                     <Text>Sucesores de Emilio Gross S.R.L.</Text>
                     <Text>

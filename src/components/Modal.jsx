@@ -21,7 +21,7 @@ export const Modal = ({
   return (
     <div
       id={modalId}
-      className={`absolute bottom-0 right-0 w-full min-h-screen bg-gray-800/40 flex items-start justify-center ${
+      className={`absolute bottom-0 right-0 w-full h-screen bg-gray-800/40 flex items-start justify-center ${
         !show && "hidden"
       }`}
     >

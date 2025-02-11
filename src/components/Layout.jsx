@@ -18,7 +18,7 @@ export default function Layout() {
         <>
           <div className="bg-gray-100">
             <NavBar />
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 min-h-screen">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 min-h-screen ">
               <Outlet />
             </div>
             

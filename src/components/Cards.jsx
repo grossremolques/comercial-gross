@@ -38,7 +38,7 @@ export function CardToggle({ className, title, children }) {
 export function Card({ className, title, children }) {
   return (
     <div
-      className={`rounded-lg border border-gray-200 shadow-sm pt-4 py-6 bg-white ${className}`}
+      className={`rounded-lg border border-gray-200 shadow-sm py-6 px-4 bg-white ${className}`}
     >
       <h2 className="md:text-lg sm:text-md font-normal text-gray-700">
         {title}

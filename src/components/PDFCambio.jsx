@@ -138,7 +138,7 @@ export function PDFCambio() {
     </div>
       {pdfData && (
         <>
-          <PDFViewer width={"100%"} height={"100%"}>
+          <PDFViewer width={"100%"} height={"800px"}>
             <Document>
               <Page size={"A4"} style={styles.page}>
                 <View style={styles.header}>

@@ -9,12 +9,13 @@ import { useAuth } from "../../context/AuthContext";
 import { ss_formas_pago, ss_proforma } from "../../API/backend";
 import { InfoProducto } from "../../templates/InfoProducto";
 import { InfoPago } from "../../templates/InfoPago";
+import { useNavigate } from "react-router-dom";
 export function NewProforma() {
+  const navigate = useNavigate();
   const STORAGE_KEY = "data-new-proforma";
   const dataLocalStorage = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
   const [data, setData] = useState({});
   const { handleModalShow, handleModalClose } = useModal();
-  //const [dataModelo, setDataModelo] = useState();
   const { user } = useAuth();
 
   const {
@@ -37,6 +38,7 @@ export function NewProforma() {
     try {
       const lastId = await ss_proforma.getLastId();
       data["id"] = lastId + 1;
+      data['id_cliente'] = data.cliente.id
       try {
         const { result, status } = await ss_proforma.postData(data, user);
         if (status === 200) {
@@ -46,7 +48,7 @@ export function NewProforma() {
           });
           setData(data);
           handleModalClose();
-          //handleModalShow("success-save");
+          handleModalShow("modal-save-success");
         }
       } catch (err) {
         console.error("Error:", err.message);
@@ -58,34 +60,6 @@ export function NewProforma() {
   const onError = (data) => {
     console.error(data);
   };
-  //const [selectClient, setSelectClient] = useState({});
-  /* useEffect(() => {
-    console.log(selectClient)
-    setValue("cliente", selectClient);
-    setValue("razon_social", selectClient?.razon_social);
-    setValue("id_cliente", selectClient?.id);
-  }, [selectClient]); */
-
-  /* useEffect(() => {
-    reset({
-      largo: dataModelo?.largo.value,
-      ancho: dataModelo?.ancho.value,
-      alto: dataModelo?.alto.value,
-      puerta_trasera: dataModelo?.puerta_trasera.value,
-      capacidad: dataModelo?.capacidad.value,
-      piso: dataModelo?.piso.value,
-      espesor: dataModelo?.espesor.value,
-      cumbrera_lateral: dataModelo?.cumbrera_lateral.value,
-      cant_puertas_laterales: dataModelo?.cant_puertas_laterales.value,
-      altura_baranda: dataModelo?.altura_baranda.value,
-      cajon: dataModelo?.cajon.value,
-      cilindro: dataModelo?.cilindro.value,
-      tara: dataModelo?.tara.value,
-      traba_puerta: dataModelo?.traba_puerta.value,
-      cliente: selectClient.razon_social,
-      id_cliente: selectClient.id,
-    });
-  }, [dataModelo]); */
 
   return (
     <div className="">
@@ -93,19 +67,21 @@ export function NewProforma() {
         className="overflow-y-auto"
         onSubmit={handleSubmit(onSubmit, onError)}
       >
+        <div className=" overflow-y-auto" style={{ height: "calc(100vh - 10rem)" }}>
         <InfoCliente
           register={register}
           errors={errors}
           setValue={setValue}
           data={dataLocalStorage}
+          watch={watch}
         />
          <InfoProducto
           register={register}
           errors={errors}
           setValue={setValue}
-          data={dataLocalStorage}
           watch={watch}
           reset={reset}
+          data={dataLocalStorage}
         />
         <InfoPago
           register={register}
@@ -113,8 +89,10 @@ export function NewProforma() {
           watch={watch}
           control={control}
           setValue={setValue}
+          data={dataLocalStorage}
           
         />
+        </div>
         <div className="fixed bottom-0 left-0 w-full flex items-end px-10 py-3 bg-gray-800/70">
           <Button
             className="ml-auto w-50"
@@ -123,6 +101,37 @@ export function NewProforma() {
             onSubmit={handleSubmit(onSubmit, onError)}
           >
             Guardar
+          </Button>
+          <Button
+            className="ml-auto w-50"
+            variant={"dangerOutline"}
+            type="button"
+            onClick={() => {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify({}));
+              reset({
+                razon_social: "",
+                modelo: "",
+                largo: "",
+                ancho: "",
+                alto: "",
+                capacidad: "",
+                cant_puertas_laterales: "",
+                altura_baranda: "",
+                puerta_trasera: "",
+                piso: "",
+                espesor: "",
+                cumbrera_lateral: "",
+                cajon: "",
+                tara: "",
+                cilindro: '',
+                fecha_estimada: "",
+                vencimiento: "",
+                priceInput: "",
+                formaPago: [],
+              })
+            }}
+          >
+            Test
           </Button>
         </div>
         <ModalLoading title={"Guardado información"} id={"loading-save"} />

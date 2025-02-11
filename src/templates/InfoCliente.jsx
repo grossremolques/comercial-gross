@@ -16,13 +16,17 @@ export const InfoCliente = ({
   errors,
   setValue,
   data,
+  watch
 }) => {
   const {} = register('cliente');
   const [selectClient, setSelectClient] = useState(data.cliente);
   useEffect(() => {
     setValue('cliente', selectClient)
     setValue('razon_social' , selectClient?.razon_social);
-  },[selectClient])
+  },[selectClient]);
+  useEffect(() => {
+    if(watch('razon_social')=== '') setSelectClient({})
+  },[watch('razon_social')])
   return (
     <CardToggle
       className={"lg:max-w-[1000px] mx-auto mb-5"}

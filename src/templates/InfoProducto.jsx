@@ -31,7 +31,7 @@ export const InfoProducto = ({
   ];
   useEffect(() => {
     setValue("dataModelo", selectModelo);
-    setValue("modelo", selectModelo.modelo.value);
+    setValue("modelo", selectModelo?.modelo.value);
     attr.forEach((item) => {
       setValue(
         item,
@@ -80,7 +80,6 @@ export const InfoProducto = ({
             errors={errors}
             setSelectModelo={setSelectModelo}
           />
-          {errors.modelo && <TextInvalidate message={errors.modelo.message} />}
           <h3 className="font-medium text-lg mt-4 mb-2 text-gray-700">
             Medidas
           </h3>
