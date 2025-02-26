@@ -43,6 +43,8 @@ jobs:
           VITE_SS_EMPLEADOS: ${{secrets.VITE_SS_EMPLEADOS}}
           VITE_SS_GESTORIA: ${{secrets.VITE_SS_GESTORIA}}
           VITE_SS_UNIDADES_GROSS: ${{secrets.VITE_SS_UNIDADES_GROSS}}
+          VITE_SS_ESPECIFICACIONES: ${{secrets.VITE_SS_ESPECIFICACION}}
+          VITE_SS_PROFORMA: ${{secrets.VITE_SS_PROFORMA}}
           
         run: npm run build
 
