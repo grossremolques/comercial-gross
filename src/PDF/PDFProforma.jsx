@@ -460,7 +460,7 @@ export function PDFProforma() {
                       }}
                     >
                       <Text>
-                        Asesor Comercia:{" "}
+                        Asesor Comercial:{" "}
                         {`${vendedor.nombre} ${vendedor.apellido}`}
                       </Text>
                       <Text>Email: {vendedor.email_empresa}</Text>
