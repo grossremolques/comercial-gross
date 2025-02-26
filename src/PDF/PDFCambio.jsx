@@ -10,7 +10,7 @@ import {
 import Logo from "../assets/Logos/logo_dark.png";
 import "../fonts";
 import { useLocation } from "react-router-dom";
-import Button from "./Buttons";
+import Button from "../components/Buttons";
 import { NavLink } from "react-router-dom";
 const styles = StyleSheet.create({
   page: {
@@ -129,12 +129,18 @@ const styles = StyleSheet.create({
 export function PDFCambio() {
     const location = useLocation();
   const { pdfData } = location.state || {};
+  console.log(pdfData);
   return (
     <>
     <div className="w-full text-center mt-5 mb-10">
-      <Button className="" variant={'primaryOutline'}>
-        <NavLink to={'/solicitudes'}>Ir al inicio</NavLink>
-      </Button>
+    <div className="w-full text-center mt-5 mb-10">
+            <Button
+              className={"min-w-40"}
+              type="button"
+              variant="primary"
+              text={<NavLink to={"/solicitudes"}>Ir a Solicitudes</NavLink>}
+            />
+          </div>
     </div>
       {pdfData && (
         <>
@@ -155,7 +161,7 @@ export function PDFCambio() {
                   <View style={styles.section_1}>
                     <Text>Fecha: <Text >{pdfData.fecha_creacion}</Text></Text>
                     <Text>Id Orden: <Text style={{fontWeight: 'bold'}}>{pdfData.id}</Text></Text>
-                    <Text>Trazabilidad: <Text style={{fontWeight: 'bold'}}>{pdfData.trazabilidadStr}</Text></Text>
+                    <Text>Trazabilidad: <Text style={{fontWeight: 'bold'}}>{pdfData.trazabilidad}</Text></Text>
                   </View>
                   <View style={styles.section_2}>
                     <Text style={styles.subtitle}>Detalles del Cambio</Text>
@@ -192,7 +198,7 @@ export function PDFCambio() {
                       </Text>
                       <Text style={styles.cell}>Aprobado</Text>
                     </View>
-                    {pdfData.datosCambio.map((item, index) => (
+                    {pdfData.modificaciones.map((item, index) => (
                       <View style={styles.row} key={index}>
                         <Text
                           style={[

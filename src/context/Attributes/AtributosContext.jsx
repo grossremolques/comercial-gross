@@ -13,7 +13,7 @@ import {
 } from "../../API/backend";
 
 const AtributosContext = createContext();
-export const useAtrubutos = () => useContext(AtributosContext);
+export const useAtributos = () => useContext(AtributosContext);
 
 export function AtributosProvider({ children }) {
   const initialState = {

@@ -6,6 +6,8 @@ import {
   StyleSheet,
   PDFViewer,
   Image,
+  Svg,
+  Path,
 } from "@react-pdf/renderer";
 import Logo from "../assets/Logos/logoGross.png";
 import LogoISO from "../assets/Logos/LogoISO9001.png";
@@ -13,11 +15,11 @@ import "../fonts";
 import { useLocation } from "react-router-dom";
 import Button from "../components/Buttons";
 import { NavLink } from "react-router-dom";
-import { useAtrubutos } from "../context/Attributes/AtributosContext";
 import { useEffect, useState } from "react";
+import { ss_empleados } from "../API/backend";
 const styles = StyleSheet.create({
   page: {
-    padding: 15,
+    padding: 10,
     fontFamily: "ChakraPetch",
     fontSize: 10,
     color: "#333",
@@ -103,16 +105,18 @@ export function PDFProforma() {
   const location = useLocation();
   const { pdfData } = location.state || {};
   const [proformaValues, setProformaValues] = useState([]);
+  const [vendedor, setVendedor] = useState([]);
 
   useEffect(() => {
     getProformaValues();
+    getVendedor(pdfData.vendedor);
   }, []);
   function getProformaValues() {
     let arr = [];
-    for (let item in pdfData.dataModelo) {
-      if (pdfData.dataModelo[item].isInProforma) {
-        pdfData.dataModelo[item]["attr"] = item;
-        arr.push(pdfData.dataModelo[item]);
+    for (let item in pdfData.selectedModelo) {
+      if (pdfData.selectedModelo[item].isInProforma) {
+        pdfData.selectedModelo[item]["attr"] = item;
+        arr.push(pdfData.selectedModelo[item]);
       }
     }
     setProformaValues(arr);
@@ -120,33 +124,52 @@ export function PDFProforma() {
   const Paragrap = () => {
     return (
       <Text style={{ marginBottom: 10 }}>
-        Un{" "}
+        Un{pdfData.selectedModelo.tipo.value === "Carrocería" && "a"}{" "}
         <Text
           style={{ fontWeight: "bold" }}
-        >{`${pdfData.dataModelo.tipo.value} ${pdfData.dataModelo.carrozado.value}`}</Text>
-        , nuevo, marca GROSS, material COMÚN; con configuración de ejes{" "}
-        <Text style={{ fontWeight: "bold" }}>
-          {pdfData.dataModelo.ejes.value}
-        </Text>
-        , ejes tubulares, mazas tipo disco, y campanas de freno de 8 pulgadas;{" "}
-        <Text style={{ fontWeight: "bold" }}>
-          17 llantas de ACERO de 9.00 × 22.5 pulgadas
-        </Text>
-        ; suspensión mecánica; sistema de frenos neumático ABS; luces
-        reglamentarias LED de 24 [V]. Con chasis color{" "}
+        >{`${pdfData.selectedModelo.tipo.value} ${pdfData.selectedModelo.carrozado.value}`}</Text>
+        , nuev{pdfData.selectedModelo.tipo.value === "Carrocería" ? "a" : "o"},
+        marca GROSS, material COMÚN;
+        {pdfData.selectedModelo.tipo.value != "Carrocería" && (
+          <>
+            <Text>con configuración de ejes </Text>
+            <Text style={{ fontWeight: "bold" }}>
+              {pdfData.selectedModelo.ejes.value}
+            </Text>
+            , ejes tubulares, mazas tipo disco, y campanas de freno de 8
+            pulgadas;{" "}
+            <Text style={{ fontWeight: "bold" }}>
+              {pdfData.selectedModelo.llantas_acero.value} llantas de ACERO de
+              9.00 × 22.5 pulgadas
+            </Text>
+            ; suspensión mecánica; sistema de frenos neumático ABS
+          </>
+        )}
+        ; luces reglamentarias LED de 24 [V]. Con chasis color{" "}
         <Text style={{ fontWeight: "bold" }}>Negro Titanium Gross</Text> y
         carrozado color <Text>a elección</Text>.
       </Text>
     );
+  };
+  const getVendedor = async (alias) => {
+    try {
+      const res = await ss_empleados.getDataById("alias", alias);
+      setVendedor(res);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>
       {proformaValues.length > 0 && (
         <>
           <div className="w-full text-center mt-5 mb-10">
-            <Button className="" variant={"primaryOutline"}>
-              <NavLink to={"/solicitudes"}>Ir al inicio</NavLink>
-            </Button>
+            <Button
+              className={"min-w-40"}
+              type="button"
+              variant="primary"
+              text={<NavLink to={"/proformas"}>Ir al inicio</NavLink>}
+            />
           </div>
           <PDFViewer width={"100%"} height={"800px"}>
             <Document>
@@ -163,7 +186,7 @@ export function PDFProforma() {
                     <View style={styles.rowClientes}>
                       <Text style={{ marginRight: "10px" }}>Razón Social:</Text>
                       <Text style={styles.cellData}>
-                        {pdfData.cliente.razon_social}
+                        {pdfData.selectedCliente.razon_social}
                       </Text>
                     </View>
                     <View
@@ -177,20 +200,20 @@ export function PDFProforma() {
                       <View style={[styles.rowClientes, { width: "50%" }]}>
                         <Text style={{}}>CUIT:</Text>
                         <Text style={styles.cellData}>
-                          {pdfData.cliente.cuit}
+                          {pdfData.selectedCliente.cuit}
                         </Text>
                       </View>
                       <View style={[styles.rowClientes, { width: "50%" }]}>
                         <Text style={{}}>Código postal:</Text>
                         <Text style={styles.cellData}>
-                          {pdfData.cliente.cod_postal}
+                          {pdfData.selectedCliente.cod_postal}
                         </Text>
                       </View>
                     </View>
                     <View style={styles.rowClientes}>
                       <Text style={{ marginRight: "10px" }}>Domicilio:</Text>
                       <Text style={styles.cellData}>
-                        {`${pdfData.cliente.calle} ${pdfData.cliente.num}`}
+                        {`${pdfData.selectedCliente.calle} ${pdfData.selectedCliente.num}`}
                       </Text>
                     </View>
                     <View
@@ -204,13 +227,13 @@ export function PDFProforma() {
                       <View style={[styles.rowClientes, { width: "50%" }]}>
                         <Text style={{}}>Localidad:</Text>
                         <Text style={styles.cellData}>
-                          {pdfData.cliente.localidad}
+                          {pdfData.selectedCliente.localidad}
                         </Text>
                       </View>
                       <View style={[styles.rowClientes, { width: "50%" }]}>
                         <Text style={{}}>Provincia:</Text>
                         <Text style={styles.cellData}>
-                          {pdfData.cliente.provincia}
+                          {pdfData.selectedCliente.provincia}
                         </Text>
                       </View>
                     </View>
@@ -225,13 +248,13 @@ export function PDFProforma() {
                       <View style={[styles.rowClientes, { width: "50%" }]}>
                         <Text style={{}}>Telefono:</Text>
                         <Text style={styles.cellData}>
-                          {pdfData.cliente.tel}
+                          {pdfData.selectedCliente.tel}
                         </Text>
                       </View>
                       <View style={[styles.rowClientes, { width: "50%" }]}>
                         <Text style={{}}>Email:</Text>
                         <Text style={styles.cellData}>
-                          {pdfData.cliente.email}
+                          {pdfData.selectedCliente.email}
                         </Text>
                       </View>
                     </View>
@@ -239,29 +262,62 @@ export function PDFProforma() {
                   <View style={{ marginBottom: 15 }}>
                     {<Paragrap />}
                     <Text style={styles.tableSubtitle}>Características:</Text>
-                    <View style={{ display: "flex", flexDirection: 'row', flexWrap: "wrap"}}>
-                    {proformaValues.map(
-                          (item) =>
-                            pdfData[item.attr] != "N/A" &&
-                            pdfData[item.attr] != 0 && (
-                              <View
-                                style={[styles.rowCaracteristics, { width: "50%" }]}
-                                key={item.attr}
-                              >
-                                <Text
-                                  style={{
-                                    textTransform: "capitalize",
-                                    width: 150,
-                                  }}
+                    <View style={{ display: "flex", flexDirection: "row" }}>
+                      {/* Primera columna */}
+                      <View style={{ width: "50%" }}>
+                        {proformaValues
+                          .filter((_, index) => index % 2 === 0) // Elementos pares
+                          .map(
+                            (item) =>
+                              pdfData[item.attr] !== "N/A" &&
+                              pdfData[item.attr] !== 0 && (
+                                <View
+                                  style={styles.rowCaracteristics}
+                                  key={item.attr}
                                 >
-                                  {item.attr.replace(/_/g, " ")}:
-                                </Text>
-                                <Text style={{ fontWeight: "bold" }}>
-                                  {pdfData[item.attr]}
-                                </Text>
-                              </View>
-                            )
-                        )}
+                                  <Text
+                                    style={{
+                                      textTransform: "capitalize",
+                                      width: 150,
+                                    }}
+                                  >
+                                    {item.attr.replace(/_/g, " ")}:
+                                  </Text>
+                                  <Text style={{ fontWeight: "bold" }}>
+                                    {pdfData[item.attr]}
+                                  </Text>
+                                </View>
+                              )
+                          )}
+                      </View>
+
+                      {/* Segunda columna */}
+                      <View style={{ width: "50%" }}>
+                        {proformaValues
+                          .filter((_, index) => index % 2 !== 0) // Elementos impares
+                          .map(
+                            (item) =>
+                              pdfData[item.attr] !== "N/A" &&
+                              pdfData[item.attr] !== 0 && (
+                                <View
+                                  style={styles.rowCaracteristics}
+                                  key={item.attr}
+                                >
+                                  <Text
+                                    style={{
+                                      textTransform: "capitalize",
+                                      width: 150,
+                                    }}
+                                  >
+                                    {item.attr.replace(/_/g, " ")}:
+                                  </Text>
+                                  <Text style={{ fontWeight: "bold" }}>
+                                    {pdfData[item.attr]}
+                                  </Text>
+                                </View>
+                              )
+                          )}
+                      </View>
                     </View>
                   </View>
                   <View style={styles.precio}>
@@ -279,7 +335,7 @@ export function PDFProforma() {
                       <Text>I.V.A:</Text>
                       <Text style={styles.spacing}></Text>
                       <Text>
-                        {pdfData.iva.toLocaleString("es-AR", {
+                        {parseFloat(pdfData.iva).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}
@@ -289,7 +345,7 @@ export function PDFProforma() {
                       <Text>Total:</Text>
                       <Text style={styles.spacing}></Text>
                       <Text>
-                        {pdfData.total.toLocaleString("es-AR", {
+                        {parseFloat(pdfData.total).toLocaleString("es-AR", {
                           style: "currency",
                           currency: "ARS",
                         })}
@@ -383,6 +439,34 @@ export function PDFProforma() {
                       - Esta unidad quedará congelado al momento del pago total
                       de la misma, el valor podrá variar sin previo aviso
                     </Text>
+                    <View
+                      style={{
+                        textAlign: "center",
+                        marginTop: 10,
+                        marginBottom: 25,
+                      }}
+                    >
+                      <Text>P/Suc. De Emilio Gross SRL.</Text>
+                      <Text>{`${vendedor.nombre} ${vendedor.apellido}`}</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        fontSize: "8",
+                        backgroundColor: "#f6f3f4",
+                        padding: "3",
+                      }}
+                    >
+                      <Text>
+                        Asesor Comercia:{" "}
+                        {`${vendedor.nombre} ${vendedor.apellido}`}
+                      </Text>
+                      <Text>Email: {vendedor.email_empresa}</Text>
+                      <Text>Contacto: {vendedor.contacto}</Text>
+                      
+                    </View>
                   </View>
                   <View style={styles.footer}>
                     <Text>Sucesores de Emilio Gross S.R.L.</Text>

@@ -28,17 +28,8 @@ export function NavBar() {
             >
               Solicitudes
             </NavLink>
+            
             <NavLink
-              to="/solicitar-cambio"
-              className={({ isActive }) =>
-                `px-1.5 rounded ${
-                  isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
-                }`
-              }
-            >
-              Crear Solicitudes
-            </NavLink>
-            {/* <NavLink
               to="/proformas"
               className={({ isActive }) =>
                 `px-1.5 rounded ${
@@ -48,26 +39,6 @@ export function NavBar() {
             >
               Proformas
             </NavLink>
-            <NavLink
-              to="/new-proforma"
-              className={({ isActive }) =>
-                `px-1.5 rounded ${
-                  isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
-                }`
-              }
-            >
-              Crear Proforma
-            </NavLink>
-            <NavLink
-              to="/pdf-proforma"
-              className={({ isActive }) =>
-                `px-1.5 rounded ${
-                  isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
-                }`
-              }
-            >
-              PDF
-            </NavLink> */}
           </div>
         </div>
       </div>

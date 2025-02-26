@@ -59,3 +59,33 @@ export const ss_puerta_trasera = new GoogleSheet({
     rowHead: 1,
     nameSheet: "Registro",
   });
+  export const ss_empleados = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_EMPLEADOS,
+    rowHead: 1,
+    nameSheet: "Registro",
+  });
+  export const ss_solicitudes = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_CAMBIO,
+    rowHead: 1,
+    nameSheet: "Registro",
+  });
+  export const ss_unidadesGross = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_UNIDADES_GROSS,
+    rowHead: 1,
+    nameSheet: "Unidades",
+  });
+  export const ss_gestoria = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_GESTORIA,
+    rowHead: 1,
+    nameSheet: "Gestoría",
+  });
+  export const ss_cambios_atributos = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_CAMBIO,
+    rowHead: 1,
+    nameSheet: "Atributos",
+  });
+  export const ss_cambios_detalle = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_CAMBIO,
+    rowHead: 1,
+    nameSheet: "Detalle",
+  });

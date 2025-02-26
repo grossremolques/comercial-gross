@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDoubleDownIcon } from "@heroicons/react/24/solid";
-export function CardToggle({ className, title, children }) {
+export const CardToggle = ({ className, title, children }) => {
   const [toggleCard, setToggleCard] = useState({ hidden: false, border: true });
 
   const handleOpenCard = (e) => {

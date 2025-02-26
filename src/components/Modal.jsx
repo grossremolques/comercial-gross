@@ -68,7 +68,7 @@ export const ModalLoading = ({ title, id }) => {
     </Modal>
   );
 };
-export const ModalSuccess = ({ title, id }) => {
+export const ModalSuccess = ({ title, id, children }) => {
   return (
     <Modal
       modalId={id}
@@ -76,25 +76,7 @@ export const ModalSuccess = ({ title, id }) => {
       title={title}
       icon={<CheckBadgeIcon width={"24px"} />}
     >
-      <p className="mt-4 text-sm text-green-700">
-        Los datos se han guardo exitosamente
-        <br />
-        <strong>
-          Imprime el registro de la Solicitud, y entegalo al responsable de
-          procesar tu pedido
-        </strong>
-      </p>
-      <Button
-        className={"w-full mt-4"}
-        type="button"
-        variant="success"
-        onClick={() => {
-          handleModalClose();
-          navigate("/pdf", { state: { pdfData: data } });
-        }}
-      >
-        Imprimir Solicitud
-      </Button>
+      {children}
     </Modal>
   );
 };

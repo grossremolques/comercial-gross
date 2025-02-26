@@ -1,8 +1,20 @@
 import React from "react";
+const stylebases = "rounded-md border-gray-200 shadow-xs sm:text-sm disabled:bg-gray-100";
 
+export const Label = ({ label, htmlFor }) => {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className="block text-sm font-medium text-gray-700 mb-1"
+    >
+      {" "}
+      {label}{" "}
+    </label>
+  );
+};
 export const Input = React.forwardRef(
   (
-    { onChange, onBlur, name, placeholder, onClick, type = "text", onInput, readOnly , className},
+    { onChange, onBlur, name, placeholder, onClick, type = "text", onInput, readOnly , className, disabled},
     ref
   ) => {
     return (
@@ -16,14 +28,45 @@ export const Input = React.forwardRef(
         type={type}
         onInput={onInput}
         readOnly={readOnly}
-        className={`mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm read-only:bg-gray-100 ${className}`}
+        disabled={disabled}
+        autoComplete="off"
+        className={`w-full ${stylebases} ${className}`}
       />
     );
   }
 );
-
+export const Textarea = React.forwardRef(
+  (
+    {
+      onChange,
+      onBlur,
+      name,
+      placeholder,
+      onClick,
+      onInput,
+      className,
+      rows = 3,
+      disabled
+    },
+    ref
+  ) => {
+    return (
+      <textarea
+        onChange={onChange}
+        onBlur={onBlur}
+        name={name}
+        onClick={onClick}
+        rows={rows}
+        ref={ref}
+        placeholder={placeholder}
+        disabled={disabled}
+        className={`w-full ${stylebases} ${className}`}
+      ></textarea>
+    );
+  }
+);
 export const Select = React.forwardRef(
-  ({ onChange, onBlur, name, placeholder, onClick, onInput, disabled, children},
+  ({ onChange, onBlur, name, placeholder, onClick, onInput, disabled, className, children},
     ref) => {
     return (
       <select
@@ -35,7 +78,7 @@ export const Select = React.forwardRef(
         onClick={onClick}
         onInput={onInput}
         disabled={disabled}
-        className="mt-1 w-full rounded-md border-gray-200 text-gray-700 sm:text-sm shadow-sm disabled:bg-gray-100"
+        className={`w-full ${stylebases} ${className}`}
       >
         <option value=''>{placeholder}</option>
         {children}
@@ -44,17 +87,6 @@ export const Select = React.forwardRef(
     );
   }
 );
-export const Label = ({ label, htmlFor }) => {
-  return (
-    <label
-      htmlFor={htmlFor}
-      className="block text-sm font-medium text-gray-700"
-    >
-      {" "}
-      {label}{" "}
-    </label>
-  );
-};
 export const InputComponent = ({ label, htmlFor, children, someClass }) => {
   return (
     <div className={someClass}>
@@ -104,7 +136,7 @@ export const SelectGroup = React.forwardRef(
 );
 export const TextInvalidate = ({message}) => {
   return (
-    <div className="mt-1 text-sm text-red-500">
+    <div className="mt-1 text-xs text-red-500">
       {message}
     </div>
   );

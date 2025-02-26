@@ -1,23 +1,21 @@
 import "./App.css";
 import { RouterProvider, createHashRouter } from "react-router-dom";
 import Layout from "./components/Layout";
-import { AuthContextProvider } from "./context/AuthContext";
-import { SolicitudCambio } from "./pages/SolicitudCambio";
-import { ModalContextProvider } from "./context/ModalContext";
-import { PDFCambio } from "./components/PDFCambio";
-import Solicitudes from "./pages/Solicitudes";
-import { SolcitudID } from "./pages/SolicitudID";
-import { AtributosProvider } from "./context/Attributes/AtributosContext";
-import { PDFProforma } from "./PDF/PDFProforma";
 
-import { ClientesContextProvider } from "./context/ClientesContext";
+import { PDFCambio } from "./PDF/PDFCambio";
+import { PDFProforma } from "./PDF/PDFProforma";
 
 /* 📂 Proforma */
 import { NewProforma } from "./pages/Proforma/NewProforma";
-import Proformas from "./pages/Proforma/Proformas";
 import { ProformaID } from "./pages/Proforma/ProformaID";
-import { InfoProducto } from "./templates/InfoProducto";
-
+import Proformas from "./pages/Proforma/Proformas";
+/* 📂 Solicitudes */
+import Solicitudes from "./pages/Cambios/Solicitudes";
+import { NuevaSolicitud } from "./pages/Cambios/NuevaSolicitud";
+import { SolcitudID } from "./pages/Cambios/SolicitudID";
+/* Contextos */
+import { AuthContextProvider } from "./context/AuthContext";
+import { ModalContextProvider } from "./context/ModalContext";
 function App() {
   const router = createHashRouter([
     {
@@ -28,14 +26,11 @@ function App() {
         { path: "/pdf-cambio", element: <PDFCambio /> },
         { path: "/solicitudes", element: <Solicitudes /> },
         { path: "/proformas", element: <Proformas /> },
-        { path: "/solicitar-cambio", element: <SolicitudCambio /> },
+        { path: "/solicitar-cambio", element: <NuevaSolicitud /> },
         { path: "/solicitud/:id", element: <SolcitudID /> },
         { path: "/proforma/:id", element: <ProformaID /> },
-        {
-          path: "/new-proforma",
-          element: <NewProforma />,
-        },
-        { path: "/pdf-proforma", element: <PDFProforma /> }
+        { path: "/new-proforma", element: <NewProforma /> },
+        { path: "/pdf-proforma", element: <PDFProforma /> },
       ],
     },
 
@@ -44,13 +39,9 @@ function App() {
   return (
     <>
       <AuthContextProvider>
-        <ClientesContextProvider>
-          <ModalContextProvider>
-            <AtributosProvider>
-              <RouterProvider router={router} />
-            </AtributosProvider>
-          </ModalContextProvider>
-        </ClientesContextProvider>
+        <ModalContextProvider>
+          <RouterProvider router={router} />
+        </ModalContextProvider>
       </AuthContextProvider>
     </>
   );

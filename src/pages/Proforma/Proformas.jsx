@@ -3,26 +3,37 @@ import { useState, useEffect } from "react";
 import { Input } from "../../components/Forms";
 import Button from "../../components/Buttons";
 import { useForm } from "react-hook-form";
-import { FunnelIcon } from "@heroicons/react/24/solid";
+import { FunnelIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ss_proforma } from "../../API/backend";
 import { useClientes } from "../../context/ClientesContext";
-import { useAtrubutos } from "../../context/Attributes/AtributosContext";
+import { useAtributos } from "../../context/Attributes/AtributosContext";
 import { ss_formas_pago } from "../../API/backend";
-
+import { useLocation } from "react-router-dom";
+import { useCallback } from "react";
+import { NoDataComponent } from "../../components/DataField";
 export default function Proformas() {
+  const STORAGE_KEY = "filterData";
+  const filterData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  const location = useLocation();
   const { clientes, getClientes } = useClientes();
-  const {modelos, getModelos} = useAtrubutos();
+  const { modelos, getModelos } = useAtributos();
   const [pagos, setPagos] = useState([]);
 
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm({
-    defaultValues: {},
+  const { register, watch } = useForm({
+    defaultValues: filterData,
   });
+
+  const watchedValues = watch();
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(watchedValues));
+  }, [watchedValues]);
+
   const [dataFiltered, setDataFiltered] = useState([]);
   const [proformas, setProformas] = useState([]);
-  
+
   const columns = [
     {
       name: "Id",
@@ -40,7 +51,7 @@ export default function Proformas() {
     {
       name: "Cliente",
       width: "270px",
-      selector: (row) => row.cliente?.razon_social,
+      selector: (row) => row.selectedCliente?.razon_social,
       sortable: true,
     },
     {
@@ -72,7 +83,7 @@ export default function Proformas() {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
   const getProformas = async () => {
     try {
       const dataProformas = await ss_proforma.getData();
@@ -81,32 +92,33 @@ export default function Proformas() {
       const formaPago = [];
       dataProformas.map((item) => {
         clients.push(clientes.find((cliente) => cliente.id == item.id_cliente));
-        models.push(modelos.find((modelo) => modelo.modelo.value === item.modelo));
+        models.push(
+          modelos.find((modelo) => modelo.modelo.value === item.modelo)
+        );
         formaPago.push(pagos.filter((pago) => pago.id_factura === item.id));
-        
       });
       clients.map((cliente) => {
         dataProformas.map((proforma) => {
           if (cliente?.id == proforma.id_cliente) {
-            proforma["cliente"] = cliente;
+            proforma["selectedCliente"] = cliente;
           }
         });
       });
       models.map((modelo) => {
         dataProformas.map((proforma) => {
           if (modelo?.modelo.value == proforma.modelo) {
-            proforma["dataModelo"] = modelo;
+            proforma["selectedModelo"] = modelo;
           }
         });
-      })
-      
+      });
+
       formaPago.map((pago) => {
         dataProformas.map((proforma) => {
-         if(pago.length > 0 && pago[0].id_factura == proforma.id) {
-          proforma["formaPago"] = pago}
-
-        })
-      })
+          if (pago.length > 0 && pago[0].id_factura == proforma.id) {
+            proforma["formaPago"] = pago;
+          }
+        });
+      });
       setProformas(dataProformas.reverse());
       setDataFiltered(dataProformas.reverse());
     } catch (e) {
@@ -121,16 +133,12 @@ export default function Proformas() {
   useEffect(() => {
     if (clientes.length > 0) getProformas();
   }, [clientes]);
-  const handleFilter = (data) => {
-    data.trazabilidadQuery = data.trazabilidadQuery
-      .replace(".", "")
-      .replace("-", "");
-    console.log(data);
+  const handleFilter = () => {
+    const data = watch();
     setDataFiltered(
       proformas.filter((item) => {
         return (
-          item.trazabilidad.toString().includes(data.trazabilidadQuery) &&
-          item.cliente
+          item.selectedCliente.razon_social
             .toLowerCase()
             .includes(data.clienteQuery.toLowerCase()) &&
           item.modelo.toLowerCase().includes(data.modeloQuery.toLowerCase())
@@ -141,35 +149,63 @@ export default function Proformas() {
   const openProforma = (data) => {
     navigate(`/proforma/${data.id}`, { state: { proformaData: data } });
   };
+  useEffect(() => {
+    if (location.state?.refresh) {
+      getProformas(); // Llamada a la API para obtener los datos más recientes
+    }
+  }, [location.state]);
+  useEffect(() => {
+    handleFilter();
+  }, [proformas]);
   return (
     <div className="w-full mx-auto">
       <h1 className="font-medium text-3xl text-center text-gray-700 mb-10">
         Facturas Proformas
       </h1>
       <form
-        onSubmit={handleSubmit(handleFilter)}
-        className="flex gap-1 my-6 w-full"
+        className="flex gap-1 my-6 w-full justify-between"
       >
-        <Input placeholder={"Cliente"} {...register("clienteQuery")} />
-        <Input
-          placeholder={"Trazabilidad"}
-          {...register("trazabilidadQuery")}
+        <div className="w-auto flex gap-1">
+          <Input
+            placeholder={"Cliente"}
+            {...register("clienteQuery")}
+            onInput={handleFilter}
+          />
+          <Input
+            placeholder={"Modelo"}
+            {...register("modeloQuery")}
+            onInput={handleFilter}
+          />
+        </div>
+
+        <Button
+          className={"min-w-50"}
+          type="button"
+          variant="success"
+          text={<NavLink to={"/new-proforma"}>Crear Proforma</NavLink>}
+          icon={<PlusIcon className="w-4" />}
         />
-        <Input placeholder={"Modelo"} {...register("modeloQuery")} />
-        <Button className={"w-130"} type={"submit"} variant={"primary"}>
-          <div className="flex gap-1 justify-center">
-            <FunnelIcon width={"16px"} />
-            Filtrar
-          </div>
-        </Button>
-        <Button className={"w-130"} type={"submit"} variant={"success"}>
-          <NavLink to={"/new-proforma"}>Crear Proforma</NavLink>
-        </Button>
       </form>
       <TableComponent
         data={dataFiltered}
         columns={columns}
         handleOnRowClick={openProforma}
+        noDataComponent={
+          <NoDataComponent
+            title={"No hay Proformas"}
+            text={
+              "Puedes agregar proformas haciendo click en el boton de abajo"
+            }
+          >
+            <Button
+              className={"min-w-50"}
+              type="button"
+              variant="success"
+              text={<NavLink to={"/new-proforma"}>Crear Proforma</NavLink>}
+              icon={<PlusIcon className="w-4" />}
+            />
+          </NoDataComponent>
+        }
       />
     </div>
   );

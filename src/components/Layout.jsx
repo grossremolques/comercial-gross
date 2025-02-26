@@ -2,6 +2,10 @@ import { Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 import { NavBar } from "./NavBar";
+import { ClientesContextProvider } from "../context/ClientesContext";
+import { GestoriaContextProvider } from "../context/GestoriaContext";
+import { UnidadesGrossContextProvider } from "../context/UnidadesGrossContext";
+import { AtributosProvider } from "../context/Attributes/AtributosContext";
 export default function Layout() {
   const { auth, getAuth, getUser, user } = useAuth();
   useEffect(() => {
@@ -16,12 +20,19 @@ export default function Layout() {
     <>
       {auth && user && (
         <>
-          <div className="bg-gray-100">
+          <div className="fixed w-full bg-gray-100">
             <NavBar />
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 min-h-screen ">
-              <Outlet />
+            <div className="mx-auto px-4 sm:px-6 py-20 min-h-screen ">
+              <ClientesContextProvider>
+                <GestoriaContextProvider>
+                  <UnidadesGrossContextProvider>
+                    <AtributosProvider>
+                      <Outlet />
+                    </AtributosProvider>
+                  </UnidadesGrossContextProvider>
+                </GestoriaContextProvider>
+              </ClientesContextProvider>
             </div>
-            
           </div>
         </>
       )}

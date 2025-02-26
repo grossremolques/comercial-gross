@@ -1,32 +1,34 @@
 import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Button from "../../components/Buttons";
-import { BoxComponentScrolling } from "../../components/BoxComponent";
-import FormularioProforma from "../../templates/FormularioProforma";
+import { useEffect, useState } from "react";
 import { PencilSquareIcon, DocumentIcon } from "@heroicons/react/24/solid";
-import { ss_proforma, ss_formas_pago } from "../../API/backend";
-import { useModal } from "../../context/ModalContext";
-import { ModalLoading, ModalSuccess } from "../../components/Modal";
+import Button from "../../components/Buttons";
 import { useNavigate } from "react-router-dom";
-
-export function ProformaID() {
+import { BoxComponentScrolling } from "../../components/BoxComponent";
+import FormularioSolicitud from "../../templates/FormularioSolicitud";
+import { ModalLoading, ModalSuccess } from "../../components/Modal";
+import { useModal } from "../../context/ModalContext";
+import { ss_solicitudes, ss_cambios_detalle } from "../../API/backend";
+export function SolcitudID() {
   const navigate = useNavigate();
   const { handleModalClose, handleModalShow } = useModal();
   const [disabled, setDisabled] = useState(true);
   const location = useLocation();
-  const { proformaData } = location.state || {};
+  const { solicitudData } = location.state || {};
+  solicitudData.trazabilidad = solicitudData.trazabilidad
+    .toString()
+    .replace(/(\d{1})(\d{4})(\d{2})/, "$1.$2-$3");
   const modalsId = { loading: "loading", success: "success" };
-  const [data, setData] = useState(proformaData);
-  const onSubmit = async ({ data, dirtyFields, reset,watch }) => {
+  const [data, setData] = useState(solicitudData);
+  const onSubmit = async ({ data, dirtyFields, reset, watch }) => {
     handleModalShow(modalsId.loading);
     const updates = {};
     //obtener datos del "fieldArray"
-    const actionsFormasPago = getFormasPago(
-      data.formaPago,
-      proformaData.formaPago
+    const actionsModificaciones = getModificaciones(
+      data.modificaciones,
+      solicitudData.modificaciones
     );
-    updates["formaPago"] = actionsFormasPago.update;
-    delete dirtyFields.formaPago;
+    updates["modificaciones"] = actionsModificaciones.update;
+    delete dirtyFields.modificaciones;
     //obtener los datos a actualizar
     for (let item in dirtyFields) {
       if (dirtyFields[item]) {
@@ -35,48 +37,52 @@ export function ProformaID() {
     }
     //actualizar los datos en la base de datos
     try {
-      const { status } = await ss_proforma.updateData({
+      const { status } = await ss_solicitudes.updateData({
         colName: "id",
-        id: proformaData.id,
+        id: solicitudData.id,
         values: updates,
       });
-      //agregar las nuevas formas de pago
-      for (const item of actionsFormasPago.append) {
-        item['id_factura'] = data.id;
-        const { result, status } = await ss_formas_pago.postData({ data: item, includeId: true });
+      //agregar las nuevas modificaciones
+      for (const item of actionsModificaciones.append) {
+        item["id_orden"] = data.id;
+        const { result, status } = await ss_cambios_detalle.postData({
+          data: item,
+          includeId: true,
+        });
       }
       //actualizar las formas de pago
-      await Promise.all(actionsFormasPago.update.map(async (item) => {
-        const { status } = await ss_formas_pago.updateData({
-          colName: "id",
-          id: item.id,
-          values: item,
-        });
-      }));
+      await Promise.all(
+        actionsModificaciones.update.map(async (item) => {
+          const { status } = await ss_cambios_detalle.updateData({
+            colName: "id",
+            id: item.id,
+            values: item,
+          });
+        })
+      );
       //eliminar las formas de pago (desactivar)
-      await Promise.all(actionsFormasPago.remove.map(async (item) => {
-        const res = await ss_formas_pago.disactive({
-          colName: "id",
-          id: item.id,
-        });
-      }));
+      await Promise.all(
+        actionsModificaciones.remove.map(async (item) => {
+          const res = await ss_cambios_detalle.disactive({
+            colName: "id",
+            id: item.id,
+          });
+        })
+      );
       handleModalClose();
       handleModalShow(modalsId.success);
       // 🔹 Resetear el formulario con los valores actualizados
       setData(watch());
-      reset(watch()); 
-      setDisabled(true)
+      reset(watch());
+      setDisabled(true); 
     } catch (err) {
       console.error(err);
       return;
-    };
+    }
   };
-  const onError = async (data) => {
-    console.log(data);
-  };
-  const getFormasPago = (actualsValues, defaultValues = []) => {
+  const getModificaciones = (actualsValues, defaultValues = []) => {
     const arr = { append: [], remove: [], update: [] };
-  
+
     // Verificar si hay elementos nuevos para agregar
     if (actualsValues?.length) {
       const hasAppend = !actualsValues.every((item) => item.id);
@@ -84,30 +90,37 @@ export function ProformaID() {
         arr.append = actualsValues.filter((item) => item.id === "");
       }
     }
-  
+
     // Si defaultValues está vacío, solo retornamos los agregados
     if (defaultValues.length === 0) return arr;
-  
+
     // Verificar elementos eliminados y modificados
     defaultValues.forEach((origin) => {
-      const hasRemoved = !actualsValues.some((actual) => actual.id === origin.id);
+      const hasRemoved = !actualsValues.some(
+        (actual) => actual.id === origin.id
+      );
       if (hasRemoved) arr.remove.push(origin);
-  
+
       actualsValues.forEach((actual) => {
-        if (actual.id === origin.id && JSON.stringify(actual) !== JSON.stringify(origin)) {
+        if (
+          actual.id === origin.id &&
+          JSON.stringify(actual) !== JSON.stringify(origin)
+        ) {
           arr.update.push(actual);
         }
       });
     });
-  
+
     return arr;
   };
-  
+  const onError = async (data) => {
+    console.log(data);
+  };
   return (
     <>
-      <BoxComponentScrolling title="Creando Proforma">
-        <FormularioProforma
-          defaultValues={proformaData}
+      <BoxComponentScrolling title="Solicitud">
+        <FormularioSolicitud
+          defaultValues={solicitudData}
           onSubmit={onSubmit}
           onError={onError}
           isDisabled={disabled}
@@ -125,36 +138,37 @@ export function ProformaID() {
               text="Ir al inicio"
               onClick={() => {
                 handleModalClose();
-                navigate("/proformas", { state: { refresh: true } });
+                navigate("/solicitudes", { state: { refresh: true } });
               }}
             />
           </div>
         </ModalSuccess>
         <div className="fixed bottom-[15px] left-8">
           <div className="flex gap-2">
+            {solicitudData.status === "Pendiente" && (
+              <Button
+                type="button"
+                variant="pink"
+                text="Habilitar edición"
+                icon={<PencilSquareIcon className="w-4" />}
+                hidden_text
+                onClick={() => {
+                  setDisabled(false);
+                }}
+              />
+            )}
+
             <Button
-            type="button"
-            variant="pink"
-            text="Habilitar edición"
-            icon={<PencilSquareIcon className="w-4" />}
-            hidden_text
-            onClick={() => {
-              setDisabled(false);
-            }}
-          />
-          <Button
               className={"min-w-40"}
               type="button"
               variant="blue"
               text="Ver documento"
               icon={<DocumentIcon className="w-4" />}
               onClick={() => {
-                navigate("/pdf-proforma", { state: { pdfData: data } });
+                navigate("/pdf-cambio", { state: { pdfData: data } });
               }}
             />
           </div>
-          
-          
         </div>
       </BoxComponentScrolling>
     </>

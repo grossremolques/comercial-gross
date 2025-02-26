@@ -12,12 +12,22 @@ const customStyles = {
       fontSize: "0.95rem",
     },
   },
+  background: {
+    default: 'transparent',
+  },
 };
 const options = {
   rowsPerPageText: "Filas por página",
   rangeSeparatorText: "de",
-} 
-export default function TableComponent({columns, data, handleOnRowClick, conditionalRowStyles}) {
+};
+
+export default function TableComponent({
+  columns,
+  data,
+  handleOnRowClick,
+  conditionalRowStyles,
+  noDataComponent = <p>No hay datos para mostrar</p>,
+}) {
   return (
     <DataTable
       className="custom-element"
@@ -31,6 +41,7 @@ export default function TableComponent({columns, data, handleOnRowClick, conditi
       highlightOnHover
       onRowClicked={handleOnRowClick}
       conditionalRowStyles={conditionalRowStyles}
+      noDataComponent={noDataComponent}
     />
   );
 }
