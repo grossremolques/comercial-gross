@@ -407,6 +407,11 @@ export function PDFProforma() {
                         )
                       )}
                     </View>
+                    <View>
+                    <Text style={styles.tableSubtitle}>Observaciones:</Text>
+                    <Text>{pdfData.nota}</Text>
+
+                    </View>
                   </View>
                 </View>
                 <View

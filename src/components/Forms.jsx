@@ -60,7 +60,7 @@ export const Textarea = React.forwardRef(
         ref={ref}
         placeholder={placeholder}
         disabled={disabled}
-        className={`w-full ${stylebases} ${className}`}
+        className={`w-full field-sizing-content ${stylebases} ${className}`}
       ></textarea>
     );
   }

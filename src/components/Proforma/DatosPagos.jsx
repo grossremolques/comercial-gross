@@ -2,7 +2,7 @@ import { CardToggle } from "../Cards";
 import CurrencyInput from "react-currency-input-field";
 import { useAtributos } from "../../context/Attributes/AtributosContext";
 import { useFieldArray } from "react-hook-form";
-import { Label, Input, Select, TextInvalidate } from "../Forms";
+import { Label, Input, Select, TextInvalidate, Textarea } from "../Forms";
 import Button from "../Buttons";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useFormContext } from "react-hook-form";
@@ -219,6 +219,13 @@ function DatosPagos() {
                 ))}
               </tbody>
             </table>
+            <div className="mt-2"> 
+              <Label label={"Observaciones"} htmlFor={"nota"} />
+              <Textarea
+                {...register("nota")}
+              />
+              
+            </div>
             {errors.submit && (
               <TextInvalidate message={errors.submit.message} />
             )}
