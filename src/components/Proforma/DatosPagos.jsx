@@ -31,7 +31,7 @@ function DatosPagos() {
     const precio = parseFloat(value?.replace(/[^\d.-]/g, "")) || 0;
 
     // Calcular IVA y Total
-    const iva = precio * 0.21;
+    const iva = precio * 0.105;
     const total = precio + iva;
 
     // Actualizar valores en react-hook-form
