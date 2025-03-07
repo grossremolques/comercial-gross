@@ -1,5 +1,6 @@
 import React from "react";
-const stylebases = "rounded-md border-gray-200 shadow-xs sm:text-sm disabled:bg-gray-100";
+const stylebases =
+  "rounded-md border-gray-200 shadow-xs sm:text-sm disabled:bg-gray-100";
 
 export const Label = ({ label, htmlFor }) => {
   return (
@@ -12,32 +13,12 @@ export const Label = ({ label, htmlFor }) => {
     </label>
   );
 };
-export const Input = React.forwardRef(
-  (
-    { onChange, onBlur, name, placeholder, onClick, type = "text", onInput, readOnly , className, disabled},
-    ref
-  ) => {
-    return (
-      <input
-        onChange={onChange}
-        onBlur={onBlur}
-        name={name}
-        ref={ref}
-        placeholder={placeholder}
-        onClick={onClick}
-        type={type}
-        onInput={onInput}
-        readOnly={readOnly}
-        disabled={disabled}
-        autoComplete="off"
-        className={`w-full ${stylebases} ${className}`}
-      />
-    );
-  }
-);
+
 export const Textarea = React.forwardRef(
   (
     {
+      label = "falta label",
+      no_label,
       onChange,
       onBlur,
       name,
@@ -46,44 +27,128 @@ export const Textarea = React.forwardRef(
       onInput,
       className,
       rows = 3,
-      disabled
+      disabled,
     },
     ref
   ) => {
     return (
-      <textarea
-        onChange={onChange}
-        onBlur={onBlur}
-        name={name}
-        onClick={onClick}
-        rows={rows}
-        ref={ref}
-        placeholder={placeholder}
-        disabled={disabled}
-        className={`w-full field-sizing-content ${stylebases} ${className}`}
-      ></textarea>
+      <div className="w-full">
+        <label
+          htmlFor={name}
+          className={`block text-sm font-medium text-gray-700 mb-1 ${
+            no_label && "sr-only"
+          }`}
+        >
+          {" "}
+          {label}{" "}
+        </label>
+        <textarea
+          onChange={onChange}
+          onBlur={onBlur}
+          name={name}
+          onClick={onClick}
+          rows={rows}
+          ref={ref}
+          placeholder={placeholder}
+          disabled={disabled}
+          className={`w-full field-sizing-content ${stylebases} ${className}`}
+        ></textarea>
+      </div>
+    );
+  }
+);
+export const Input = React.forwardRef(
+  (
+    {
+      onChange,
+      onBlur,
+      name,
+      placeholder,
+      onClick,
+      type = "text",
+      onInput,
+      readOnly,
+      className,
+      disabled,
+      defaultValue,
+      label = "falta label",
+      no_label,
+    },
+    ref
+  ) => {
+    return (
+      <div className={`w-full ${className}`}>
+        <label
+          htmlFor={name}
+          className={`block text-sm font-medium text-gray-700 mb-1 ${
+            no_label && "sr-only"
+          }`}
+        >
+          {" "}
+          {label}{" "}
+        </label>
+
+        <input
+          onChange={onChange}
+          onBlur={onBlur}
+          name={name}
+          ref={ref}
+          placeholder={placeholder}
+          onClick={onClick}
+          type={type}
+          onInput={onInput}
+          readOnly={readOnly}
+          disabled={disabled}
+          defaultValue={defaultValue}
+          className={`w-full ${stylebases} ${className}`}
+        />
+      </div>
     );
   }
 );
 export const Select = React.forwardRef(
-  ({ onChange, onBlur, name, placeholder, onClick, onInput, disabled, className, children},
-    ref) => {
+  (
+    {
+      label = "falta label",
+      onChange,
+      onBlur,
+      name,
+      placeholder,
+      onClick,
+      onInput,
+      disabled,
+      className,
+      children,
+      no_label,
+    },
+    ref
+  ) => {
     return (
-      <select
-        onChange={onChange}
-        onBlur={onBlur}
-        name={name}
-        ref={ref}
-        placeholder={placeholder}
-        onClick={onClick}
-        onInput={onInput}
-        disabled={disabled}
-        className={`w-full ${stylebases} ${className}`}
-      >
-        <option value=''>{placeholder}</option>
-        {children}
-        
-      </select>
+      <div className="w-full">
+        <label
+          htmlFor={name}
+          className={`block text-sm font-medium text-gray-700 mb-1 ${
+            no_label && "sr-only"
+          }`}
+        >
+          {" "}
+          {label}{" "}
+        </label>
+        <select
+          onChange={onChange}
+          onBlur={onBlur}
+          name={name}
+          ref={ref}
+          placeholder={placeholder}
+          onClick={onClick}
+          onInput={onInput}
+          disabled={disabled}
+          className={`w-full ${stylebases} ${className}`}
+        >
+          <option value="">{placeholder}</option>
+          {children}
+        </select>
+      </div>
     );
   }
 );
@@ -134,10 +199,6 @@ export const SelectGroup = React.forwardRef(
     );
   }
 );
-export const TextInvalidate = ({message}) => {
-  return (
-    <div className="mt-1 text-xs text-red-500">
-      {message}
-    </div>
-  );
-}
+export const TextInvalidate = ({ message }) => {
+  return <div className="mt-1 text-xs text-red-500">{message}</div>;
+};

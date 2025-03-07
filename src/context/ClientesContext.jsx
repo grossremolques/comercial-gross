@@ -4,6 +4,7 @@ const ClientesContext = createContext();
 export const useClientes = () => useContext(ClientesContext);
 export const ClientesContextProvider = ({children}) => {
     const [clientes, setClientes] = useState([]);
+    const [client, setClient] = useState([]);
     useEffect(() => {
         getClientes();
       }, []);
@@ -11,8 +12,9 @@ export const ClientesContextProvider = ({children}) => {
         const res = await ss_clientes.getData();
         setClientes(res);
       };
+
     return (
-        <ClientesContext.Provider value={{clientes, getClientes}}>
+        <ClientesContext.Provider value={{clientes, getClientes, client, setClient}}>
             {children}
         </ClientesContext.Provider>
     )

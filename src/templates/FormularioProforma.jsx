@@ -1,7 +1,7 @@
 import { useForm, FormProvider } from "react-hook-form";
 import DatosPagos from "../components/Proforma/DatosPagos";
 import DatosProducto from "../components/Proforma/DatosProducto";
-import DatosCliente from "../components/DatosCliente";
+import DatosSeleccionarCliente from "../components/DatosSeleccionarCliente";
 import { Footer } from "../components/Footer";
 import Button from "../components/Buttons";
 import { Input, Label } from "../components/Forms";
@@ -21,7 +21,7 @@ function FormularioProforma({ defaultValues, onSubmit, onError, isDisabled }) {
       <form onSubmit={methods.handleSubmit(handleSendings, onError)}>
           
         <fieldset disabled={isDisabled}>
-        <DatosCliente/>
+        <DatosSeleccionarCliente/>
           <DatosProducto />
           <DatosPagos />
         <Footer>

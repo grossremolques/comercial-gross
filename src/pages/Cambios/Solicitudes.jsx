@@ -164,7 +164,12 @@ export default function Solicitudes() {
   }, [location.state]);
   useEffect(() => {
     handleFilter();
-  }, [solicitudes, watch('clienteQuery'), watch('modeloQuery'), watch('trazabilidadQuery')]);
+  }, [
+    solicitudes,
+    watch("clienteQuery"),
+    watch("modeloQuery"),
+    watch("trazabilidadQuery"),
+  ]);
   return (
     <div className="w-full mx-auto">
       <h1 className="font-medium text-3xl text-center text-gray-700 mb-10">
@@ -173,16 +178,22 @@ export default function Solicitudes() {
       <form className="flex my-6 w-full justify-between">
         <div className="flex gap-2 max-w-3xl">
           <Input
+            label="Cliente"
+            no_label
             type="search"
             placeholder={"Cliente"}
             {...register("clienteQuery")}
           />
           <Input
+            label="Trazabilidad"
+            no_label
             type="search"
             placeholder={"Trazabilidad"}
             {...register("trazabilidadQuery")}
           />
           <Input
+            label="Modelo"
+            no_label
             type="search"
             placeholder={"Modelo"}
             {...register("modeloQuery")}

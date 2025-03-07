@@ -1,4 +1,4 @@
-import { XMarkIcon, ArchiveBoxIcon, CheckBadgeIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, ArchiveBoxIcon, CheckBadgeIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { useModal } from "../context/ModalContext";
 import ReactLoading from "react-loading";
 export const Modal = ({
@@ -14,7 +14,8 @@ export const Modal = ({
     danger: "text-red-700",
     primary: "text-indigo-600",
     success: "text-green-600",
-    waiting: "text-blue-500",
+    blue: "text-blue-500",
+    pink: "text-pink-500",
   };
   const { handleModalClose, activeModal } = useModal();
   const show = activeModal === modalId;
@@ -27,9 +28,9 @@ export const Modal = ({
     >
       <div
         role="alert"
-        className="rounded-xl border border-gray-100 bg-white px-8 py-6 mt-[100px] max-h-full sm:w-sm md:w-lg"
+        className="rounded-xl border border-gray-100 bg-white md:px-8 px-4 py-6 mt-[100px] max-h-full w-sm md:w-lg"
       >
-        <div className={`flex items-start gap-4 ${variants[variant]}`}>
+        <div className={`flex gap-2 ${variants[variant]}`}>
           {icon}
 
           <div className="flex-1">
@@ -80,3 +81,16 @@ export const ModalSuccess = ({ title, id, children }) => {
     </Modal>
   );
 };
+export const ModalError = ({ title, id, children }) => {
+  return (
+    <Modal
+      modalId={id}
+      variant="danger"
+      title={title}
+      icon={<ExclamationCircleIcon width={"24px"} />}
+    >
+      {children}
+    </Modal>
+  );
+};
+

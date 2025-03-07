@@ -15,20 +15,25 @@ export const GestoriaContextProvider = ({ children }) => {
   const getGestoria = async () => {
     try {
       const dataGestoria = await ss_gestoria.getData();
-
-      dataGestoria.forEach((unidad) => {
-        const cliente = clientes.find((c) => c.id === unidad.id_cliente);
-        if (cliente) {
-          unidad["selectedCliente"] = cliente;
-        }
-      });
-
-      setGestoria(dataGestoria);
+      if (dataGestoria.error) {
+        window.alert(`
+  code : ${dataGestoria.error.code}
+  message : ${dataGestoria.error.message}
+  status : ${dataGestoria.error.status}`);
+      } else {
+        dataGestoria.forEach((unidad) => {
+          const cliente = clientes.find((c) => c.id === unidad.id_cliente);
+          if (cliente) {
+            unidad["selectedCliente"] = cliente;
+          }
+        });
+        setGestoria(dataGestoria);
+      }
     } catch (e) {
       console.log(e);
     }
   };
-  
+
   return (
     <GestoriaContext.Provider value={{ gestoria, getGestoria }}>
       {children}

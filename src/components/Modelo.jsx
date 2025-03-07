@@ -8,6 +8,7 @@ import { useAtributos } from "../context/Attributes/AtributosContext";
 import { useFormContext } from "react-hook-form";
 export function Modelo() {
   const [filteredData, setFilteredData] = useState([]);
+  const [search, setSearch] = useState("");
   const { handleModalShow, handleModalClose } = useModal();
   const { modelos, getModelos } = useAtributos();
   const {
@@ -23,27 +24,36 @@ export function Modelo() {
   useEffect(() => {
     setFilteredData(modelos);
   }, [modelos]);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const result = modelos.filter((item) =>
+        item.modelo.value.toLowerCase().includes(search.toLowerCase())
+      );
+      setFilteredData(result);
+    }, 300); // Agrega un debounce de 300ms
+    return () => clearTimeout(timeout);
+  }, [search]);
   function handleSelectedModelo(data) {
-    const values = watch()
+    const values = watch();
     setValue("selectedModelo", data);
     for (let attr in values) {
-      if(data[attr]) setValue(attr, data[attr].value, { shouldDirty: true });
+      if (data[attr]) setValue(attr, data[attr].value, { shouldDirty: true });
     }
   }
   return (
     <>
-      <Label label={"Seleccionar modelo"} htmlFor={"modelo"} />
-        <Input
-          placeholder={"Buscar Modelo"}
-          onClick={() => handleModalShow("findModelo")}
-          readOnly={true}
-          {...register("modelo", {
-            required: {
-              value: "Debe seleccionar un modelo",
-              message: "Debe seleccionar un modelo",
-            },
-          })}
-        />
+      <Input
+        label={"Seleccionar modelo"}
+        placeholder={"Buscar Modelo"}
+        onClick={() => handleModalShow("findModelo")}
+        readOnly={true}
+        {...register("modelo", {
+          required: {
+            value: "Debe seleccionar un modelo",
+            message: "Debe seleccionar un modelo",
+          },
+        })}
+      />
       {errors.modelo && <TextInvalidate message={errors.modelo.message} />}
       <Modal
         modalId={"findModelo"}
@@ -54,6 +64,8 @@ export function Modelo() {
         <div className="mt-4">
           <p className="mt-1 text-sm text-gray-700">Seleccione un modelo.</p>
           <Input
+          label="Buscar modelo"
+          no_label
             type="search"
             placeholder="Buscar Modelo"
             onInput={(e) => setSearch(e.target.value)}

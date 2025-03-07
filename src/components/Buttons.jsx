@@ -42,6 +42,10 @@ const Button = React.forwardRef(
       pink: "border-pink-500 bg-pink-500 text-white hover:bg-transparent hover:text-pink-500 focus:outline-none focus:ring active:text-pink-500",
       red: "border-red-500 bg-red-500 text-white hover:bg-transparent hover:text-red-500 focus:outline-none focus:ring active:text-red-500",
       blue: "border-blue-500 bg-blue-500 text-white hover:bg-transparent hover:text-blue-500 focus:outline-none focus:ring active:text-blue-500",
+      blueOutline:
+        "text-blue-500 border-blue-500 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring active:bg-blue-500",
+        pinkOutline:
+        "text-pink-500 border-pink-500 hover:bg-pink-500 hover:text-white focus:outline-none focus:ring active:bg-pink-500",
     };
 
     return (

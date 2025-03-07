@@ -88,8 +88,8 @@ function DatosSolicitud() {
         className={"lg:max-w-[1000px] mx-auto mb-5"}
         title={"Datos de la Solicitud"}
       >
-        <Label label={"Seleccionar trazabilidad"} htmlFor={"trazabilidad"} />
         <Input
+        label={"Seleccionar trazabilidad"}
           placeholder={"Buscar trazabilidad"}
           onClick={() => handleModalShow("findTrazabilidad")}
           {...register("trazabilidad", {
@@ -137,10 +137,12 @@ function DatosSolicitud() {
         >
           <div className="mt-4">
             <p className="mt-1 text-sm text-gray-700">
-              Seleccione un Trazabilidad.
+              Seleccione una Trazabilidad.
             </p>
             <Input
               type="search"
+              label="Trazabilidad"
+              no_label
               placeholder="Buscar Trazabilidad"
               onInput={(e) => setSearch(e.target.value)}
               {...register("getTrazabilidad", {})}
@@ -193,6 +195,8 @@ function DatosSolicitud() {
                 <tr key={index}>
                   <th className="whitespace-nowrap p-0.5 text-gray-700">
                     <Select
+                    label={"Atributo"}
+                    no_label
                       placeholder={"Seleccione un atributo"}
                       {...register(`modificaciones.${index}.atributo`, {
                         required: true,
@@ -220,6 +224,8 @@ function DatosSolicitud() {
                   <td className="whitespace-nowrap p-0.5 text-gray-700">
                     <Input
                       type={"text"}
+                      label={"Valor actual"}
+                    no_label
                       placeholder={"Valor actual"}
                       disabled={true}
                       //value={unidad[watch(`modificaciones.${index}.atributo`)]}
@@ -230,6 +236,8 @@ function DatosSolicitud() {
                   </td>
                   <td className="whitespace-nowrap p-0.5 text-gray-700">
                     <Input
+                    label={"nuevo valor"}
+                    no_label
                       type={"text"}
                       placeholder={"Valor Nuevo"}
                       {...register(`modificaciones.${index}.valor_nuevo`, {

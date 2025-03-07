@@ -138,7 +138,7 @@ export default function Proformas() {
     setDataFiltered(
       proformas.filter((item) => {
         return (
-          item.selectedCliente.razon_social
+          item.selectedCliente?.razon_social
             .toLowerCase()
             .includes(data.clienteQuery.toLowerCase()) &&
           item.modelo.toLowerCase().includes(data.modeloQuery.toLowerCase())
@@ -162,16 +162,18 @@ export default function Proformas() {
       <h1 className="font-medium text-3xl text-center text-gray-700 mb-10">
         Facturas Proformas
       </h1>
-      <form
-        className="flex gap-1 my-6 w-full justify-between"
-      >
+      <form className="flex gap-1 my-6 w-full justify-between">
         <div className="w-auto flex gap-1">
           <Input
+            label={"Cliente"}
+            no_label
             placeholder={"Cliente"}
             {...register("clienteQuery")}
             onInput={handleFilter}
           />
           <Input
+            label={"MOdelo"}
+            no_label
             placeholder={"Modelo"}
             {...register("modeloQuery")}
             onInput={handleFilter}

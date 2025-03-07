@@ -48,9 +48,9 @@ function DatosPagos() {
           title={"Datos de Entrega y Pago"}
         >
           <div className="w-50 mb-2">
-            <Label label={"Asesor Comercial"} htmlFor={"vendedor"} />
             <Select
               placeholder={""}
+              label={"Asesor Comercial"}
               {...register('vendedor', {
                 required: {value: true, message: 'Seleccione el vendedor'},
               })}
@@ -68,9 +68,9 @@ function DatosPagos() {
           <div className="flex gap-2">
             
             <div>
-              <Label label={"Fecha entrega"} htmlFor={"fecha_estimada"} />
               <Input
                 type="date"
+                label={"Fecha entrega"}
                 {...register("fecha_estimada", {
                   required: { value: true, message: "Campo obligatorio" },
                 })}
@@ -80,9 +80,9 @@ function DatosPagos() {
               )}
             </div>
             <div>
-              <Label label={"Valido hasta"} htmlFor={"vencimiento"} />
               <Input
                 type="date"
+                label={"Valido hasta"}
                 {...register("vencimiento", {
                   required: { value: true, message: "Campo obligatorio" },
                 })}
@@ -220,8 +220,8 @@ function DatosPagos() {
               </tbody>
             </table>
             <div className="mt-2"> 
-              <Label label={"Observaciones"} htmlFor={"nota"} />
               <Textarea
+              label={"Observaciones"}
                 {...register("nota")}
               />
               
