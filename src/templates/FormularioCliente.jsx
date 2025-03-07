@@ -193,9 +193,9 @@ function FormularioCliente() {
                       <Input
                         label="Telefono"
                         type="text"
-                        {...register("telefono", { required: true })}
+                        {...register("tel", { required: true })}
                       />
-                      {errors.telefono && (
+                      {errors.tel && (
                         <TextInvalidate message={"Campo obligatorio"} />
                       )}
                       <Input label="Email" type="text" {...register("email")} />

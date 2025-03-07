@@ -85,7 +85,7 @@ export default function DatosClientes() {
             <Input
               label="Telefono"
               type="text"
-              {...register("telefono", { required: true })}
+              {...register("tel", { required: true })}
             />
             <Input label="Email" type="text" {...register("email")} />
           </div>

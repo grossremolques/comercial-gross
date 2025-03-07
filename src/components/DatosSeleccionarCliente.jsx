@@ -61,7 +61,7 @@ function DatosSeleccionarCliente() {
       localidad: "",
       provincia: "",
       domicilio: "",
-      telefono: "",
+      tel: "",
       email: "",
     });
     setValue("razon_social", "");
@@ -131,7 +131,7 @@ function DatosSeleccionarCliente() {
         <DataField
           icon={<PhoneIcon width={"16px"} />}
           label={"Telefono"}
-          value={client?.telefono}
+          value={client?.tel}
         />
         <DataField
           icon={<EnvelopeIcon width={"16px"} />}
