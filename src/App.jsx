@@ -1,6 +1,7 @@
 import "./App.css";
 import { RouterProvider, createHashRouter } from "react-router-dom";
 import Layout from "./components/Layout";
+import Clientes from "./pages/Clientes";
 
 import { PDFCambio } from "./PDF/PDFCambio";
 import { PDFProforma } from "./PDF/PDFProforma";
@@ -31,6 +32,7 @@ function App() {
         { path: "/proforma/:id", element: <ProformaID /> },
         { path: "/new-proforma", element: <NewProforma /> },
         { path: "/pdf-proforma", element: <PDFProforma /> },
+        { path: "/clientes", element: <Clientes /> },
       ],
     },
 

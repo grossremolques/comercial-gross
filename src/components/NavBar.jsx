@@ -39,6 +39,16 @@ export function NavBar() {
             >
               Proformas
             </NavLink>
+            <NavLink
+              to="/clientes"
+              className={({ isActive }) =>
+                `px-1.5 rounded ${
+                  isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
+                }`
+              }
+            >
+              Clientes
+            </NavLink>
           </div>
         </div>
       </div>

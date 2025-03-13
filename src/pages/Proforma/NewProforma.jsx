@@ -5,15 +5,16 @@ import { ModalLoading, ModalSuccess } from "../../components/Modal";
 import { useModal } from "../../context/ModalContext";
 import Button from "../../components/Buttons";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import FormularioCliente from "../../templates/FormularioCliente";
+import { useClientes } from "../../context/ClientesContext";
 export function NewProforma() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { handleModalClose, handleModalShow } = useModal();
   const modalsId = { loading: "loading", success: "success" };
   const [data, setData] = useState();
+  const { client, getClientes, clientes, setClient } = useClientes();
 
   const onSubmit = async ({ data }) => {
     handleModalShow(modalsId.loading);
@@ -46,6 +47,7 @@ export function NewProforma() {
   const onError = (data) => {
     console.error(data);
   };
+  useEffect(()=>{setClient("")},[])
   return (
     <>
       <BoxComponentScrolling title="Creando Proforma">
@@ -54,9 +56,6 @@ export function NewProforma() {
           onError={onError}
           isDisabled={false}
           defaultValues={{ vendedor: user.alias }}
-        />
-        <FormularioCliente
-          isDisabled={false}
         />
         <ModalLoading id={modalsId.loading} title={"Guardando Proforma"} />
         <ModalSuccess id={modalsId.success} title={"Proforma Guardado"}>

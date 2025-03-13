@@ -6,9 +6,10 @@ import { ss_localidades, ss_clientes } from "../API/backend";
 import { useState, useEffect } from "react";
 import { useClientes } from "../context/ClientesContext";
 import { Input, Select, TextInvalidate } from "../components/Forms";
-function FormularioCliente() {
-  const [isDisabled, setIsDisabled] = useState(false)
-  const { client, getClientes, clientes } = useClientes();
+import { useModal } from "../context/ModalContext";
+function FormularioCliente({ handleSelectedCliente }) {
+  const { handleModalClose } = useModal();
+  const { client, getClientes, clientes, setClient } = useClientes();
   const [newClient, setNewClient] = useState(false);
   const {
     register,
@@ -38,7 +39,7 @@ function FormularioCliente() {
     reset(client);
     setValue("localidad", client.localidad);
     setNewClient(client.razon_social === "");
-  }, [client]);
+  }, [client, localidades, reset, setValue]);
   const handleCodPostal = () => {
     const cod_postal = watch("cod_postal");
     if (localidades) {
@@ -47,41 +48,49 @@ function FormularioCliente() {
       );
       if (filtered.length > 0) {
         setFilterLocalidades(filtered);
-        setValue("provincia", filtered[0].provincia);
+        setValue("provincia", filtered[0].provincia, { shouldDirty: true });
       }
     }
   };
   const handleSendings = async (data) => {
-    
     Object.keys(dirtyFields).forEach((key) => (dirtyFields[key] = data[key]));
     try {
       if (newClient) {
-        const res = await ss_clientes.postData({ data: data });
-        console.log(res);
+        const { status, response } = await ss_clientes.postData({ data: data });
+        if (status === 200) {
+          if (handleSelectedCliente) handleSelectedCliente(response);
+        }
       } else {
+        console.log(dirtyFields);
         const res = await ss_clientes.updateData({
           colName: "id",
-          id: client.id,
+          id: parseInt(client.id),
           values: dirtyFields,
-        });        
+        });
+        if (res.status === 200) {
+          const updatedClient = { ...client, ...dirtyFields }; // Combina datos actualizados
+
+          if (handleSelectedCliente) handleSelectedCliente(updatedClient);
+        }
       }
       getClientes();
     } catch (e) {
       console.error(e);
+    } finally {
+      handleModalClose();
     }
   };
-  /* const handleValidateID = (value) => {
-    const regex = /^[a-zA-Z0-9\s]+$/;
-    return regex.test(value);
-    /
-  }; */
   const handleValidateID = (value) => {
-    const isId = clientes.some((item) => item.id == value);
-    if (isId) return "Id registrado";
+    if (newClient) {
+      const isId = clientes.some((item) => item.id == value);
+      if (isId) return "Id registrado";
+    }
   };
   const handleValidateCUIT = (value) => {
-    const isCUIT = clientes.some((item) => item.cuit == value);
-    if (isCUIT) return "CUIT registrado";
+    if (newClient) {
+      const isCUIT = clientes.some((item) => item.cuit == value);
+      if (isCUIT) return "CUIT registrado";
+    }
   };
   const onError = (err) => {
     console.error(err);
@@ -105,7 +114,7 @@ function FormularioCliente() {
           style={{ height: "calc(100vh - 300px)" }}
         >
           <form onSubmit={handleSubmit(handleSendings, onError)}>
-            <fieldset disabled={isDisabled}>
+            <fieldset>
               <>
                 {filterLocalidades && (
                   <>
@@ -155,6 +164,7 @@ function FormularioCliente() {
                         {...register("cod_postal", {
                           required: true,
                           onChange: handleCodPostal,
+                          valueAsNumber: true,
                         })}
                       />
                       {errors.cod_postal && (

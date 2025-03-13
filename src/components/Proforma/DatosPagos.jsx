@@ -161,6 +161,8 @@ function DatosPagos() {
                     </th>
                     <td className="whitespace-nowrap p-0.5 text-gray-900">
                       <Select
+                      label="Forma de Pago"
+                      no_label
                         placeholder={"Seleccione una formas de pago"}
                         {...register(`formaPago.${index}.forma_pago`, {
                           required: true,
@@ -180,6 +182,8 @@ function DatosPagos() {
                       {watch(`formaPago.${index}.forma_pago`) ===
                       "Unidad usada" ? (
                         <Input
+                        label="Unidad usada"
+                        no_label
                           type={"text"}
                           placeholder={"Describa la unidad usada"}
                           {...register(`formaPago.${index}.unidad_usada`, {
@@ -188,6 +192,8 @@ function DatosPagos() {
                         />
                       ) : (
                         <Select
+                        label="Metodo de Pago"
+                        no_label
                           placeholder={"Metodo de Pago"}
                           {...register(`formaPago.${index}.metodo_pago`, {
                             required: true,

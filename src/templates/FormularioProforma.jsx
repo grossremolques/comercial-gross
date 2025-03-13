@@ -4,7 +4,6 @@ import DatosProducto from "../components/Proforma/DatosProducto";
 import DatosSeleccionarCliente from "../components/DatosSeleccionarCliente";
 import { Footer } from "../components/Footer";
 import Button from "../components/Buttons";
-import { Input, Label } from "../components/Forms";
 function FormularioProforma({ defaultValues, onSubmit, onError, isDisabled }) {
   const methods = useForm({
     defaultValues: defaultValues || {
@@ -12,16 +11,16 @@ function FormularioProforma({ defaultValues, onSubmit, onError, isDisabled }) {
   });
   const { formState: { dirtyFields }, unregister, reset, watch} = methods;
   const handleSendings = (data) => {
+    console.log(data)
     data.id_cliente = data.selectedCliente.id
     unregister(['getCliente', 'getModelo', 'submit', 'razon_social']);
     onSubmit({data, dirtyFields, reset, watch})
   }
   return (
     <FormProvider {...methods}>
+      <DatosSeleccionarCliente isDisabled={isDisabled}/>
       <form onSubmit={methods.handleSubmit(handleSendings, onError)}>
-          
         <fieldset disabled={isDisabled}>
-        <DatosSeleccionarCliente/>
           <DatosProducto />
           <DatosPagos />
         <Footer>

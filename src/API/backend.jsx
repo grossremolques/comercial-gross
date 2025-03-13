@@ -57,7 +57,7 @@ export const ss_puerta_trasera = new GoogleSheet({
   export const ss_clientes = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_CLIENTES,
     rowHead: 1,
-    nameSheet: "Registro"/*  "Datos Generales" */,
+    nameSheet: /* "Registro" */ "Datos Generales",
   });
   export const ss_localidades = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_CLIENTES,
