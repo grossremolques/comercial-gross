@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { CardToggle } from "../Cards";
-import { Label, Input, Select } from "../Forms";
+import { Label, Input, Select } from "../Generales/Forms";
 import { useAtributos } from "../../context/Attributes/AtributosContext";
 import { useEffect, useState } from "react";
 import { Modelo } from "../Modelo";

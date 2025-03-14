@@ -1,6 +1,6 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { Footer } from "../components/Footer";
-import Button from "../components/Buttons";
+import Button from "../components/Generales/Buttons";
 import DatosSolicitud from "../components/Solicitud/DatosSolicitud";
 function FormularioSolicitud({ defaultValues, onSubmit, onError, isDisabled }) {
     const methods = useForm({

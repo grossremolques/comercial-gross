@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ModalLoading, ModalSuccess } from "../../components/Modal";
 import { useModal } from "../../context/ModalContext";
 
-import Button from "../../components/Buttons";
+import Button from "../../components/Generales/Buttons";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import FormularioSolicitud from "../../templates/FormularioSolicitud";

@@ -4,11 +4,11 @@ import { Modal } from "./Modal";
 import FormularioCliente from "../templates/FormularioCliente";
 
 import { CardToggle } from "./Cards";
-import { Input, TextInvalidate } from "./Forms";
+import { Input, TextInvalidate } from "./Generales/Forms";
 
 import { useModal } from "../context/ModalContext";
 import { useClientes } from "../context/ClientesContext";
-import Button from "./Buttons";
+import Button from "./Generales/Buttons";
 import { useFormContext } from "react-hook-form";
 
 import { DataField } from "./DataField";

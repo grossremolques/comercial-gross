@@ -1,9 +1,8 @@
-import { Input, Label, TextInvalidate } from "./Forms";
-import { PlusIcon, PencilIcon, TruckIcon } from "@heroicons/react/24/solid";
+import { Input, TextInvalidate } from "./Generales/Forms";
+import { TruckIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { Modal } from "./Modal";
 import { useModal } from "../context/ModalContext";
-import Button from "./Buttons";
 import { useAtributos } from "../context/Attributes/AtributosContext";
 import { useFormContext } from "react-hook-form";
 export function Modelo() {

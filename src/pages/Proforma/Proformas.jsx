@@ -1,7 +1,7 @@
-import TableComponent from "../../components/TableComponent";
+import TableComponent from "../../components/Generales/TableComponent";
 import { useState, useEffect } from "react";
-import { Input } from "../../components/Forms";
-import Button from "../../components/Buttons";
+import { Input } from "../../components/Generales/Forms";
+import Button from "../../components/Generales/Buttons";
 import { useForm } from "react-hook-form";
 import { FunnelIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
@@ -14,7 +14,7 @@ import { useLocation } from "react-router-dom";
 import { useCallback } from "react";
 import { NoDataComponent } from "../../components/DataField";
 export default function Proformas() {
-  const STORAGE_KEY = "filterData";
+  const STORAGE_KEY = "data-filter-proformas";
   const filterData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
   const location = useLocation();
   const { clientes, getClientes } = useClientes();

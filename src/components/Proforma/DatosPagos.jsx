@@ -2,12 +2,11 @@ import { CardToggle } from "../Cards";
 import CurrencyInput from "react-currency-input-field";
 import { useAtributos } from "../../context/Attributes/AtributosContext";
 import { useFieldArray } from "react-hook-form";
-import { Label, Input, Select, TextInvalidate, Textarea } from "../Forms";
-import Button from "../Buttons";
+import { Label, Input, Select, TextInvalidate, Textarea } from "../Generales/Forms";
+import Button from "../Generales/Buttons";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
 function DatosPagos() {
   const {
     register,

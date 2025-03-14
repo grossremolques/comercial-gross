@@ -1,7 +1,7 @@
-import TableComponent from "../components/TableComponent";
+import TableComponent from "../components/Generales/TableComponent";
 import { useState, useEffect } from "react";
-import { Input } from "../components/Forms";
-import Button from "../components/Buttons";
+import { Input } from "../components/Generales/Forms";
+import Button from "../components/Generales/Buttons";
 import { useForm } from "react-hook-form";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";

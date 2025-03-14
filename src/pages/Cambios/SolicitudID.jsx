@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PencilSquareIcon, DocumentIcon } from "@heroicons/react/24/solid";
-import Button from "../../components/Buttons";
+import Button from "../../components/Generales/Buttons";
 import { useNavigate } from "react-router-dom";
 import { BoxComponentScrolling } from "../../components/BoxComponent";
 import FormularioSolicitud from "../../templates/FormularioSolicitud";

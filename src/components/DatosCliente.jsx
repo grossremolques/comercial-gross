@@ -1,7 +1,6 @@
-import { CardToggle, Card } from "./Cards";
-import { Input, Select } from "./Forms";
+import { Input, Select } from "./Generales/Forms";
 import { useFormContext } from "react-hook-form";
-import Button from "./Buttons";
+import Button from "./Generales/Buttons";
 import { useEffect, useState } from "react";
 import { useClientes } from "../context/ClientesContext";
 import { ss_localidades } from "../API/backend";

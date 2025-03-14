@@ -1,5 +1,5 @@
 import { CardToggle } from "../Cards";
-import { Label, Input, Select, TextInvalidate } from "../Forms";
+import { Label, Input, Select, TextInvalidate } from "../Generales/Forms";
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { DataField } from "../DataField";
 import { Modal } from "../Modal";
@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { useModal } from "../../context/ModalContext";
 import { useUnidadesGross } from "../../context/UnidadesGrossContext";
-import Button from "../Buttons";
+import Button from "../Generales/Buttons";
 import { ss_cambios_atributos } from "../../API/backend";
 function DatosSolicitud() {
   const [filteredData, setFilteredData] = useState([]);

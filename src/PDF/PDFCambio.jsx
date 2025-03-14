@@ -10,7 +10,7 @@ import {
 import Logo from "../assets/Logos/logo_dark.png";
 import "../fonts";
 import { useLocation } from "react-router-dom";
-import Button from "../components/Buttons";
+import Button from "../components/Generales/Buttons";
 import { NavLink } from "react-router-dom";
 const styles = StyleSheet.create({
   page: {

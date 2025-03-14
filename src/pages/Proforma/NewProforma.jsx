@@ -3,7 +3,7 @@ import FormularioProforma from "../../templates/FormularioProforma";
 import { ss_proforma, ss_formas_pago } from "../../API/backend";
 import { ModalLoading, ModalSuccess } from "../../components/Modal";
 import { useModal } from "../../context/ModalContext";
-import Button from "../../components/Buttons";
+import Button from "../../components/Generales/Buttons";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";

@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
-import Button from "../components/Buttons";
+import Button from "../components/Generales/Buttons";
 import { Modal } from "../components/Modal";
 import { UserIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import { ss_localidades, ss_clientes } from "../API/backend";
 import { useState, useEffect } from "react";
 import { useClientes } from "../context/ClientesContext";
-import { Input, Select, TextInvalidate } from "../components/Forms";
+import { Input, Select, TextInvalidate } from "../components/Generales/Forms";
 import { useModal } from "../context/ModalContext";
 function FormularioCliente({ handleSelectedCliente }) {
   const { handleModalClose } = useModal();

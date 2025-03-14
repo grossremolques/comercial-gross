@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
-import { NavBar } from "./NavBar";
+import { NavBar } from "./Generales/NavBar";
 import { ClientesContextProvider } from "../context/ClientesContext";
 import { GestoriaContextProvider } from "../context/GestoriaContext";
 import { UnidadesGrossContextProvider } from "../context/UnidadesGrossContext";

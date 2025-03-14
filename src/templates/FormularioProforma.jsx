@@ -3,7 +3,7 @@ import DatosPagos from "../components/Proforma/DatosPagos";
 import DatosProducto from "../components/Proforma/DatosProducto";
 import DatosSeleccionarCliente from "../components/DatosSeleccionarCliente";
 import { Footer } from "../components/Footer";
-import Button from "../components/Buttons";
+import Button from "../components/Generales/Buttons";
 function FormularioProforma({ defaultValues, onSubmit, onError, isDisabled }) {
   const methods = useForm({
     defaultValues: defaultValues || {

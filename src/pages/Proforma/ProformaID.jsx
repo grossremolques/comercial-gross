@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Button from "../../components/Buttons";
+import Button from "../../components/Generales/Buttons";
 import { BoxComponentScrolling } from "../../components/BoxComponent";
 import FormularioProforma from "../../templates/FormularioProforma";
 import { PencilSquareIcon, DocumentIcon } from "@heroicons/react/24/solid";

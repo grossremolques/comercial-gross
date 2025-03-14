@@ -13,7 +13,7 @@ import Logo from "../assets/Logos/logoGross.png";
 import LogoISO from "../assets/Logos/LogoISO9001.png";
 import "../fonts";
 import { useLocation } from "react-router-dom";
-import Button from "../components/Buttons";
+import Button from "../components/Generales/Buttons";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ss_empleados } from "../API/backend";

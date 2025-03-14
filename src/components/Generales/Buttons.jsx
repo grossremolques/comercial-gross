@@ -12,7 +12,6 @@ const Button = React.forwardRef(
       name,
       icon,
       hidden_text,
-      rounded = "sm",
       disabled = false,
     },
     ref
@@ -44,7 +43,7 @@ const Button = React.forwardRef(
       blue: "border-blue-500 bg-blue-500 text-white hover:bg-transparent hover:text-blue-500 focus:outline-none focus:ring active:text-blue-500",
       blueOutline:
         "text-blue-500 border-blue-500 hover:bg-blue-500 hover:text-white focus:outline-none focus:ring active:bg-blue-500",
-        pinkOutline:
+      pinkOutline:
         "text-pink-500 border-pink-500 hover:bg-pink-500 hover:text-white focus:outline-none focus:ring active:bg-pink-500",
     };
 

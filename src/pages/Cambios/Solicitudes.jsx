@@ -1,7 +1,7 @@
-import TableComponent from "../../components/TableComponent";
+import TableComponent from "../../components/Generales/TableComponent";
 import { useState, useEffect } from "react";
-import { Input } from "../../components/Forms";
-import Button from "../../components/Buttons";
+import { Input } from "../../components/Generales/Forms";
+import Button from "../../components/Generales/Buttons";
 import { useForm } from "react-hook-form";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
@@ -11,7 +11,7 @@ import { NoDataComponent } from "../../components/DataField";
 import { useUnidadesGross } from "../../context/UnidadesGrossContext";
 import { ss_cambios_detalle } from "../../API/backend";
 export default function Solicitudes() {
-  const STORAGE_KEY = "filterDataSolicitudes";
+  const STORAGE_KEY = "data-filter-solicitudes";
   const filterDataSolicitudes =
     JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
   const location = useLocation();
