@@ -124,7 +124,7 @@ export const Select = React.forwardRef(
     ref
   ) => {
     return (
-      <div className="w-full">
+      <div className={`w-full ${className}`}>
         <label
           htmlFor={name}
           className={`block text-sm font-medium text-gray-700 mb-1 ${
@@ -143,7 +143,7 @@ export const Select = React.forwardRef(
           onClick={onClick}
           onInput={onInput}
           disabled={disabled}
-          className={`w-full ${stylebases} ${className}`}
+          className={`w-full ${stylebases}`}
         >
           <option value="">{placeholder}</option>
           {children}
@@ -152,15 +152,76 @@ export const Select = React.forwardRef(
     );
   }
 );
-export const InputComponent = ({ label, htmlFor, children, someClass }) => {
+export const InputGroup = (
+  { label = "falta label", className, children, no_label },
+  ref
+) => {
   return (
-    <div className={someClass}>
-      <Label label={label} htmlFor={htmlFor} />
+    <div className={`w-full ${className}`}>
+      <span
+        className={`block text-sm font-medium text-gray-700 mb-1 ${
+          no_label && "sr-only"
+        }`}
+      >
+        {" "}
+        {label}{" "}
+      </span>
       {children}
     </div>
   );
 };
+export const SingleInputForGroup = React.forwardRef(
+  (
+    {
+      onChange,
+      onBlur,
+      name,
+      placeholder,
+      onClick,
+      type = "text",
+      onInput,
+      readOnly,
+      disabled,
+      defaultValue,
+      label,
+    },
+    ref
+  ) => {
+    return (
+      <>
+        <label
+          htmlFor={name}
+          className="sr-only"
+        >
+          {" "}
+          {label}{" "}
+        </label>
 
+        <input
+          onChange={onChange}
+          onBlur={onBlur}
+          name={name}
+          ref={ref}
+          placeholder={placeholder}
+          onClick={onClick}
+          type={type}
+          onInput={onInput}
+          readOnly={readOnly}
+          disabled={disabled}
+          defaultValue={defaultValue}
+          className="w-full px-4 py-2 text-sm border-none"
+        />
+      </>
+    );
+  }
+);
+export const TextLabelGroup = ({ title }) => {
+  return (
+    <span className="inline-block p-2 text-sm font-medium text-gray-700 bg-gray-100">
+      {title}
+    </span>
+  );
+};
 export const Button = ({ children }) => {
   return (
     <button

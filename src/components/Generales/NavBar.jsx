@@ -49,6 +49,26 @@ export function NavBar() {
             >
               Clientes
             </NavLink>
+            {/*<NavLink
+              to="/gestoria"
+              className={({ isActive }) =>
+                `px-1.5 rounded ${
+                  isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
+                }`
+              }
+            >
+              Gestoría
+            </NavLink>
+             <NavLink
+              to="/nueva-venta"
+              className={({ isActive }) =>
+                `px-1.5 rounded ${
+                  isActive ? "text-white font-semibold" : "hover:bg-gray-500/50"
+                }`
+              }
+            >
+              Venta de 0 km
+            </NavLink> */}
           </div>
         </div>
       </div>

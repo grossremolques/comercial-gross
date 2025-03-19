@@ -213,7 +213,7 @@ export function PDFProforma() {
                     <View style={styles.rowClientes}>
                       <Text style={{ marginRight: "10px" }}>Domicilio:</Text>
                       <Text style={styles.cellData}>
-                        {`${pdfData.selectedCliente.calle} ${pdfData.selectedCliente.num}`}
+                        {pdfData.selectedCliente.domicilio}
                       </Text>
                     </View>
                     <View

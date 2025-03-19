@@ -107,7 +107,7 @@ function DatosSeleccionarCliente({isDisabled}) {
         {errors.razon_social && (
           <TextInvalidate message={errors.razon_social.message} />
         )}
-        <div className="mt-4 columns-2">
+        <div className="mt-4 md:columns-2">
           <DataField
             icon={<IdentificationIcon width={"16px"} />}
             label={"CUIT"}

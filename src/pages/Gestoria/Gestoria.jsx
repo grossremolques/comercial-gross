@@ -12,8 +12,8 @@ import { useAtributos } from "../../context/Attributes/AtributosContext";
 import { ss_formas_pago } from "../../API/backend";
 import { useLocation } from "react-router-dom";
 import { NoDataComponent } from "../../components/DataField";
-export default function Proformas() {
-  const STORAGE_KEY = "data-filter-proformas";
+export default function Gestoria() {
+  const STORAGE_KEY = "data-filter-gestoria";
   const filterData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
   const location = useLocation();
   const { clientes, getClientes } = useClientes();

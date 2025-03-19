@@ -27,7 +27,7 @@ export const CardToggle = ({ className, title, children }) => {
       </div>
       <div
         className={`overflow-hidden transition-all duration-500 ease-in-out ${
-          toggleCard.hidden ? "max-h-0" : "max-h-[500px]"
+          toggleCard.hidden ? "max-h-0" : "max-h-auto"
         }`}
       >
         <div className="p-4 sm:p-6">{children}</div>

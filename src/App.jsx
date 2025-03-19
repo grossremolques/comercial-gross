@@ -5,6 +5,7 @@ import Clientes from "./pages/Clientes";
 
 import { PDFCambio } from "./PDF/PDFCambio";
 import { PDFProforma } from "./PDF/PDFProforma";
+import Gestoria from "./pages/Gestoria/Gestoria";
 
 /* 📂 Proforma */
 import { NewProforma } from "./pages/Proforma/NewProforma";
@@ -14,6 +15,9 @@ import Proformas from "./pages/Proforma/Proformas";
 import Solicitudes from "./pages/Cambios/Solicitudes";
 import { NuevaSolicitud } from "./pages/Cambios/NuevaSolicitud";
 import { SolcitudID } from "./pages/Cambios/SolicitudID";
+/* 📂 Venta 0 km */
+import NuevaVenta from "./pages/UnidadNueva/NuevaVenta";
+
 /* Contextos */
 import { AuthContextProvider } from "./context/AuthContext";
 import { ModalContextProvider } from "./context/ModalContext";
@@ -33,6 +37,8 @@ function App() {
         { path: "/new-proforma", element: <NewProforma /> },
         { path: "/pdf-proforma", element: <PDFProforma /> },
         { path: "/clientes", element: <Clientes /> },
+        { path: "/gestoria", element: <Gestoria /> },
+        { path: "/nueva-venta", element: <NuevaVenta /> },
       ],
     },
 
