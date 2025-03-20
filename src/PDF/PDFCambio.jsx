@@ -167,7 +167,8 @@ export function PDFCambio() {
                     <Text style={styles.subtitle}>Detalles del Cambio</Text>
                     <View style={styles.section_3}>
                       <Text style={{ fontWeight: "bold" }}>Cliente: </Text>
-                      <Text>{pdfData.cliente}</Text>
+                      <Text>{pdfData.selectUnidad.gestoria.selectedCliente.razon_social
+                      }</Text>
                     </View>
                     <View style={styles.section_3}>
                       <Text style={{ fontWeight: "bold" }}>Producto: </Text>

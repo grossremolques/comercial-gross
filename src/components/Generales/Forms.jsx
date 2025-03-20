@@ -152,12 +152,14 @@ export const Select = React.forwardRef(
     );
   }
 );
-export const InputGroup = (
-  { label = "falta label", className, children, no_label },
-  ref
-) => {
+export const InputGroup = ({
+  label = "falta label",
+  className,
+  children,
+  no_label,
+}) => {
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`${className}`}>
       <span
         className={`block text-sm font-medium text-gray-700 mb-1 ${
           no_label && "sr-only"
@@ -166,7 +168,9 @@ export const InputGroup = (
         {" "}
         {label}{" "}
       </span>
-      {children}
+      <span className="inline-flex overflow-hidden rounded-md border bg-white shadow-xs border-gray-200">
+        {children}
+      </span>
     </div>
   );
 };
@@ -189,10 +193,7 @@ export const SingleInputForGroup = React.forwardRef(
   ) => {
     return (
       <>
-        <label
-          htmlFor={name}
-          className="sr-only"
-        >
+        <label htmlFor={name} className="sr-only">
           {" "}
           {label}{" "}
         </label>

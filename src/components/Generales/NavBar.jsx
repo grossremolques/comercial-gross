@@ -49,7 +49,7 @@ export function NavBar() {
             >
               Clientes
             </NavLink>
-            {/*<NavLink
+            {/* <NavLink
               to="/gestoria"
               className={({ isActive }) =>
                 `px-1.5 rounded ${
