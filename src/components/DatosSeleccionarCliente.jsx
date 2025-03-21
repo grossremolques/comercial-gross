@@ -66,7 +66,6 @@ function DatosSeleccionarCliente({isDisabled}) {
   }, []);
   return (
     <>
-    {console.log(isDisabled)}
       <CardToggle
         className={"lg:max-w-[1000px] mx-auto mb-5"}
         title={"Datos del Cliente"}

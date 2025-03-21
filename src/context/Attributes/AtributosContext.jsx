@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { AtributosReducer } from "./AtributosReduce";
 import {
   ss_modelos,
@@ -119,6 +119,17 @@ export function AtributosProvider({ children }) {
       console.error(err);
     }
   };
+  useEffect(() => {
+    getPuertasTraseras();
+    getCapacidad();
+    getModelos();
+    getPiso();
+    getCumbrera();
+    getMecanismo();
+    getCilindro();
+    getFormaPago();
+    getMedioPago();
+  },[])
   return (
     <AtributosContext.Provider
       value={{

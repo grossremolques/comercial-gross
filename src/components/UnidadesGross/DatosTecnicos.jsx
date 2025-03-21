@@ -56,7 +56,7 @@ export default function DatosTecnico() {
               className={"lg:max-w-[1000px] mx-auto mb-5"}
               title={"Datos Técnicos"}
             >
-              <Modelo />
+              <Modelo inputName={'modelo'}/>
               <div className="grid md:grid-cols-6 gap-2 grid-cols-3 mt-2">
                 <Input
                   type="number"

@@ -9,16 +9,17 @@ import { useNavigate } from "react-router-dom";
 import { ss_proforma } from "../../API/backend";
 import { useClientes } from "../../context/ClientesContext";
 import { useAtributos } from "../../context/Attributes/AtributosContext";
-import { ss_formas_pago } from "../../API/backend";
+import { ss_formas_pago, ss_producto } from "../../API/backend";
 import { useLocation } from "react-router-dom";
 import { NoDataComponent } from "../../components/DataField";
 export default function Proformas() {
   const STORAGE_KEY = "data-filter-proformas";
   const filterData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
   const location = useLocation();
-  const { clientes, getClientes } = useClientes();
-  const { modelos, getModelos } = useAtributos();
+  const { clientes } = useClientes();
+  const { modelos } = useAtributos();
   const [pagos, setPagos] = useState([]);
+  const [productos, setProductos] = useState([]);
 
   const navigate = useNavigate();
   const { register, watch } = useForm({
@@ -36,37 +37,49 @@ export default function Proformas() {
   const columns = [
     {
       name: "Id",
-      width: "80px",
+      width: "65px",
       selector: (row) => row.id,
       sortable: true,
     },
     {
       name: "Fecha",
-      width: "120px",
+      width: "110px",
       selector: (row) => row.fecha_creacion,
       sortable: true,
     },
 
     {
       name: "Cliente",
-      width: "270px",
+      width: "260px",
       selector: (row) => row.selectedCliente?.razon_social,
       sortable: true,
     },
     {
       name: "Modelo",
-      selector: (row) => row.modelo,
+      selector: (row) => {
+        let modelo = row.modelos?.map(item => `${item.cantidad} ${item.modelo}`)
+        return modelo?.join('\n\n');
+      },
+      cell: (row) => (
+        <div>
+          {row.modelos?.map((item, index) => (
+            <div key={index} style={{ marginBottom: "8px" }}>
+              {item.cantidad} {item.modelo}
+            </div>
+          ))}
+        </div>
+      ),
       sortable: true,
     },
     {
       name: "Registrado por",
-      width: "180px",
+      width: "150px",
       selector: (row) => row.registrado_por,
       sortable: true,
     },
     {
       name: "Precio",
-      width: "180px",
+      width: "150px",
       selector: (row) =>
         row.precio.toLocaleString("es-AR", {
           style: "currency",
@@ -83,18 +96,24 @@ export default function Proformas() {
       console.log(e);
     }
   };
+  const getProductos = async () => {
+    try {
+      const dataProductos = await ss_producto.getData();
+      setProductos(dataProductos);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const getProformas = async () => {
     try {
       const dataProformas = await ss_proforma.getData();
       const clients = [];
-      const models = [];
       const formaPago = [];
+      const products = [];
       dataProformas.map((item) => {
         clients.push(clientes.find((cliente) => cliente.id == item.id_cliente));
-        models.push(
-          modelos.find((modelo) => modelo.modelo.value === item.modelo)
-        );
         formaPago.push(pagos.filter((pago) => pago.id_factura === item.id));
+        products.push(productos.filter((product) => product.id_proforma === item.id));
       });
       clients.map((cliente) => {
         dataProformas.map((proforma) => {
@@ -103,14 +122,6 @@ export default function Proformas() {
           }
         });
       });
-      models.map((modelo) => {
-        dataProformas.map((proforma) => {
-          if (modelo?.modelo.value == proforma.modelo) {
-            proforma["selectedModelo"] = modelo;
-          }
-        });
-      });
-
       formaPago.map((pago) => {
         dataProformas.map((proforma) => {
           if (pago.length > 0 && pago[0].id_factura == proforma.id) {
@@ -118,20 +129,26 @@ export default function Proformas() {
           }
         });
       });
-      setProformas(dataProformas.reverse());
+      products.map((product) => {
+        dataProformas.map((proforma) => {
+          if (product.length > 0 && product[0].id_proforma == proforma.id) {
+            proforma["modelos"] = product;
+          }
+        });
+      });
+      setProformas(dataProformas);
       setDataFiltered(dataProformas.reverse());
     } catch (e) {
       console.log(e);
     }
   };
   useEffect(() => {
-    getClientes();
-    getModelos();
     getPagos();
+    getProductos();
   }, []);
   useEffect(() => {
-    if (clientes.length > 0) getProformas();
-  }, [clientes]);
+    if (clientes.length > 0 && productos.length>0 && pagos.length>0) getProformas();
+  }, [clientes, productos, pagos]);
   const handleFilter = () => {
     const data = watch();
     setDataFiltered(
@@ -146,6 +163,7 @@ export default function Proformas() {
     );
   };
   const openProforma = (data) => {
+    console.log(data)
     navigate(`/proforma/${data.id}`, { state: { proformaData: data } });
   };
   useEffect(() => {

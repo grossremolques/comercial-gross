@@ -1,6 +1,6 @@
 import { BoxComponentScrolling } from "../../components/BoxComponent";
 import FormularioProforma from "../../templates/FormularioProforma";
-import { ss_proforma, ss_formas_pago } from "../../API/backend";
+import { ss_proforma, ss_formas_pago, ss_producto } from "../../API/backend";
 import { ModalLoading, ModalSuccess } from "../../components/Modal";
 import { useModal } from "../../context/ModalContext";
 import Button from "../../components/Generales/Buttons";
@@ -17,37 +17,83 @@ export function NewProforma() {
   const { client, getClientes, clientes, setClient } = useClientes();
 
   const onSubmit = async ({ data }) => {
-    handleModalShow(modalsId.loading);
     try {
-      const { result, status } = await ss_proforma.postData({
+      handleModalShow(modalsId.loading);
+
+      // 1. Registrar la proforma y obtener el ID
+      const { result: registroResult, status: registroStatus } =
+        await postRegistro(data);
+
+      if (registroStatus !== 200) throw new Error("Error en postRegistro");
+      console.log(registroResult)
+      // 2. Agregar el ID a los modelos y forma de pago
+      data.modelos.forEach((item) => (item["id_proforma"] = registroResult.id));
+      data.formaPago.forEach(
+        (item) => (item["id_factura"] = registroResult.id)
+      );
+      
+
+      // 3. Ejecutar las otras peticiones en paralelo
+      const [productosResult, formaPagoResult] = await Promise.all([
+        postProductos(data.modelos),
+        postFormaPagos(data.formaPago),
+      ]);
+
+      console.log("Registro completado:", {
+        registro: registroResult,
+        productos: productosResult,
+        formaPago: formaPagoResult,
+      });
+
+      handleModalClose();
+    } catch (error) {
+      console.error("Error en onSubmit:", error);
+      handleModalShow(modalsId.error);
+    }
+  };
+
+  const postRegistro = async (data) => {
+    try {
+      return await ss_proforma.postData({
         data: data,
         user: user,
         includeId: true,
       });
-      if (status === 200) {
-        try {
-          for (const item of data.formaPago) {
-            item["id_factura"] = data.id;
-            const { result, status } = await ss_formas_pago.postData({
-              data: item,
-              includeId: true,
-            });
-          }
-          handleModalClose();
-          handleModalShow(modalsId.success);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-      setData(data);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error("Error en postRegistro:", error);
+      throw error;
     }
   };
-  const onError = (data) => {
-    console.error(data);
+
+  const postProductos = async (data) => {
+    try {
+      return await Promise.all(
+        data.map((item) =>
+          ss_producto.postData({ data: item, includeId: true })
+        )
+      );
+    } catch (error) {
+      console.error("Error en postProductos:", error);
+      throw error;
+    }
   };
-  useEffect(()=>{setClient("")},[])
+
+  const postFormaPagos = async (data) => {
+    try {
+      return await Promise.all(
+        data.map((item) =>
+          ss_formas_pago.postData({ data: item, includeId: true })
+        )
+      );
+    } catch (error) {
+      console.error("Error en postFormaPagos:", error);
+      throw error;
+    }
+  };
+  const onError = (e) => {console.error("Error en")}
+  useEffect(() => {
+    setClient("");
+  }, []);
   return (
     <>
       <BoxComponentScrolling title="Creando Proforma">

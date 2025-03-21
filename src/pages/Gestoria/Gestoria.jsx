@@ -125,8 +125,8 @@ export default function Gestoria() {
     }
   };
   useEffect(() => {
-    getClientes();
-    getModelos();
+    //getClientes();
+    //getModelos();
     getPagos();
   }, []);
   useEffect(() => {

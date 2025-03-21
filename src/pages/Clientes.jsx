@@ -16,7 +16,7 @@ export default function CLientes() {
   const { clientes, getClientes, setClient } = useClientes();
   const { handleModalClose, handleModalShow } = useModal();
   useEffect(() => {
-    getClientes();
+    //getClientes();
   }, []);
   useEffect(() => {
     setDataFiltered(clientes);
@@ -72,7 +72,7 @@ export default function CLientes() {
     setDataFiltered(
       clientes.filter((item) => {
         return item.razon_social
-          .toLowerCase()
+          ?.toLowerCase()
           .includes(data.clienteQuery.toLowerCase());
       })
     );

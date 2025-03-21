@@ -94,3 +94,8 @@ export const ss_puerta_trasera = new GoogleSheet({
     rowHead: 1,
     nameSheet: "Detalle",
   });
+  export const ss_producto = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_PROFORMA,
+    rowHead: 1,
+    nameSheet: "Producto",
+  });

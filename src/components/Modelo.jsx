@@ -5,7 +5,7 @@ import { Modal } from "./Modal";
 import { useModal } from "../context/ModalContext";
 import { useAtributos } from "../context/Attributes/AtributosContext";
 import { useFormContext } from "react-hook-form";
-export function Modelo() {
+export function Modelo({inputName}) {
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
   const { handleModalShow, handleModalClose } = useModal();
@@ -18,7 +18,7 @@ export function Modelo() {
   } = useFormContext();
 
   useEffect(() => {
-    getModelos();
+    //getModelos();
   }, []);
   useEffect(() => {
     setFilteredData(modelos);
@@ -33,10 +33,10 @@ export function Modelo() {
     return () => clearTimeout(timeout);
   }, [search]);
   function handleSelectedModelo(data) {
-    const values = watch();
-    setValue("selectedModelo", data);
-    for (let attr in values) {
-      if (data[attr]) setValue(attr, data[attr].value, { shouldDirty: true });
+    const modelos = watch('modelos')[0];
+    setValue(`${inputName}selectedModelo`, data)
+    for (let attr in modelos) {
+      if (data[attr]) setValue(`${inputName}${attr}`, data[attr].value, { shouldDirty: true });
     }
   }
   return (
@@ -46,7 +46,7 @@ export function Modelo() {
         placeholder={"Buscar Modelo"}
         onClick={() => handleModalShow("findModelo")}
         readOnly={true}
-        {...register("modelo", {
+        {...register(`${inputName}modelo`, {
           required: {
             value: "Debe seleccionar un modelo",
             message: "Debe seleccionar un modelo",
