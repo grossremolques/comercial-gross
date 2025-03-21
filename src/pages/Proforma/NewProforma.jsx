@@ -25,27 +25,22 @@ export function NewProforma() {
         await postRegistro(data);
 
       if (registroStatus !== 200) throw new Error("Error en postRegistro");
-      console.log(registroResult)
       // 2. Agregar el ID a los modelos y forma de pago
-      data.modelos.forEach((item) => (item["id_proforma"] = registroResult.id));
+      data.modelos.forEach((item) => (item["id_proforma"] = data.id));
       data.formaPago.forEach(
-        (item) => (item["id_factura"] = registroResult.id)
+        (item) => (item["id_factura"] = data.id)
       );
-      
-
       // 3. Ejecutar las otras peticiones en paralelo
       const [productosResult, formaPagoResult] = await Promise.all([
         postProductos(data.modelos),
         postFormaPagos(data.formaPago),
       ]);
-
+      handleModalShow(modalsId.success)
       console.log("Registro completado:", {
         registro: registroResult,
         productos: productosResult,
         formaPago: formaPagoResult,
       });
-
-      handleModalClose();
     } catch (error) {
       console.error("Error en onSubmit:", error);
       handleModalShow(modalsId.error);

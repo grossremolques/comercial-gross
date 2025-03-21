@@ -4,7 +4,7 @@ import Button from "../../components/Generales/Buttons";
 import { BoxComponentScrolling } from "../../components/BoxComponent";
 import FormularioProforma from "../../templates/FormularioProforma";
 import { PencilSquareIcon, DocumentIcon } from "@heroicons/react/24/solid";
-import { ss_proforma, ss_formas_pago } from "../../API/backend";
+import { ss_proforma, ss_formas_pago, ss_producto } from "../../API/backend";
 import { useModal } from "../../context/ModalContext";
 import { ModalLoading, ModalSuccess } from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
@@ -19,14 +19,22 @@ export function ProformaID() {
   const [data, setData] = useState(proformaData);
   const onSubmit = async ({ data, dirtyFields, reset,watch }) => {
     handleModalShow(modalsId.loading);
-    const updates = {};
-    //obtener datos del "fieldArray"
-    const actionsFormasPago = getFormasPago(
+    const updatesFormasPago = {};
+    const updatesModelos = {};
+    const updates = {}
+    //obtener datos del "fieldArray" Formas de Pagos y Modelos
+     const actionsFormasPago = getActionsInArray(
       data.formaPago,
       proformaData.formaPago
     );
+    const actionsModelos = getActionsInArray(
+      data.modelos,
+      proformaData.modelos
+    );
     updates["formaPago"] = actionsFormasPago.update;
+    updates["modelos"] = actionsModelos.update;
     delete dirtyFields.formaPago;
+    delete dirtyFields.modelos;
     //obtener los datos a actualizar
     for (let item in dirtyFields) {
       if (dirtyFields[item]) {
@@ -40,12 +48,16 @@ export function ProformaID() {
         id: proformaData.id,
         values: updates,
       });
-      //agregar las nuevas formas de pago
+      //agregar las nuevas formas de pago y modelos
       for (const item of actionsFormasPago.append) {
         item['id_factura'] = data.id;
         const { result, status } = await ss_formas_pago.postData({ data: item, includeId: true });
       }
-      //actualizar las formas de pago
+      for (const item of actionsModelos.append) {
+        item['id_proforma'] = data.id;
+        const { result, status } = await ss_producto.postData({ data: item, includeId: true });
+      }
+      //actualizar las formas de pago y modelos
       await Promise.all(actionsFormasPago.update.map(async (item) => {
         const { status } = await ss_formas_pago.updateData({
           colName: "id",
@@ -53,13 +65,27 @@ export function ProformaID() {
           values: item,
         });
       }));
-      //eliminar las formas de pago (desactivar)
+      await Promise.all(actionsModelos.update.map(async (item) => {
+        const { status } = await ss_producto.updateData({
+          colName: "id",
+          id: item.id,
+          values: item,
+        });
+      }));
+      //eliminar las formas de pago y modelos (desactivar)
       await Promise.all(actionsFormasPago.remove.map(async (item) => {
         const res = await ss_formas_pago.disactive({
           colName: "id",
           id: item.id,
         });
       }));
+      await Promise.all(actionsModelos.remove.map(async (item) => {
+        const res = await ss_producto.disactive({
+          colName: "id",
+          id: item.id,
+        });
+      }));
+      
       handleModalClose();
       handleModalShow(modalsId.success);
       // 🔹 Resetear el formulario con los valores actualizados
@@ -74,20 +100,17 @@ export function ProformaID() {
   const onError = async (data) => {
     console.log(data);
   };
-  const getFormasPago = (actualsValues, defaultValues = []) => {
+  const getActionsInArray = (actualsValues, defaultValues = []) => {
     const arr = { append: [], remove: [], update: [] };
-  
     // Verificar si hay elementos nuevos para agregar
     if (actualsValues?.length) {
       const hasAppend = !actualsValues.every((item) => item.id);
       if (hasAppend) {
         arr.append = actualsValues.filter((item) => item.id === "");
       }
-    }
-  
+    }  
     // Si defaultValues está vacío, solo retornamos los agregados
-    if (defaultValues.length === 0) return arr;
-  
+    if (defaultValues.length === 0) return arr;  
     // Verificar elementos eliminados y modificados
     defaultValues.forEach((origin) => {
       const hasRemoved = !actualsValues.some((actual) => actual.id === origin.id);
@@ -99,10 +122,8 @@ export function ProformaID() {
         }
       });
     });
-  
     return arr;
   };
-  
   return (
     <>
       <BoxComponentScrolling title="Creando Proforma">

@@ -159,6 +159,7 @@ export function PDFProforma() {
       console.error(error);
     }
   };
+  console.log(pdfData)
   return (
     <>
       {proformaValues.length > 0 && (

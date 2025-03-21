@@ -24,6 +24,7 @@ function DatosProducto() {
     name: "modelos",
   });
   const defaultValue = {
+    id:'',
     cantidad: 1,
     largo: "",
     ancho: "",
