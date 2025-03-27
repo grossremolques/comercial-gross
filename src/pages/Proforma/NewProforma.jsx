@@ -27,15 +27,13 @@ export function NewProforma() {
       if (registroStatus !== 200) throw new Error("Error en postRegistro");
       // 2. Agregar el ID a los modelos y forma de pago
       data.modelos.forEach((item) => (item["id_proforma"] = data.id));
-      data.formaPago.forEach(
-        (item) => (item["id_factura"] = data.id)
-      );
+      data.formaPago.forEach((item) => (item["id_factura"] = data.id));
       // 3. Ejecutar las otras peticiones en paralelo
       const [productosResult, formaPagoResult] = await Promise.all([
         postProductos(data.modelos),
         postFormaPagos(data.formaPago),
       ]);
-      handleModalShow(modalsId.success)
+      handleModalShow(modalsId.success);
       console.log("Registro completado:", {
         registro: registroResult,
         productos: productosResult,
@@ -85,7 +83,9 @@ export function NewProforma() {
       throw error;
     }
   };
-  const onError = (e) => {console.error("Error en")}
+  const onError = (e) => {
+    console.error("Error en");
+  };
   useEffect(() => {
     setClient("");
   }, []);

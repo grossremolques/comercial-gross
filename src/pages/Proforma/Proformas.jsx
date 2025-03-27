@@ -163,7 +163,6 @@ export default function Proformas() {
     );
   };
   const openProforma = (data) => {
-    console.log(data)
     navigate(`/proforma/${data.id}`, { state: { proformaData: data } });
   };
   useEffect(() => {

@@ -17,6 +17,7 @@ import Button from "../components/Generales/Buttons";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ss_empleados } from "../API/backend";
+import { useAtributos } from "../context/Attributes/AtributosContext";
 const styles = StyleSheet.create({
   page: {
     padding: 10,
@@ -54,7 +55,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "bold",
     marginBottom: 3,
-    marginTop: 7,
   },
   rowClientes: {
     display: "flex",
@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "baseline",
     marginBottom: 2,
-    gap: 6,
   },
   precio: {
     display: "flex",
@@ -102,50 +101,53 @@ const styles = StyleSheet.create({
 });
 
 export function PDFProforma() {
+  const { modelos, getModelos } = useAtributos();
   const location = useLocation();
   const { pdfData } = location.state || {};
-  const [proformaValues, setProformaValues] = useState([]);
+  const [proformaValues, setProformaValues] = useState(false);
   const [vendedor, setVendedor] = useState([]);
 
   useEffect(() => {
-    getProformaValues();
+    getModelos();
     getVendedor(pdfData.vendedor);
   }, []);
+  useEffect(() => {
+    getProformaValues();
+  }, [modelos]);
   function getProformaValues() {
-    let arr = [];
-    for (let item in pdfData.selectedModelo) {
-      if (pdfData.selectedModelo[item].isInProforma) {
-        pdfData.selectedModelo[item]["attr"] = item;
-        arr.push(pdfData.selectedModelo[item]);
-      }
+    if (modelos.length > 0) {
+      pdfData.modelos.forEach((item) => {
+        const completeModeloData = modelos.find(
+          (elem) => elem.modelo.value === item.modelo
+        );
+        item.dataComplete = completeModeloData;
+      });
+      setProformaValues(true);
     }
-    setProformaValues(arr);
   }
-  const Paragrap = () => {
+  const Paragrap = ({ modelo }) => {
     return (
-      <Text style={{ marginBottom: 10 }}>
-        Un{pdfData.selectedModelo.tipo.value === "Carrocería" && "a"}{" "}
+      <Text style={{ marginTop: 7, marginBottom: 4 }}>
         <Text
           style={{ fontWeight: "bold" }}
-        >{`${pdfData.selectedModelo.tipo.value} ${pdfData.selectedModelo.carrozado.value}`}</Text>
-        , nuev{pdfData.selectedModelo.tipo.value === "Carrocería" ? "a" : "o"},
-        marca GROSS, material COMÚN;
-        {pdfData.selectedModelo.tipo.value != "Carrocería" && (
+        >{`${modelo.cantidad} ${modelo.dataComplete.tipo.value} ${modelo.dataComplete.carrozado.value}`}</Text>
+        , nuevo, marca GROSS, material COMÚN;{" "}
+        {modelo.dataComplete.tipo.value != "Carrocería" && (
           <>
             <Text>con configuración de ejes </Text>
             <Text style={{ fontWeight: "bold" }}>
-              {pdfData.selectedModelo.ejes.value}
+              {modelo.dataComplete.ejes.value}
             </Text>
             , ejes tubulares, mazas tipo disco, y campanas de freno de 8
             pulgadas;{" "}
             <Text style={{ fontWeight: "bold" }}>
-              {pdfData.selectedModelo.llantas_acero.value} llantas de ACERO de
-              9.00 × 22.5 pulgadas
+              {modelo.dataComplete.llantas_acero.value} llantas de ACERO de 9.00
+              × 22.5 pulgadas
             </Text>
             ; suspensión mecánica; sistema de frenos neumático ABS
           </>
         )}
-        ; luces reglamentarias LED de 24 [V]. Con chasis color{" "}
+        luces reglamentarias LED de 24 [V]. Con chasis color{" "}
         <Text style={{ fontWeight: "bold" }}>Negro Titanium Gross</Text> y
         carrozado color <Text>a elección</Text>.
       </Text>
@@ -159,10 +161,38 @@ export function PDFProforma() {
       console.error(error);
     }
   };
-  console.log(pdfData)
+  const ColumnDetails = ({ modelo, par = true }) => {
+    for (let attr in modelo) {
+      if (modelo[attr] === "N/A" || modelo[attr] === 0) delete modelo[attr];
+    }
+    const keys = Object.keys(modelo);
+    const filtered = par
+      ? keys.filter((_, index) => index % 2 === 0)
+      : keys.filter((_, index) => index % 2 !== 0);
+    return (
+      <>
+        {filtered.map(
+          (attr) =>
+            modelo.dataComplete[attr] && attr != 'modelo'&&(
+              <View style={styles.rowCaracteristics}>
+                <Text
+                  style={{
+                    textTransform: "capitalize",
+                    width: 150,
+                  }}
+                >
+                  {attr.replace(/_/g, " ")}:
+                </Text>
+                <Text style={{ fontWeight: "bold" }}>{pdfData[attr]}</Text>
+              </View>
+            )
+        )}
+      </>
+    );
+  };
   return (
     <>
-      {proformaValues.length > 0 && (
+      {proformaValues > 0 && (
         <>
           <div className="w-full text-center mt-5 mb-10">
             <Button
@@ -261,65 +291,22 @@ export function PDFProforma() {
                     </View>
                   </View>
                   <View style={{ marginBottom: 15 }}>
-                    {<Paragrap />}
-                    <Text style={styles.tableSubtitle}>Características:</Text>
-                    <View style={{ display: "flex", flexDirection: "row" }}>
-                      {/* Primera columna */}
-                      <View style={{ width: "50%" }}>
-                        {proformaValues
-                          .filter((_, index) => index % 2 === 0) // Elementos pares
-                          .map(
-                            (item) =>
-                              pdfData[item.attr] !== "N/A" &&
-                              pdfData[item.attr] !== 0 && (
-                                <View
-                                  style={styles.rowCaracteristics}
-                                  key={item.attr}
-                                >
-                                  <Text
-                                    style={{
-                                      textTransform: "capitalize",
-                                      width: 150,
-                                    }}
-                                  >
-                                    {item.attr.replace(/_/g, " ")}:
-                                  </Text>
-                                  <Text style={{ fontWeight: "bold" }}>
-                                    {pdfData[item.attr]}
-                                  </Text>
-                                </View>
-                              )
-                          )}
+                    {pdfData.modelos.map((modelo, index) => (
+                      <View key={`${modelo}${index}`}>
+                        <Paragrap modelo={modelo} />
+                        <Text style={styles.tableSubtitle}>
+                          Características:
+                        </Text>
+                        <View style={{ display: "flex", flexDirection: "row" }}>
+                          <View style={{ width: "50%" }}>
+                            <ColumnDetails modelo={modelo} par={false} />
+                          </View>
+                          <View style={{ width: "50%" }}>
+                            <ColumnDetails modelo={modelo} />
+                          </View>
+                        </View>
                       </View>
-
-                      {/* Segunda columna */}
-                      <View style={{ width: "50%" }}>
-                        {proformaValues
-                          .filter((_, index) => index % 2 !== 0) // Elementos impares
-                          .map(
-                            (item) =>
-                              pdfData[item.attr] !== "N/A" &&
-                              pdfData[item.attr] !== 0 && (
-                                <View
-                                  style={styles.rowCaracteristics}
-                                  key={item.attr}
-                                >
-                                  <Text
-                                    style={{
-                                      textTransform: "capitalize",
-                                      width: 150,
-                                    }}
-                                  >
-                                    {item.attr.replace(/_/g, " ")}:
-                                  </Text>
-                                  <Text style={{ fontWeight: "bold" }}>
-                                    {pdfData[item.attr]}
-                                  </Text>
-                                </View>
-                              )
-                          )}
-                      </View>
-                    </View>
+                    ))}
                   </View>
                   <View style={styles.precio}>
                     <View style={styles.row}>
@@ -409,16 +396,15 @@ export function PDFProforma() {
                       )}
                     </View>
                     <View>
-                    <Text style={styles.tableSubtitle}>Observaciones:</Text>
-                    <Text>{pdfData.nota}</Text>
-
+                      <Text style={styles.tableSubtitle}>Observaciones:</Text>
+                      <Text style={{marginBottom: 3}}>{pdfData.nota || 'Sin Observaciones'}</Text>
                     </View>
                   </View>
                 </View>
                 <View
                   style={{
                     position: "absolute",
-                    bottom: 30,
+                    bottom: 15,
                     left: 0,
                     width: "100%",
                   }}
@@ -449,7 +435,7 @@ export function PDFProforma() {
                       style={{
                         textAlign: "center",
                         marginTop: 10,
-                        marginBottom: 25,
+                        marginBottom: 20,
                       }}
                     >
                       <Text>P/Suc. De Emilio Gross SRL.</Text>
@@ -471,7 +457,6 @@ export function PDFProforma() {
                       </Text>
                       <Text>Email: {vendedor.email_empresa}</Text>
                       <Text>Contacto: {vendedor.contacto}</Text>
-                      
                     </View>
                   </View>
                   <View style={styles.footer}>

@@ -17,10 +17,9 @@ export function ProformaID() {
   const { proformaData } = location.state || {};
   const modalsId = { loading: "loading", success: "success" };
   const [data, setData] = useState(proformaData);
+
   const onSubmit = async ({ data, dirtyFields, reset,watch }) => {
     handleModalShow(modalsId.loading);
-    const updatesFormasPago = {};
-    const updatesModelos = {};
     const updates = {}
     //obtener datos del "fieldArray" Formas de Pagos y Modelos
      const actionsFormasPago = getActionsInArray(
