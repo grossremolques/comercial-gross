@@ -18,6 +18,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ss_empleados } from "../API/backend";
 import { useAtributos } from "../context/Attributes/AtributosContext";
+import { useForm } from "react-hook-form";
 const styles = StyleSheet.create({
   page: {
     padding: 10,
@@ -106,7 +107,7 @@ export function PDFProforma() {
   const { pdfData } = location.state || {};
   const [proformaValues, setProformaValues] = useState(false);
   const [vendedor, setVendedor] = useState([]);
-
+  const { register, watch } = useForm();
   useEffect(() => {
     getModelos();
     getVendedor(pdfData.vendedor);
@@ -173,8 +174,9 @@ export function PDFProforma() {
       <>
         {filtered.map(
           (attr) =>
-            modelo.dataComplete[attr] && attr != 'modelo'&&(
-              <View style={styles.rowCaracteristics}>
+            modelo.dataComplete[attr] &&
+            attr != "modelo" && (
+              <View style={styles.rowCaracteristics} key={attr}>
                 <Text
                   style={{
                     textTransform: "capitalize",
@@ -190,11 +192,63 @@ export function PDFProforma() {
       </>
     );
   };
+  const Toggle = () => {
+    return (
+      <label
+        htmlFor="MostartCaracteristicas"
+        className="group relative block h-8 w-14 rounded-full bg-gray-300 transition-colors [-webkit-tap-highlight-color:_transparent] has-checked:bg-green-500"
+      >
+        <input
+          type="checkbox"
+          id="MostartCaracteristicas"
+          checked={watch(`show`) || false}
+          className="peer sr-only"
+          {...register("show")}
+        />
+
+        <span className="absolute inset-y-0 start-0 m-1 grid size-6 place-content-center rounded-full bg-white text-gray-700 transition-[inset-inline-start] peer-checked:start-6 peer-checked:*:first:hidden *:last:hidden peer-checked:*:last:block">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="size-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18 18 6M6 6l12 12"
+            />
+          </svg>
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="size-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m4.5 12.75 6 6 9-13.5"
+            />
+          </svg>
+        </span>
+      </label>
+    );
+  };
   return (
     <>
       {proformaValues > 0 && (
         <>
-          <div className="w-full text-center mt-5 mb-10">
+          <div className="w-full flex items-center justify-between mb-4">
+            <div className="flex gap-4 border border-slate-300/60 rounded-2xl px-4 py-2 font-medium text-gray-700 shadow">
+              <p>Ocultar caracteríticas en el boleto</p>
+              <Toggle />
+            </div>
             <Button
               className={"min-w-40"}
               type="button"
@@ -294,17 +348,23 @@ export function PDFProforma() {
                     {pdfData.modelos.map((modelo, index) => (
                       <View key={`${modelo}${index}`}>
                         <Paragrap modelo={modelo} />
-                        <Text style={styles.tableSubtitle}>
-                          Características:
-                        </Text>
-                        <View style={{ display: "flex", flexDirection: "row" }}>
-                          <View style={{ width: "50%" }}>
-                            <ColumnDetails modelo={modelo} par={false} />
-                          </View>
-                          <View style={{ width: "50%" }}>
-                            <ColumnDetails modelo={modelo} />
-                          </View>
-                        </View>
+                        {!watch(`show`) && (
+                          <>
+                            <Text style={styles.tableSubtitle}>
+                              Características:
+                            </Text>
+                            <View
+                              style={{ display: "flex", flexDirection: "row" }}
+                            >
+                              <View style={{ width: "50%" }}>
+                                <ColumnDetails modelo={modelo} par={false} />
+                              </View>
+                              <View style={{ width: "50%" }}>
+                                <ColumnDetails modelo={modelo} />
+                              </View>
+                            </View>
+                          </>
+                        )}
                       </View>
                     ))}
                   </View>
@@ -397,7 +457,9 @@ export function PDFProforma() {
                     </View>
                     <View>
                       <Text style={styles.tableSubtitle}>Observaciones:</Text>
-                      <Text style={{marginBottom: 3}}>{pdfData.nota || 'Sin Observaciones'}</Text>
+                      <Text style={{ marginBottom: 3 }}>
+                        {pdfData.nota || "Sin Observaciones"}
+                      </Text>
                     </View>
                   </View>
                 </View>

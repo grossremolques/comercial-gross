@@ -24,7 +24,9 @@ export function NewProforma() {
       const { result: registroResult, status: registroStatus } =
         await postRegistro(data);
 
-      if (registroStatus !== 200) throw new Error("Error en postRegistro");
+      if (registroStatus === 200) {
+        
+      }//throw new Error("Error en postRegistro");
       // 2. Agregar el ID a los modelos y forma de pago
       data.modelos.forEach((item) => (item["id_proforma"] = data.id));
       data.formaPago.forEach((item) => (item["id_factura"] = data.id));
@@ -34,6 +36,7 @@ export function NewProforma() {
         postFormaPagos(data.formaPago),
       ]);
       handleModalShow(modalsId.success);
+      setData(data)
       console.log("Registro completado:", {
         registro: registroResult,
         productos: productosResult,
@@ -57,27 +60,27 @@ export function NewProforma() {
       throw error;
     }
   };
-
   const postProductos = async (data) => {
     try {
-      return await Promise.all(
-        data.map((item) =>
-          ss_producto.postData({ data: item, includeId: true })
-        )
-      );
+      for (const item of data) {
+        const { result, status } = await ss_producto.postData({
+          data: item,
+          includeId: true,
+        });
+      }
     } catch (error) {
       console.error("Error en postProductos:", error);
       throw error;
     }
   };
-
   const postFormaPagos = async (data) => {
     try {
-      return await Promise.all(
-        data.map((item) =>
-          ss_formas_pago.postData({ data: item, includeId: true })
-        )
-      );
+      for (const item of data) {
+        const { result, status } = await ss_formas_pago.postData({
+          data: item,
+          includeId: true,
+        });
+      }
     } catch (error) {
       console.error("Error en postFormaPagos:", error);
       throw error;
