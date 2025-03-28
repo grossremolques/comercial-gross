@@ -14,6 +14,7 @@ export default function DatosTecnico() {
   const {
     register,
     watch,
+    setValue,
     formState: { errors },
   } = useFormContext({});
   const [modelo, setModelo] = useState(watch("selectedModelo"));
@@ -43,6 +44,20 @@ export default function DatosTecnico() {
   useEffect(() => {
     setModelo(watch("selectedModelo"));
   }, [watch("selectedModelo")]);
+
+  const handleSelection = ({data, inputName}) => {
+    console.log("handleSelection:", data);
+    const modelos = watch();
+    console.log(modelos)
+    setValue(`selectedModelo`, data);
+    for (let attr in modelos) {
+      if (data[attr])
+        setValue(`${attr}`, data[attr].value, {
+          shouldDirty: true,
+        });
+    }
+    console.log(watch())
+  };
   return (
     <>
       {puertasTraseras.length > 0 &&
@@ -50,13 +65,13 @@ export default function DatosTecnico() {
         piso.length > 0 &&
         cumbrera.length > 0 &&
         mecanismo.length > 0 &&
-        cilindro.length > 0 && (
+        cilindro.length > 0 &&  (
           <>
             <CardToggle
-              className={"lg:max-w-[1000px] mx-auto mb-5"}
+              className={"lg:max-w-[1000px] mx-auto my-4"}
               title={"Datos Técnicos"}
             >
-              <Modelo inputName={'modelo'}/>
+              <Modelo inputName={"modelo"} handleSelection={handleSelection}/>
               <div className="grid md:grid-cols-6 gap-2 grid-cols-3 mt-2">
                 <Input
                   type="number"
@@ -139,7 +154,7 @@ export default function DatosTecnico() {
                 >
                   {puertasTraseras.map(
                     (item) =>
-                      item.activo == "Sí" && (
+                      item.active == true && (
                         <option key={item.descripcion} value={item.descripcion}>
                           {item.descripcion}
                         </option>
@@ -210,7 +225,7 @@ export default function DatosTecnico() {
               </div>
             </CardToggle>
             <CardToggle
-              className={"lg:max-w-[1000px] mx-auto mb-5"}
+              className={"lg:max-w-[1000px] mx-auto mb-4"}
               title={"Opciones de colores"}
             >
               <div className="flex gap-2">
@@ -261,7 +276,7 @@ export default function DatosTecnico() {
               </div>
             </CardToggle>
             <CardToggle
-              className={"lg:max-w-[1000px] mx-auto mb-5"}
+              className={"lg:max-w-[1000px] mx-auto mb-4"}
               title={"Características Especiales"}
             >
               <div className="grid md:grid-cols-6 gap-2 grid-cols-3 mt-2">
@@ -355,10 +370,14 @@ export default function DatosTecnico() {
                   ))}
                 </Select>
                 <Select
-                className="col-span-2"
-                  disabled={modelo?.alt_trbj_plato_tractor_cargado?.type === "Fijo"}
+                  className="col-span-2"
+                  disabled={
+                    modelo?.alt_trbj_plato_tractor_cargado?.type === "Fijo"
+                  }
                   label={"Alt. trabajo plato tractor"}
-                  {...register("alt_trbj_plato_tractor_cargado", { required: true })}
+                  {...register("alt_trbj_plato_tractor_cargado", {
+                    required: true,
+                  })}
                 >
                   {[].map((item) => (
                     <option key={item.descripcion} value={item.descripcion}>
@@ -380,10 +399,67 @@ export default function DatosTecnico() {
               </div>
             </CardToggle>
             <CardToggle
-              className={"lg:max-w-[1000px] mx-auto mb-5"}
-              title={"Llantas"}
+              className={"lg:max-w-[1000px] mx-auto mb-4"}
+              title={"Accesorios y Llantas"}
             >
-              <InputGroup label="Material" className="col-span-2">
+              <div className="grid md:grid-cols-8 gap-2 grid-cols-3 mt-2">
+                <Select
+                  disabled={modelo?.levanta_eje?.type === "Fijo"}
+                  label={"Levanta eje"}
+                  {...register("levanta_eje", { required: true })}
+                >
+                  {[].map((item) => (
+                    <option key={item.descripcion} value={item.descripcion}>
+                      {item.descripcion}
+                    </option>
+                  ))}
+                </Select>
+                <Select
+                  disabled={modelo?.cajon_adicional?.type === "Fijo"}
+                  label={"Cajón adicional"}
+                  {...register("cajon_adicional", { required: true })}
+                >
+                  {[].map((item) => (
+                    <option key={item.descripcion} value={item.descripcion}>
+                      {item.descripcion}
+                    </option>
+                  ))}
+                </Select>
+                <Select
+                  disabled={modelo?.bulon_largo?.type === "Fijo"}
+                  label={"Bulón largo"}
+                  {...register("bulon_largo", { required: true })}
+                >
+                  {[].map((item) => (
+                    <option key={item.descripcion} value={item.descripcion}>
+                      {item.descripcion}
+                    </option>
+                  ))}
+                </Select>
+                <Select
+                  disabled={modelo?.rampa?.type === "Fijo"}
+                  label={"Rampa"}
+                  {...register("rampa", { required: true })}
+                >
+                  {[].map((item) => (
+                    <option key={item.descripcion} value={item.descripcion}>
+                      {item.descripcion}
+                    </option>
+                  ))}
+                </Select>
+                <Select
+                  disabled={modelo?.traba_puerta?.type === "Fijo"}
+                  label={"Traba de puerta"}
+                  {...register("traba_puerta", { required: true })}
+                >
+                  {[].map((item) => (
+                    <option key={item.descripcion} value={item.descripcion}>
+                      {item.descripcion}
+                    </option>
+                  ))}
+                </Select>
+
+                <InputGroup label="Material" className="col-span-2">
                   <TextLabelGroup title={"Acero"} />
                   <SingleInputForGroup
                     label="Acero"
@@ -392,6 +468,7 @@ export default function DatosTecnico() {
                   <TextLabelGroup title={"Aluminio"} />
                   <SingleInputForGroup
                     label="Aluminio"
+                    type="numeber"
                     {...register("llantas_aluminio")}
                   />
                 </InputGroup>
@@ -406,6 +483,7 @@ export default function DatosTecnico() {
                     </option>
                   ))}
                 </Select>
+              </div>
             </CardToggle>
           </>
         )}

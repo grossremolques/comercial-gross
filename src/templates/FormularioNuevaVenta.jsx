@@ -18,6 +18,7 @@ export default function FormularioNuevaVenta({ defaultValues, onSubmit, onError,
   }
   return (
     <FormProvider {...methods}>
+      
       <DatosSeleccionarCliente isDisabled={isDisabled}/>
       <form onSubmit={methods.handleSubmit(handleSendings, onError)}>
         <fieldset disabled={isDisabled}>
@@ -42,6 +43,7 @@ export default function FormularioNuevaVenta({ defaultValues, onSubmit, onError,
           </Footer>
           </fieldset>
       </form>
+      
     </FormProvider>
   );
 }

@@ -67,7 +67,7 @@ function DatosSeleccionarCliente({isDisabled}) {
   return (
     <>
       <CardToggle
-        className={"lg:max-w-[1000px] mx-auto mb-5"}
+        className={"lg:max-w-[1000px] mx-auto"}
         title={"Datos del Cliente"}
       >
         <div className="flex gap-2 justify-between">

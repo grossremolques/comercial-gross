@@ -1,30 +1,27 @@
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { CardToggle } from "../Cards";
-import { Label, Input, Select } from "../Generales/Forms";
+import { Input, Select } from "../Generales/Forms";
 import { useAtributos } from "../../context/Attributes/AtributosContext";
 import { useEffect, useState } from "react";
 import { Modelo } from "../Modelo";
 import {
-  ChevronDoubleDownIcon,
-  PlusIcon,
   TrashIcon,
   PlusCircleIcon,
 } from "@heroicons/react/24/solid";
-import Badge from "../Generales/Badge";
 import Button from "../Generales/Buttons";
 function DatosProducto() {
   const {
     register,
     watch,
     control,
-    formState: { errors },
+    setValue
   } = useFormContext({});
   const { fields, append, remove } = useFieldArray({
     control,
     name: "modelos",
   });
   const defaultValue = {
-    id:'',
+    id: "",
     cantidad: 1,
     largo: "",
     ancho: "",
@@ -41,43 +38,32 @@ function DatosProducto() {
     traba_puerta: "",
     cilindro: "",
     modelo: "",
-    selectedModelo: {}
+    selectedModelo: {},
   };
-  // Estado para manejar la apertura/cierre de cada sección
-  const [openSections, setOpenSections] = useState({});
   useEffect(() => {
     if (fields.length === 0) {
       append(defaultValue, { shouldFocus: false });
     }
   }, [fields, append]);
-  const [modelo, setModelo] = useState(watch("selectedModelo"));
   const {
-    getPuertasTraseras,
     puertasTraseras,
-    getCapacidad,
     capacidad,
-    getPiso,
     piso,
-    getCumbrera,
     cumbrera,
-    getMecanismo,
     mecanismo,
-    getCilindro,
     cilindro,
   } = useAtributos();
-  useEffect(() => {
-    //getPuertasTraseras();
-    //getCapacidad();
-    //getPiso();
-    //getCumbrera();
-    //getMecanismo();
-    //getCilindro();
-  }, []);
 
-  useEffect(() => {
-    setModelo(watch("selectedModelo"));
-  }, [watch("selectedModelo")]);
-
+  const handleSelection = ({data, inputName}) => {
+    const modelos = watch("modelos")[0];
+    setValue(`${inputName}selectedModelo`, data);
+    for (let attr in modelos) {
+      if (data[attr])
+        setValue(`${inputName}${attr}`, data[attr].value, {
+          shouldDirty: true,
+        });
+    }
+  };
   return (
     <>
       {puertasTraseras.length > 0 &&
@@ -96,7 +82,10 @@ function DatosProducto() {
                 className="border border-amber-400 px-2 pb-4 pt-2 rounded-md bg-amber-100/40 mb-3"
               >
                 <div className="flex gap-2 items-end">
-                  <Modelo inputName={`modelos.${index}.`} />
+                  <Modelo
+                    inputName={`modelos.${index}.`}
+                    handleSelection={handleSelection}
+                  />
                   <Input
                     type="number"
                     label={"Cantidad"}
@@ -122,25 +111,38 @@ function DatosProducto() {
                   <Input
                     type="number"
                     label={"Largo"}
-                    disabled={watch(`modelos.${index}.selectedModelo.largo.type`) === "Fijo"}
+                    disabled={
+                      watch(`modelos.${index}.selectedModelo.largo.type`) ===
+                      "Fijo"
+                    }
                     {...register(`modelos.${index}.largo`, { required: true })}
                   />
                   <Input
                     type="number"
                     label={"Ancho"}
-                    disabled={watch(`modelos.${index}.selectedModelo.ancho.type`) === "Fijo"}
+                    disabled={
+                      watch(`modelos.${index}.selectedModelo.ancho.type`) ===
+                      "Fijo"
+                    }
                     {...register(`modelos.${index}.ancho`, { required: true })}
                   />
 
                   <Input
                     type="number"
                     label={"Alto"}
-                    disabled={watch(`modelos.${index}.selectedModelo.alto.type`) === "Fijo"}
+                    disabled={
+                      watch(`modelos.${index}.selectedModelo.alto.type`) ===
+                      "Fijo"
+                    }
                     {...register(`modelos.${index}.alto`, { required: true })}
                   />
                   <Select
                     label={"Capacidad"}
-                    disabled={watch(`modelos.${index}.selectedModelo.capacidad.type`) === "Fijo"}
+                    disabled={
+                      watch(
+                        `modelos.${index}.selectedModelo.capacidad.type`
+                      ) === "Fijo"
+                    }
                     {...register(`modelos.${index}.capacidad`, {
                       required: true,
                     })}
@@ -160,7 +162,11 @@ function DatosProducto() {
                     <Input
                       type="number"
                       label={"Cant. ptas. lat"}
-                      disabled={watch(`modelos.${index}.selectedModelo.cant_puertas_laterales.type`) === "Fijo"}
+                      disabled={
+                        watch(
+                          `modelos.${index}.selectedModelo.cant_puertas_laterales.type`
+                        ) === "Fijo"
+                      }
                       {...register(`modelos.${index}.cant_puertas_laterales`, {
                         required: true,
                       })}
@@ -168,7 +174,11 @@ function DatosProducto() {
                     <Input
                       type="number"
                       label={"Altura de baranda"}
-                      disabled={watch(`modelos.${index}.selectedModelo.altura_baranda.type`) === "Fijo"}
+                      disabled={
+                        watch(
+                          `modelos.${index}.selectedModelo.altura_baranda.type`
+                        ) === "Fijo"
+                      }
                       {...register(`modelos.${index}.altura_baranda`, {
                         required: true,
                       })}
@@ -176,14 +186,18 @@ function DatosProducto() {
 
                     <Select
                       label={"Puerta trasera"}
-                      disabled={watch(`modelos.${index}.selectedModelo.puerta_trasera.type`) === "Fijo"}
+                      disabled={
+                        watch(
+                          `modelos.${index}.selectedModelo.puerta_trasera.type`
+                        ) === "Fijo"
+                      }
                       {...register(`modelos.${index}.puerta_trasera`, {
                         required: true,
                       })}
                     >
                       {puertasTraseras.map(
                         (item) =>
-                          item.activo == "Sí" && (
+                          item.active == true && (
                             <option
                               key={item.descripcion}
                               value={item.descripcion}
@@ -195,7 +209,10 @@ function DatosProducto() {
                     </Select>
                     <Select
                       label={"Piso"}
-                      disabled={watch(`modelos.${index}.selectedModelo.piso.type`) === "Fijo"}
+                      disabled={
+                        watch(`modelos.${index}.selectedModelo.piso.type`) ===
+                        "Fijo"
+                      }
                       {...register(`modelos.${index}.piso`, { required: true })}
                     >
                       {[...new Set(piso.map((item) => item.descripcion))].map(
@@ -207,7 +224,11 @@ function DatosProducto() {
                       )}
                     </Select>
                     <Select
-                      disabled={watch(`modelos.${index}.selectedModelo.espesor.type`) === "Fijo"}
+                      disabled={
+                        watch(
+                          `modelos.${index}.selectedModelo.espesor.type`
+                        ) === "Fijo"
+                      }
                       label={"Espesor"}
                       {...register(`modelos.${index}.espesor`, {
                         required: true,
@@ -222,7 +243,11 @@ function DatosProducto() {
                   </div>
                   <div className="columns-5 mt-3 gap-2">
                     <Select
-                      disabled={watch(`modelos.${index}.selectedModelo.cumbrera_lateral.type`) === "Fijo"}
+                      disabled={
+                        watch(
+                          `modelos.${index}.selectedModelo.cumbrera_lateral.type`
+                        ) === "Fijo"
+                      }
                       label={"Cumbrera lateral"}
                       {...register(`modelos.${index}.cumbrera_lateral`, {
                         required: true,
@@ -237,7 +262,10 @@ function DatosProducto() {
                     <Input
                       type="number"
                       label={"Cajon de herramientas"}
-                      disabled={watch(`modelos.${index}.selectedModelo.cajon.type`) === "Fijo"}
+                      disabled={
+                        watch(`modelos.${index}.selectedModelo.cajon.type`) ===
+                        "Fijo"
+                      }
                       {...register(`modelos.${index}.cajon`, {
                         required: true,
                       })}
@@ -245,12 +273,19 @@ function DatosProducto() {
                     <Input
                       type="number"
                       label={"Tara"}
-                      disabled={watch(`modelos.${index}.selectedModelo.tara.type`) === "Fijo"}
+                      disabled={
+                        watch(`modelos.${index}.selectedModelo.tara.type`) ===
+                        "Fijo"
+                      }
                       {...register(`modelos.${index}.tara`, { required: true })}
                     />
 
                     <Select
-                      disabled={watch(`modelos.${index}.selectedModelo.traba_puerta.type`) === "Fijo"}
+                      disabled={
+                        watch(
+                          `modelos.${index}.selectedModelo.traba_puerta.type`
+                        ) === "Fijo"
+                      }
                       label={"Traba de puerta"}
                       {...register(`modelos.${index}.traba_puerta`, {
                         required: true,
@@ -264,7 +299,11 @@ function DatosProducto() {
                     </Select>
 
                     <Select
-                      disabled={watch(`modelos.${index}.selectedModelo.cilindro.type`) === "Fijo"}
+                      disabled={
+                        watch(
+                          `modelos.${index}.selectedModelo.cilindro.type`
+                        ) === "Fijo"
+                      }
                       label={"Cilindro"}
                       {...register(`modelos.${index}.cilindro`, {
                         required: true,
