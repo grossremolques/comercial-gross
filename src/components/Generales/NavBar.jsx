@@ -25,8 +25,8 @@ export function NavBar() {
             <Link title="Solicitudes" to="/solicitudes" />
             <Link title={'Proformas'} to="/proformas"/>
             <Link title={'Clientes'} to="/clientes"/>
-            {/* <Link title={'Gestoría'} to="/gestoria"/>
-            <Link title={'Venta de 0 km'} to="/nueva-venta"/> */}
+            <Link title={'Gestoría'} to="/gestoria"/>
+            <Link title={'Venta de 0 km'} to="/nueva-venta"/>
           </div>
         </div>
       </div>

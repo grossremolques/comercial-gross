@@ -7,7 +7,8 @@ import {
   GET_CILINDRO,
   GET_MECANISMO,
   GET_FORMA_PAGO,
-  GET_MEDIOS_PAGO
+  GET_MEDIOS_PAGO,
+  GET_ARCOS
 } from "../types";
 
 export const AtributosReducer = (state, action) => {
@@ -31,7 +32,8 @@ export const AtributosReducer = (state, action) => {
       return { ...state, formaPago: payload };
     case GET_MEDIOS_PAGO:
       return {...state, mediosPago: payload };
-
+    case GET_ARCOS:
+      return {...state, arcos: payload };
     default:
       return state;
   }

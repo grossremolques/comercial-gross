@@ -31,6 +31,7 @@ export default function DatosTecnico() {
     mecanismo,
     getCilindro,
     cilindro,
+    arcos,
   } = useAtributos();
   useEffect(() => {
     getPuertasTraseras();
@@ -40,15 +41,14 @@ export default function DatosTecnico() {
     getMecanismo();
     getCilindro();
   }, []);
-
   useEffect(() => {
     setModelo(watch("selectedModelo"));
   }, [watch("selectedModelo")]);
 
-  const handleSelection = ({data, inputName}) => {
+  const handleSelection = ({ data, inputName }) => {
     console.log("handleSelection:", data);
     const modelos = watch();
-    console.log(modelos)
+    console.log(modelos);
     setValue(`selectedModelo`, data);
     for (let attr in modelos) {
       if (data[attr])
@@ -56,7 +56,7 @@ export default function DatosTecnico() {
           shouldDirty: true,
         });
     }
-    console.log(watch())
+    console.log(watch());
   };
   return (
     <>
@@ -65,13 +65,14 @@ export default function DatosTecnico() {
         piso.length > 0 &&
         cumbrera.length > 0 &&
         mecanismo.length > 0 &&
-        cilindro.length > 0 &&  (
+        cilindro.length > 0 &&
+        arcos.length > 0 && (
           <>
             <CardToggle
               className={"lg:max-w-[1000px] mx-auto my-4"}
               title={"Datos Técnicos"}
             >
-              <Modelo inputName={"modelo"} handleSelection={handleSelection}/>
+              <Modelo inputName={"modelo"} handleSelection={handleSelection} />
               <div className="grid md:grid-cols-6 gap-2 grid-cols-3 mt-2">
                 <Input
                   type="number"
@@ -172,9 +173,9 @@ export default function DatosTecnico() {
                   disabled={modelo?.arcos_centrales?.type === "Fijo"}
                   {...register("arcos_centrales", { required: true })}
                 >
-                  {[].map(
+                  {arcos.map(
                     (item) =>
-                      item.activo == "Sí" && (
+                      item.active == true && (
                         <option key={item.descripcion} value={item.descripcion}>
                           {item.descripcion}
                         </option>
@@ -186,9 +187,9 @@ export default function DatosTecnico() {
                   disabled={modelo?.arcos_extremos?.type === "Fijo"}
                   {...register("arcos_extremos", { required: true })}
                 >
-                  {[].map(
+                  {arcos.map(
                     (item) =>
-                      item.activo == "Sí" && (
+                      item.active == true && (
                         <option key={item.descripcion} value={item.descripcion}>
                           {item.descripcion}
                         </option>

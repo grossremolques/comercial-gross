@@ -9,7 +9,8 @@ import {
   ss_mecanismo,
   ss_cilindro,
   ss_forma_pago,
-  ss_medio_pago
+  ss_medio_pago,
+  ss_arcos
 } from "../../API/backend";
 
 const AtributosContext = createContext();
@@ -26,6 +27,8 @@ export function AtributosProvider({ children }) {
     cilindro: [],
     formaPago: [],
     mediosPago: [],
+    arcos:[],
+    materiales:[]
   };
   const [state, dispatch] = useReducer(AtributosReducer, initialState);
   const getPuertasTraseras = async () => {
@@ -119,6 +122,14 @@ export function AtributosProvider({ children }) {
       console.error(err);
     }
   };
+  const getArcos = async () => {
+    try {
+      const data = await ss_arcos.getData();
+      dispatch({ type: "GET_ARCOS", payload: data });
+    } catch (err) {
+      console.error(err);
+    }
+  };
   useEffect(() => {
     getPuertasTraseras();
     getCapacidad();
@@ -129,6 +140,7 @@ export function AtributosProvider({ children }) {
     getCilindro();
     getFormaPago();
     getMedioPago();
+    getArcos();
   },[])
   return (
     <AtributosContext.Provider
@@ -151,6 +163,7 @@ export function AtributosProvider({ children }) {
         formaPago: state.formaPago,
         getMedioPago,
         mediosPago: state.mediosPago,
+        arcos: state.arcos,
       }}
     >
       {children}

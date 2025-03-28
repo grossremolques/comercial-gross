@@ -19,6 +19,16 @@ export const ss_puerta_trasera = new GoogleSheet({
     rowHead: 1,
     nameSheet: "Piso",
   });
+  export const ss_arcos = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Arcos",
+  });
+  export const ss_material = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Material",
+  });
   export const ss_cumbrera = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
     rowHead: 1,
