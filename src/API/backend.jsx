@@ -54,6 +54,46 @@ export const ss_puerta_trasera = new GoogleSheet({
     rowHead: 1,
     nameSheet: "Medios de Pago",
   });
+  export const ss_colores = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Colores",
+  });
+  export const ss_cajones = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Cajones",
+  });
+  export const ss_portaAuxilio = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Porta Auxilio",
+  });
+  export const ss_ojal = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Ojales y perno rey",
+  });
+  export const ss_peso_bruto = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Peso bruto total",
+  });
+  export const ss_trabajo_plato = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Alt. trabajo plato tractor",
+  });
+  export const ss_cabezal = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Cabezal",
+  });
+  export const ss_medida_llantas = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Medida de llantas",
+  });
   export const ss_proforma = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_PROFORMA,
     rowHead: 1,

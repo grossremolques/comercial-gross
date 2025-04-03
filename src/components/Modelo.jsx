@@ -9,12 +9,10 @@ export function Modelo({ inputName, handleSelection }) {
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
   const { handleModalShow, handleModalClose } = useModal();
-  const { modelos, getModelos } = useAtributos();
+  const { modelos } = useAtributos();
   const {
     register,
     formState: { errors },
-    setValue,
-    watch,
   } = useFormContext();
 
   useEffect(() => {
@@ -31,17 +29,7 @@ export function Modelo({ inputName, handleSelection }) {
   }, [search]);
   function handleSelectedModelo(data) {
     handleSelection({data, inputName});
-    /* const modelos = watch("modelos");
-    console.log(modelos);
-    setValue(`${inputName}selectedModelo`, data);
-    for (let attr in modelos) {
-      if (data[attr])
-        setValue(`${inputName}${attr}`, data[attr].value, {
-          shouldDirty: true,
-        });
-    } */
   }
-  //console.log(modelos)
   return (
     <>
       {modelos.length > 0 && (

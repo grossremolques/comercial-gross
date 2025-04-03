@@ -8,7 +8,17 @@ import {
   GET_MECANISMO,
   GET_FORMA_PAGO,
   GET_MEDIOS_PAGO,
-  GET_ARCOS
+  GET_ARCOS,
+  GET_MATERIAL,
+  GET_COLORES,
+  GET_CAJONES,
+  GET_PORTA_AUXILIO,
+  GET_OJALES,
+  GET_PESO_BRUTO,
+  GET_TRABAJO_PLATO,
+  GET_CABEZAL,
+  GET_MEDIDA_LLANTA,
+  SET_ALL_ATRIBUTES
 } from "../types";
 
 export const AtributosReducer = (state, action) => {
@@ -34,6 +44,26 @@ export const AtributosReducer = (state, action) => {
       return {...state, mediosPago: payload };
     case GET_ARCOS:
       return {...state, arcos: payload };
+    case GET_MATERIAL:
+      return {...state, materiales: payload };
+    case GET_COLORES:
+      return {...state, colores: payload };
+    case GET_CAJONES:
+      return {...state, cajones: payload };
+    case GET_PORTA_AUXILIO:
+      return {...state, porta_auxilio: payload };
+    case GET_OJALES:
+      return {...state, ojales: payload };
+    case GET_PESO_BRUTO:
+      return {...state, peso_bruto: payload };
+    case GET_TRABAJO_PLATO:
+      return {...state, trabajo_plato: payload };
+    case GET_CABEZAL:
+      return {...state, cabezal: payload };
+    case GET_MEDIDA_LLANTA:
+      return {...state, medida_llantas: payload };
+    case SET_ALL_ATRIBUTES:
+      return {...state, allAtributes: payload };
     default:
       return state;
   }
