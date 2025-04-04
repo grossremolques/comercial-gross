@@ -8,10 +8,12 @@ import { useNavigate } from "react-router-dom";
 import FormularioSolicitud from "../../templates/FormularioSolicitud";
 import { BoxComponentScrolling } from "../../components/BoxComponent";
 import { ss_solicitudes, ss_cambios_detalle } from "../../API/backend";
+import { Modal } from "../../components/Modal";
 export function NuevaSolicitud() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { handleModalShow, handleModalClose } = useModal();
+  const [response, setResponse] = useState(null);
   const modalsId = { loading: "loading", success: "success" };  
   const [data, setData] = useState({});
   
@@ -54,6 +56,7 @@ export function NuevaSolicitud() {
         onSubmit={onSubmit}
         onError={onError}
         isDisabled={false}
+        setResponse={setResponse}
       />
       <ModalLoading id={modalsId.loading} title={"Guardando Proforma"} />
         <ModalSuccess id={modalsId.success} title={"Proforma Guardado"}>
@@ -79,6 +82,25 @@ export function NuevaSolicitud() {
           </div>
         </ModalSuccess>
     </BoxComponentScrolling>
+    {response && (
+        <Modal
+          modalId={"modal-response"}
+          title={
+            response.type === "success" ? "¡Todo marcha bien!" : "Algo anda mal"
+          }
+          variant={response.type}
+        >
+          <div className="flex flex-col gap-4 mt-3">
+            {response.message}
+            <Button
+              className="max-w-50 mx-auto"
+              text={'Aceptar'}
+              variant={"primary"}
+              onClick={handleModalClose}
+            />
+          </div>
+        </Modal>
+      )}
     </>
   );
 }

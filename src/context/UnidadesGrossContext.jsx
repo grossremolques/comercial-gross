@@ -24,8 +24,7 @@ export const UnidadesGrossContextProvider = ({ children }) => {
           item["gestoria"] = unidadGestoria;
         }
       });
-
-      setUnidadesGross(dataUnidades);
+      setUnidadesGross(dataUnidades.reverse());
     } catch (e) {
       console.log(e);
     }

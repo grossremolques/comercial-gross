@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 const ModalContext = createContext();
 export const useModal = () => useContext(ModalContext);
 export const ModalContextProvider = ({ children }) => {

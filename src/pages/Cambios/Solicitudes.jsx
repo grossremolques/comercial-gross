@@ -99,6 +99,7 @@ export default function Solicitudes() {
   }, []);
   useEffect(() => {
     if (unidadesGross.length > 0) {
+      console.log(unidadesGross);
       getDetalles();
       getSolicitudes();
     }

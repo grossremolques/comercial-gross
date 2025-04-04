@@ -2,7 +2,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Footer } from "../components/Footer";
 import Button from "../components/Generales/Buttons";
 import DatosSolicitud from "../components/Solicitud/DatosSolicitud";
-function FormularioSolicitud({ defaultValues, onSubmit, onError, isDisabled }) {
+function FormularioSolicitud({ defaultValues, onSubmit, onError, isDisabled, setResponse }) {
     const methods = useForm({
       defaultValues: defaultValues || {
       },
@@ -18,7 +18,7 @@ function FormularioSolicitud({ defaultValues, onSubmit, onError, isDisabled }) {
         <form onSubmit={methods.handleSubmit(handleSendings, onError)}>
             
           <fieldset disabled={isDisabled}>
-            <DatosSolicitud/>
+            <DatosSolicitud setResponse={setResponse}/>
           <Footer>
               <div className="flex gap-2 justify-end">
                 <Button
