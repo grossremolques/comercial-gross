@@ -20,7 +20,6 @@ export default function DatosTecnico() {
   const [modelo, setModelo] = useState(watch("selectedModelo"));
   const {
     puertasTraseras,
-    capacidad,
     piso,
     cumbrera,
     mecanismo,
@@ -42,7 +41,7 @@ export default function DatosTecnico() {
     setModelo(watch("selectedModelo"));
   }, [watch("selectedModelo")]);
 
-  const handleSelection = ({ data, inputName }) => {
+  const handleSelection = ({ data }) => {
     console.log("handleSelection:", data);
     const modelos = watch();
     setValue(`selectedModelo`, data);
@@ -228,7 +227,14 @@ export default function DatosTecnico() {
                 label={"Carrozado"}
                 {...register("color_carrozado", { required: true })}
               >
-                {[...colores, {descripcion: 'N/A', active: true, zona:"Carrozado y Franja"}].map(
+                {[
+                  ...colores,
+                  {
+                    descripcion: "N/A",
+                    active: true,
+                    zona: "Carrozado y Franja",
+                  },
+                ].map(
                   (item) =>
                     item.active == true &&
                     item.zona == "Carrozado y Franja" && (
@@ -243,7 +249,14 @@ export default function DatosTecnico() {
                 label={"Franja"}
                 {...register("color_franja", { required: true })}
               >
-                {[...colores, {descripcion: 'N/A', active: true, zona:"Carrozado y Franja" }].map(
+                {[
+                  ...colores,
+                  {
+                    descripcion: "N/A",
+                    active: true,
+                    zona: "Carrozado y Franja",
+                  },
+                ].map(
                   (item) =>
                     item.active == true &&
                     item.zona == "Carrozado y Franja" && (
@@ -258,7 +271,10 @@ export default function DatosTecnico() {
                 label={"Lona para destape"}
                 {...register("color_lona", { required: true })}
               >
-                {[...colores, {descripcion: 'N/A', active: true, zona:"Lona destape" }].map(
+                {[
+                  ...colores,
+                  { descripcion: "N/A", active: true, zona: "Lona destape" },
+                ].map(
                   (item) =>
                     item.active == true &&
                     item.zona == "Lona destape" && (
@@ -273,7 +289,10 @@ export default function DatosTecnico() {
                 label={"Chasis"}
                 {...register("color_chasis", { required: true })}
               >
-                {[...colores, {descripcion: 'N/A', active: true, zona:"Chasis"}].map(
+                {[
+                  ...colores,
+                  { descripcion: "N/A", active: true, zona: "Chasis" },
+                ].map(
                   (item) =>
                     item.active == true &&
                     item.zona == "Chasis" && (
@@ -439,6 +458,93 @@ export default function DatosTecnico() {
                   </option>
                 ))}
               </Select>
+              <Select
+                disabled={modelo?.cajon_adicional?.type === "Fijo"}
+                label={"Cajón adicional"}
+                {...register("cajon_adicional", { required: true })}
+              >
+                {cajones.map(
+                  (item) =>
+                    item.active == true && (
+                      <option key={item.descripcion} value={item.descripcion}>
+                        {item.descripcion}
+                      </option>
+                    )
+                )}
+              </Select>
+              <Select
+                disabled={modelo?.bulon_largo?.type === "Fijo"}
+                label={"Bulón largo"}
+                {...register("bulon_largo", { required: true })}
+              >
+                {booleano.map((item) => (
+                  <option key={item.descripcion} value={item.descripcion}>
+                    {item.descripcion}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                disabled={modelo?.rampa?.type === "Fijo"}
+                label={"Rampa"}
+                {...register("rampa", { required: true })}
+              >
+                {booleano.map((item) => (
+                  <option key={item.descripcion} value={item.descripcion}>
+                    {item.descripcion}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                disabled={modelo?.traba_puerta?.type === "Fijo"}
+                label={"Traba de puerta"}
+                {...register("traba_puerta", { required: true })}
+              >
+                {mecanismo.map((item) => (
+                  <option key={item.descripcion} value={item.descripcion}>
+                    {item.descripcion}
+                  </option>
+                ))}
+              </Select>
+
+              <InputGroup label="Llantas" className="col-span-2">
+                <TextLabelGroup title={"Acero"} />
+                <SingleInputForGroup
+                  label="Acero"
+                  {...register("llantas_acero")}
+                />
+                <TextLabelGroup title={"Aluminio"} />
+                <SingleInputForGroup
+                  label="Aluminio"
+                  type="numeber"
+                  {...register("llantas_aluminio")}
+                />
+              </InputGroup>
+              <Select
+                disabled={modelo?.medidas?.type === "Fijo"}
+                label={"Medida"}
+                {...register("medidas", { required: true })}
+              >
+                {medida_llantas.map(
+                  (item) =>
+                    item.active == true && (
+                      <option key={item.descripcion} value={item.descripcion}>
+                        {item.descripcion}
+                      </option>
+                    )
+                )}
+              </Select>
+            </div>
+          </CardToggle>
+          <CardToggle
+            className={"lg:max-w-[1000px] mx-auto mb-4"}
+            title={"Características Especiales para Carrocerías"}
+          >
+            <div className="grid md:grid-cols-8 gap-2 grid-cols-3 mt-2">
+              <Input
+                label={"Cajón 1"}
+                disabled={modelo?.cajon_carroceria_1?.type === "Fijo"}
+                {...register("cajon_carroceria_1", { required: true })}
+              />
               <Select
                 disabled={modelo?.cajon_adicional?.type === "Fijo"}
                 label={"Cajón adicional"}

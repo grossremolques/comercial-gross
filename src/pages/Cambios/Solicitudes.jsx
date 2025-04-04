@@ -99,7 +99,6 @@ export default function Solicitudes() {
   }, []);
   useEffect(() => {
     if (unidadesGross.length > 0) {
-      console.log(unidadesGross);
       getDetalles();
       getSolicitudes();
     }
@@ -145,7 +144,7 @@ export default function Solicitudes() {
       .replace("-", "");
     const filter = solicitudes.filter((item) => {
       return (
-        item.trazabilidad.toString().includes(data.trazabilidadQuery) &&
+        item.selectUnidad.trazabilidad.toString().includes(data.trazabilidadQuery) &&
         item.selectUnidad.gestoria?.selectedCliente?.razon_social
           .toLowerCase()
           .includes(data.clienteQuery.toLowerCase()) &&
@@ -154,7 +153,6 @@ export default function Solicitudes() {
     });
     setDataFiltered([...filter]);
   };
-  //selectUnidad.gestoria.selectedCliente.razon_social
   const openSolicitud = (data) => {
     navigate(`/solicitud/${data.id}`, { state: { solicitudData: data } });
   };
