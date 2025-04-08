@@ -58,7 +58,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getCapacidad = async () => {
@@ -68,7 +69,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getModelos = async () => {
@@ -97,7 +99,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getPiso = async () => {
@@ -107,7 +110,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getCumbrera = async () => {
@@ -117,7 +121,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getMecanismo = async () => {
@@ -127,7 +132,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getCilindro = async () => {
@@ -137,7 +143,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getFormaPago = async () => {
@@ -147,7 +154,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getMedioPago = async () => {
@@ -157,7 +165,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getArcos = async () => {
@@ -167,7 +176,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getMaterial = async () => {
@@ -177,7 +187,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getColores = async () => {
@@ -187,7 +198,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getCajones = async () => {
@@ -197,7 +209,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getPortaAuxilio = async () => {
@@ -207,7 +220,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getOjales = async () => {
@@ -217,7 +231,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getPesoBruto = async () => {
@@ -227,7 +242,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   };
   const getTrabajoPlato = async () => {
@@ -237,7 +253,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   }
   const getCabezal = async () => {
@@ -247,7 +264,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   }
   const getMedidaLlantas = async () => {
@@ -257,7 +275,8 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   }
   const getUbicaciones = async () => {
@@ -267,11 +286,12 @@ export function AtributosProvider({ children }) {
       const result = data.error ? 'fail': 'success';
       return result
     } catch (err) {
-      console.error(err);
+      console.error("Error",err);
+      return 'fail'
     }
   }
   const getAllAtributes = async () => {
-    const response = await Promise.all([
+    const results  = await Promise.all([
       getPuertasTraseras(),
       getCapacidad(),
       getModelos(),
@@ -293,8 +313,11 @@ export function AtributosProvider({ children }) {
       getMedidaLlantas(),
       getUbicaciones()
     ])
-    const isOk = response.every((res) => res ==='success')
-    dispatch({ type: "SET_ALL_ATRIBUTES", payload: isOk });
+    const allSuccess = results.every(res => res === 'success');
+    if (!allSuccess) {
+      console.error("Algunas cargas de atributos fallaron", results);
+    }
+    dispatch({ type: "SET_ALL_ATRIBUTES", payload: allSuccess });
   }
   
   return (

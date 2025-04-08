@@ -9,7 +9,10 @@ function useCamionFilter(camiones, search, debounceTime = 300) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       const result = camiones.filter((item) =>
-        item.trazabilidad.toString().toLowerCase().includes(search.toLowerCase())
+        item.trazabilidad
+          .toString()
+          .toLowerCase()
+          .includes(search.toLowerCase())
       );
       setFilteredData(result.reverse());
     }, debounceTime);
@@ -28,7 +31,7 @@ export const CamionesContextProvider = ({ children }) => {
   const [search, setSearch] = useState(""); // Estado para el término de búsqueda
   // Obtener datos de camiones
   useEffect(() => {
-    getClientes()
+    getClientes();
   }, []);
   useEffect(() => {
     if (clientes.length > 0) {
@@ -38,14 +41,17 @@ export const CamionesContextProvider = ({ children }) => {
   const getCamiones = async () => {
     try {
       const res = await ss_camiones.getData();
-      
-      res.forEach((item) => {
-        const cliente = clientes.find((cliente) => cliente.id === item.id_cliente);
-        if (cliente) {
-          item["razon_social"] = cliente.razon_social;
-        }
-      });
-      setCamiones(res);
+      if (res.length > 0) {
+        res.forEach((item) => {
+          const cliente = clientes.find(
+            (cliente) => cliente.id === item.id_cliente
+          );
+          if (cliente) {
+            item["razon_social"] = cliente.razon_social;
+          }
+        });
+        setCamiones(res);
+      }
     } catch (error) {
       console.error("Error al obtener camiones:", error);
     }
