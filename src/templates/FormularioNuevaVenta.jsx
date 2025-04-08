@@ -4,6 +4,7 @@ import DatosTecnico from "../components/UnidadesGross/DatosTecnicos";
 import DatosSeleccionarCliente from "../components/DatosSeleccionarCliente";
 import { Footer } from "../components/Footer";
 import Button from "../components/Generales/Buttons";
+import DatosSeleccionarCamion from "../components/DatosSeleccionarCamion";
 export default function FormularioNuevaVenta({ defaultValues, onSubmit, onError, isDisabled }) {
   const methods = useForm({
     defaultValues: defaultValues || {
@@ -43,6 +44,7 @@ export default function FormularioNuevaVenta({ defaultValues, onSubmit, onError,
           </Footer>
           </fieldset>
       </form>
+      <DatosSeleccionarCamion isDisabled={isDisabled}/>
       
     </FormProvider>
   );

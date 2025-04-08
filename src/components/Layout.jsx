@@ -6,6 +6,7 @@ import { ClientesContextProvider } from "../context/ClientesContext";
 import { GestoriaContextProvider } from "../context/GestoriaContext";
 import { UnidadesGrossContextProvider } from "../context/UnidadesGrossContext";
 import { AtributosProvider } from "../context/Attributes/AtributosContext";
+import { CamionesContextProvider } from "../context/CamionesContext";
 export default function Layout() {
   const { auth, getAuth, getUser, user } = useAuth();
   useEffect(() => {
@@ -24,6 +25,8 @@ export default function Layout() {
             <NavBar />
             <div className="mx-auto px-4 sm:px-6 py-20 min-h-screen ">
               <ClientesContextProvider>
+                <CamionesContextProvider>
+
                 <GestoriaContextProvider>
                   <UnidadesGrossContextProvider>
                     <AtributosProvider>
@@ -31,6 +34,7 @@ export default function Layout() {
                     </AtributosProvider>
                   </UnidadesGrossContextProvider>
                 </GestoriaContextProvider>
+                </CamionesContextProvider>
               </ClientesContextProvider>
             </div>
           </div>

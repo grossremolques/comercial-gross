@@ -19,7 +19,7 @@ import { ss_cambios_atributos } from "../../API/backend";
 function DatosSolicitud({ setResponse }) {
   const [filteredData, setFilteredData] = useState([]);
   const { handleModalShow, handleModalClose } = useModal();
-  const { unidadesGross, getUnidadesGross } = useUnidadesGross();
+  const { unidadesGross } = useUnidadesGross();
   const [search, setSearch] = useState("");
   const [unidad, setUnidad] = useState();
   const [atributos, setAtributos] = useState();

@@ -185,7 +185,7 @@ export function PDFProforma() {
                 >
                   {attr.replace(/_/g, " ")}:
                 </Text>
-                <Text style={{ fontWeight: "bold" }}>{pdfData[attr]}</Text>
+                <Text style={{ fontWeight: "bold" }}>{modelo[attr]}</Text>
               </View>
             )
         )}

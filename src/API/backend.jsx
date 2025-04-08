@@ -94,6 +94,11 @@ export const ss_puerta_trasera = new GoogleSheet({
     rowHead: 1,
     nameSheet: "Medida de llantas",
   });
+  export const ss_ubicacion = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+    rowHead: 1,
+    nameSheet: "Ubicación",
+  });
   export const ss_proforma = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_PROFORMA,
     rowHead: 1,
@@ -148,4 +153,9 @@ export const ss_puerta_trasera = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_PROFORMA,
     rowHead: 1,
     nameSheet: "Producto",
+  });
+  export const ss_camiones = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_CAMIONES,
+    rowHead: 1,
+    nameSheet: "Propuesta",
   });

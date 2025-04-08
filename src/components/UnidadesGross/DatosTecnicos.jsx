@@ -6,6 +6,7 @@ import {
   InputGroup,
   TextLabelGroup,
   SingleInputForGroup,
+  SingleSelectForGroup,
 } from "../Generales/Forms";
 import { useAtributos } from "../../context/Attributes/AtributosContext";
 import { useEffect, useState } from "react";
@@ -36,6 +37,7 @@ export default function DatosTecnico() {
     medida_llantas,
     getAllAtributes,
     allAtributes,
+    ubicaciones,
   } = useAtributos();
   useEffect(() => {
     setModelo(watch("selectedModelo"));
@@ -539,87 +541,130 @@ export default function DatosTecnico() {
             className={"lg:max-w-[1000px] mx-auto mb-4"}
             title={"Características Especiales para Carrocerías"}
           >
-            <div className="grid md:grid-cols-8 gap-2 grid-cols-3 mt-2">
-              <Input
-                label={"Cajón 1"}
-                disabled={modelo?.cajon_carroceria_1?.type === "Fijo"}
-                {...register("cajon_carroceria_1", { required: true })}
-              />
-              <Select
-                disabled={modelo?.cajon_adicional?.type === "Fijo"}
-                label={"Cajón adicional"}
-                {...register("cajon_adicional", { required: true })}
+            <div className="grid md:grid-cols-6 gap-2 grid-cols-3 mt-2">
+              <InputGroup
+                label="Cajón de Herramientas 1"
+                className="col-span-3 w-full"
               >
-                {cajones.map(
-                  (item) =>
-                    item.active == true && (
-                      <option key={item.descripcion} value={item.descripcion}>
-                        {item.descripcion}
-                      </option>
-                    )
-                )}
-              </Select>
-              <Select
-                disabled={modelo?.bulon_largo?.type === "Fijo"}
-                label={"Bulón largo"}
-                {...register("bulon_largo", { required: true })}
-              >
-                {booleano.map((item) => (
-                  <option key={item.descripcion} value={item.descripcion}>
-                    {item.descripcion}
-                  </option>
-                ))}
-              </Select>
-              <Select
-                disabled={modelo?.rampa?.type === "Fijo"}
-                label={"Rampa"}
-                {...register("rampa", { required: true })}
-              >
-                {booleano.map((item) => (
-                  <option key={item.descripcion} value={item.descripcion}>
-                    {item.descripcion}
-                  </option>
-                ))}
-              </Select>
-              <Select
-                disabled={modelo?.traba_puerta?.type === "Fijo"}
-                label={"Traba de puerta"}
-                {...register("traba_puerta", { required: true })}
-              >
-                {mecanismo.map((item) => (
-                  <option key={item.descripcion} value={item.descripcion}>
-                    {item.descripcion}
-                  </option>
-                ))}
-              </Select>
+                <TextLabelGroup title={"Medida"} />
+                <SingleSelectForGroup
+                  disabled={modelo?.cajon_carroceria_1?.type === "Fijo"}
+                  label={"Cajón 1 medida"}
+                  {...register("cajon_carroceria_1", { required: true })}
+                >
+                  {cajones.map(
+                    (item) =>
+                      item.active == true && (
+                        <option key={item.descripcion} value={item.descripcion}>
+                          {item.descripcion}
+                        </option>
+                      )
+                  )}
+                </SingleSelectForGroup>
 
-              <InputGroup label="Llantas" className="col-span-2">
-                <TextLabelGroup title={"Acero"} />
+                <TextLabelGroup title={"Ubicación"} />
+                <SingleSelectForGroup
+                  disabled={modelo?.cajon_carroceria_ubic_1?.type === "Fijo"}
+                  label={"Cajón 1 medida"}
+                  {...register("cajon_carroceria_ubic_1", { required: true })}
+                >
+                  {ubicaciones.map(
+                    (item) =>
+                      item.active == true && (
+                        <option key={item.descripcion} value={item.descripcion}>
+                          {item.descripcion}
+                        </option>
+                      )
+                  )}
+                </SingleSelectForGroup>
+              </InputGroup>
+              <InputGroup
+                label="Cajón de Herramientas 2"
+                className="col-span-3 w-full"
+              >
+                <TextLabelGroup title={"Medida"} />
+                <SingleSelectForGroup
+                  disabled={modelo?.cajon_carroceria_2?.type === "Fijo"}
+                  label={"Cajón 3 medida"}
+                  {...register("cajon_carroceria_2", { required: true })}
+                >
+                  {cajones.map(
+                    (item) =>
+                      item.active == true && (
+                        <option key={item.descripcion} value={item.descripcion}>
+                          {item.descripcion}
+                        </option>
+                      )
+                  )}
+                </SingleSelectForGroup>
+
+                <TextLabelGroup title={"Ubicación"} />
+                <SingleSelectForGroup
+                  disabled={modelo?.cajon_carroceria_ubic_2?.type === "Fijo"}
+                  label={"Cajón 1 medida"}
+                  {...register("cajon_carroceria_ubic_2", { required: true })}
+                >
+                  {ubicaciones.map(
+                    (item) =>
+                      item.active == true && (
+                        <option key={item.descripcion} value={item.descripcion}>
+                          {item.descripcion}
+                        </option>
+                      )
+                  )}
+                </SingleSelectForGroup>
+              </InputGroup>
+              <InputGroup label="Tanques de agua" className="col-span-3 w-full">
+                <TextLabelGroup title={"1"} />
+                <SingleSelectForGroup
+                  disabled={modelo?.tanq_agua_1?.type === "Fijo"}
+                  label={"tanque 1"}
+                  {...register("tanq_agua_1", { required: true })}
+                >
+                  {ubicaciones.map(
+                    (item) =>
+                      item.active == true && (
+                        <option key={item.descripcion} value={item.descripcion}>
+                          {item.descripcion}
+                        </option>
+                      )
+                  )}
+                </SingleSelectForGroup>
+
+                <TextLabelGroup title={"2"} />
+                <SingleSelectForGroup
+                  disabled={modelo?.tanq_agua_2?.type === "Fijo"}
+                  label={"tanque 2"}
+                  {...register("tanq_agua_2", { required: true })}
+                >
+                  {ubicaciones.map(
+                    (item) =>
+                      item.active == true && (
+                        <option key={item.descripcion} value={item.descripcion}>
+                          {item.descripcion}
+                        </option>
+                      )
+                  )}
+                </SingleSelectForGroup>
+              </InputGroup>
+              <InputGroup label="Boquillas" className="col-span-2 w-full">
+                <TextLabelGroup title={"Delantera"} />
                 <SingleInputForGroup
-                  label="Acero"
-                  {...register("llantas_acero")}
+                  label="Delantera"
+                  {...register("boq_st_delantera")}
                 />
-                <TextLabelGroup title={"Aluminio"} />
+                <TextLabelGroup title={"Trasera"} />
                 <SingleInputForGroup
-                  label="Aluminio"
-                  type="numeber"
-                  {...register("llantas_aluminio")}
+                  label="Trasera"
+                  {...register("boq_st_trasera")}
                 />
               </InputGroup>
-              <Select
-                disabled={modelo?.medidas?.type === "Fijo"}
-                label={"Medida"}
-                {...register("medidas", { required: true })}
-              >
-                {medida_llantas.map(
-                  (item) =>
-                    item.active == true && (
-                      <option key={item.descripcion} value={item.descripcion}>
-                        {item.descripcion}
-                      </option>
-                    )
-                )}
-              </Select>
+              <Input
+                type="number"
+                label={"Cajon en frente"}
+                disabled={modelo?.cajon_frente?.type === "Fijo"}
+                {...register("cajon_frente", { required: true })}
+              />
             </div>
           </CardToggle>
         </>

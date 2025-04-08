@@ -8,6 +8,7 @@ export const Modal = ({
   icon,
   disableXButton,
   variant = "default",
+  size = "w-sm md:w-lg",
 }) => {
   const variants = {
     default: "text-gray-800",
@@ -28,7 +29,7 @@ export const Modal = ({
     >
       <div
         role="alert"
-        className="rounded-xl border border-gray-100 bg-white md:px-8 px-4 py-6 mt-[100px] max-h-full w-sm md:w-lg"
+        className={`rounded-xl border border-gray-100 bg-white md:px-8 px-4 py-6 mt-[100px] max-h-full ${size}`}
       >
         <div className={`flex gap-2 ${variants[variant]}`}>
           {icon}

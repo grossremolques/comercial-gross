@@ -168,7 +168,7 @@ export const InputGroup = ({
         {" "}
         {label}{" "}
       </span>
-      <span className="inline-flex overflow-hidden rounded-md border bg-white shadow-xs border-gray-200">
+      <span className="inline-flex overflow-hidden rounded-md border bg-white shadow-xs border-gray-200 w-full">
         {children}
       </span>
     </div>
@@ -212,6 +212,52 @@ export const SingleInputForGroup = React.forwardRef(
           defaultValue={defaultValue}
           className="w-full px-4 py-2 text-sm border-none"
         />
+      </>
+    );
+  }
+);
+export const SingleSelectForGroup = React.forwardRef(
+  (
+    {
+      onChange,
+      onBlur,
+      name,
+      placeholder,
+      onClick,
+      type = "text",
+      onInput,
+      readOnly,
+      disabled,
+      defaultValue,
+      label,
+      no_label,
+      children
+    },
+    ref
+  ) => {
+    return (
+      <>
+        <label
+          htmlFor={name}
+          className={`block text-sm font-medium text-gray-700 mb-1 sr-only`}
+        >
+          {" "}
+          {label}{" "}
+        </label>
+        <select
+          onChange={onChange}
+          onBlur={onBlur}
+          name={name}
+          ref={ref}
+          placeholder={placeholder}
+          onClick={onClick}
+          onInput={onInput}
+          disabled={disabled}
+          className={`w-full px-4 py-2 text-sm border-none`}
+        >
+          <option value="">{placeholder}</option>
+          {children}
+        </select>
       </>
     );
   }

@@ -19,7 +19,8 @@ import {
   ss_peso_bruto,
   ss_trabajo_plato,
   ss_cabezal,
-  ss_medida_llantas
+  ss_medida_llantas,
+  ss_ubicacion
 } from "../../API/backend";
 
 const AtributosContext = createContext();
@@ -46,7 +47,8 @@ export function AtributosProvider({ children }) {
     trabajo_plato: [],
     cabezal: [],
     medida_llantas: [],
-    allAtributes: false
+    allAtributes: false,
+    ubicaciones: []
   };
   const [state, dispatch] = useReducer(AtributosReducer, initialState);
   const getPuertasTraseras = async () => {
@@ -258,6 +260,16 @@ export function AtributosProvider({ children }) {
       console.error(err);
     }
   }
+  const getUbicaciones = async () => {
+    try {
+      const data = await ss_ubicacion.getData();
+      dispatch({ type: "GET_UBICACIONES", payload: data });
+      const result = data.error ? 'fail': 'success';
+      return result
+    } catch (err) {
+      console.error(err);
+    }
+  }
   const getAllAtributes = async () => {
     const response = await Promise.all([
       getPuertasTraseras(),
@@ -278,7 +290,8 @@ export function AtributosProvider({ children }) {
       getPesoBruto(),
       getTrabajoPlato(),
       getCabezal(),
-      getMedidaLlantas()
+      getMedidaLlantas(),
+      getUbicaciones()
     ])
     const isOk = response.every((res) => res ==='success')
     dispatch({ type: "SET_ALL_ATRIBUTES", payload: isOk });
@@ -307,9 +320,11 @@ export function AtributosProvider({ children }) {
         cabezal: state.cabezal,
         medida_llantas: state.medida_llantas,
         allAtributes: state.allAtributes,
+        ubicaciones: state.ubicaciones,
         getAllAtributes,
         getFormaPago,
         getMedioPago,
+        getModelos,
       }}
     >
       {children}
