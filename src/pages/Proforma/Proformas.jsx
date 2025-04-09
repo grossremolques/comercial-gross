@@ -8,16 +8,15 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ss_proforma } from "../../API/backend";
 import { useClientes } from "../../context/ClientesContext";
-import { useAtributos } from "../../context/Attributes/AtributosContext";
 import { ss_formas_pago, ss_producto } from "../../API/backend";
 import { useLocation } from "react-router-dom";
 import { NoDataComponent } from "../../components/DataField";
+import { BoxComponentScrolling } from "../../components/BoxComponent";
 export default function Proformas() {
   const STORAGE_KEY = "data-filter-proformas";
   const filterData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
   const location = useLocation();
   const { clientes } = useClientes();
-  const { modelos } = useAtributos();
   const [pagos, setPagos] = useState([]);
   const [productos, setProductos] = useState([]);
 
@@ -57,8 +56,10 @@ export default function Proformas() {
     {
       name: "Modelo",
       selector: (row) => {
-        let modelo = row.modelos?.map(item => `${item.cantidad} ${item.modelo}`)
-        return modelo?.join('\n\n');
+        let modelo = row.modelos?.map(
+          (item) => `${item.cantidad} ${item.modelo}`
+        );
+        return modelo?.join("\n\n");
       },
       cell: (row) => (
         <div>
@@ -113,7 +114,9 @@ export default function Proformas() {
       dataProformas.map((item) => {
         clients.push(clientes.find((cliente) => cliente.id == item.id_cliente));
         formaPago.push(pagos.filter((pago) => pago.id_factura === item.id));
-        products.push(productos.filter((product) => product.id_proforma === item.id));
+        products.push(
+          productos.filter((product) => product.id_proforma === item.id)
+        );
       });
       clients.map((cliente) => {
         dataProformas.map((proforma) => {
@@ -147,7 +150,8 @@ export default function Proformas() {
     getProductos();
   }, []);
   useEffect(() => {
-    if (clientes.length > 0 && productos.length>0 && pagos.length>0) getProformas();
+    if (clientes.length > 0 && productos.length > 0 && pagos.length > 0)
+      getProformas();
   }, [clientes, productos, pagos]);
   const handleFilter = () => {
     const data = watch();
@@ -174,57 +178,59 @@ export default function Proformas() {
     handleFilter();
   }, [proformas]);
   return (
-    <div className="w-full mx-auto">
-      <h1 className="font-medium text-3xl text-center text-gray-700 mb-10">
-        Facturas Proformas
-      </h1>
-      <form className="flex gap-1 my-6 w-full justify-between">
-        <div className="w-auto flex gap-1">
-          <Input
-            label={"Cliente"}
-            no_label
-            placeholder={"Cliente"}
-            {...register("clienteQuery")}
-            onInput={handleFilter}
-          />
-          <Input
-            label={"MOdelo"}
-            no_label
-            placeholder={"Modelo"}
-            {...register("modeloQuery")}
-            onInput={handleFilter}
-          />
-        </div>
-
-        <Button
-          className={"min-w-50"}
-          type="button"
-          variant="success"
-          text={<NavLink to={"/new-proforma"}>Crear Proforma</NavLink>}
-          icon={<PlusIcon className="w-4" />}
-        />
-      </form>
-      <TableComponent
-        data={dataFiltered}
-        columns={columns}
-        handleOnRowClick={openProforma}
-        noDataComponent={
-          <NoDataComponent
-            title={"No hay Proformas"}
-            text={
-              "Puedes agregar proformas haciendo click en el boton de abajo"
-            }
-          >
-            <Button
-              className={"min-w-50"}
-              type="button"
-              variant="success"
-              text={<NavLink to={"/new-proforma"}>Crear Proforma</NavLink>}
-              icon={<PlusIcon className="w-4" />}
+    <BoxComponentScrolling title={"Proformas"} size={"md"} height="calc(100vh - 6rem)">
+      <div className="w-full mx-auto">
+        <h1 className="font-medium text-3xl text-center text-gray-700 mb-10">
+          Facturas Proformas
+        </h1>
+        <form className="flex gap-1 my-6 w-full justify-between">
+          <div className="w-auto flex gap-1">
+            <Input
+              label={"Cliente"}
+              no_label
+              placeholder={"Cliente"}
+              {...register("clienteQuery")}
+              onInput={handleFilter}
             />
-          </NoDataComponent>
-        }
-      />
-    </div>
+            <Input
+              label={"MOdelo"}
+              no_label
+              placeholder={"Modelo"}
+              {...register("modeloQuery")}
+              onInput={handleFilter}
+            />
+          </div>
+
+          <Button
+            className={"min-w-50"}
+            type="button"
+            variant="success"
+            text={<NavLink to={"/new-proforma"}>Crear Proforma</NavLink>}
+            icon={<PlusIcon className="w-4" />}
+          />
+        </form>
+        <TableComponent
+          data={dataFiltered}
+          columns={columns}
+          handleOnRowClick={openProforma}
+          noDataComponent={
+            <NoDataComponent
+              title={"No hay Proformas"}
+              text={
+                "Puedes agregar proformas haciendo click en el boton de abajo"
+              }
+            >
+              <Button
+                className={"min-w-50"}
+                type="button"
+                variant="success"
+                text={<NavLink to={"/new-proforma"}>Crear Proforma</NavLink>}
+                icon={<PlusIcon className="w-4" />}
+              />
+            </NoDataComponent>
+          }
+        />
+      </div>
+    </BoxComponentScrolling>
   );
 }

@@ -10,6 +10,7 @@ import { ss_solicitudes } from "../../API/backend";
 import { NoDataComponent } from "../../components/DataField";
 import { useUnidadesGross } from "../../context/UnidadesGrossContext";
 import { ss_cambios_detalle } from "../../API/backend";
+import { BoxComponentScrolling } from "../../components/BoxComponent";
 export default function Solicitudes() {
   const STORAGE_KEY = "data-filter-solicitudes";
   const filterDataSolicitudes =
@@ -144,7 +145,9 @@ export default function Solicitudes() {
       .replace("-", "");
     const filter = solicitudes.filter((item) => {
       return (
-        item.selectUnidad.trazabilidad.toString().includes(data.trazabilidadQuery) &&
+        item.selectUnidad.trazabilidad
+          .toString()
+          .includes(data.trazabilidadQuery) &&
         item.selectUnidad.gestoria?.selectedCliente?.razon_social
           .toLowerCase()
           .includes(data.clienteQuery.toLowerCase()) &&
@@ -170,65 +173,73 @@ export default function Solicitudes() {
     watch("trazabilidadQuery"),
   ]);
   return (
-    <div className="w-full mx-auto">
-      <h1 className="font-medium text-3xl text-center text-gray-700 mb-10">
-        Solicitudes de Cambio
-      </h1>
-      <form className="flex my-6 w-full justify-between">
-        <div className="flex gap-2 max-w-3xl">
-          <Input
-            label="Cliente"
-            no_label
-            type="search"
-            placeholder={"Cliente"}
-            {...register("clienteQuery")}
-          />
-          <Input
-            label="Trazabilidad"
-            no_label
-            type="search"
-            placeholder={"Trazabilidad"}
-            {...register("trazabilidadQuery")}
-          />
-          <Input
-            label="Modelo"
-            no_label
-            type="search"
-            placeholder={"Modelo"}
-            {...register("modeloQuery")}
-          />
-        </div>
-        <Button
-          className={"min-w-50"}
-          type="button"
-          variant="success"
-          text={<NavLink to={"/solicitar-cambio"}>Nueva Solicitud</NavLink>}
-          icon={<PlusIcon className="w-4" />}
-        />
-      </form>
-
-      <TableComponent
-        data={dataFiltered}
-        columns={columns}
-        handleOnRowClick={openSolicitud}
-        conditionalRowStyles={conditionalRowStyles}
-        noDataComponent={
-          <NoDataComponent
-            title={"No hay Solicitudes"}
-            text={
-              "Puedes agregar solicitudes haciendo click en el boton de abajo"
-            }
-          >
-            <Button
-              className={"min-w-50"}
-              type="button"
-              variant="success"
-              text={<NavLink to={"/solicitar-cambio"}>Crear Proforma</NavLink>}
-              icon={<PlusIcon className="w-4" />}
+    <BoxComponentScrolling
+      title={"Proformas"}
+      size={"md"}
+      height="calc(100vh - 6rem)"
+    >
+      <div className="w-full mx-auto">
+        <h1 className="font-medium text-3xl text-center text-gray-700 mb-10">
+          Solicitudes de Cambio
+        </h1>
+        <form className="flex my-6 w-full justify-between">
+          <div className="flex gap-2 max-w-3xl">
+            <Input
+              label="Cliente"
+              no_label
+              type="search"
+              placeholder={"Cliente"}
+              {...register("clienteQuery")}
             />
-          </NoDataComponent>
-        }
-      />
-    </div>
+            <Input
+              label="Trazabilidad"
+              no_label
+              type="search"
+              placeholder={"Trazabilidad"}
+              {...register("trazabilidadQuery")}
+            />
+            <Input
+              label="Modelo"
+              no_label
+              type="search"
+              placeholder={"Modelo"}
+              {...register("modeloQuery")}
+            />
+          </div>
+          <Button
+            className={"min-w-50"}
+            type="button"
+            variant="success"
+            text={<NavLink to={"/solicitar-cambio"}>Nueva Solicitud</NavLink>}
+            icon={<PlusIcon className="w-4" />}
+          />
+        </form>
+
+        <TableComponent
+          data={dataFiltered}
+          columns={columns}
+          handleOnRowClick={openSolicitud}
+          conditionalRowStyles={conditionalRowStyles}
+          noDataComponent={
+            <NoDataComponent
+              title={"No hay Solicitudes"}
+              text={
+                "Puedes agregar solicitudes haciendo click en el boton de abajo"
+              }
+            >
+              <Button
+                className={"min-w-50"}
+                type="button"
+                variant="success"
+                text={
+                  <NavLink to={"/solicitar-cambio"}>Crear Proforma</NavLink>
+                }
+                icon={<PlusIcon className="w-4" />}
+              />
+            </NoDataComponent>
+          }
+        />
+      </div>
+    </BoxComponentScrolling>
   );
 }
