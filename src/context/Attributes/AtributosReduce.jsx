@@ -19,7 +19,8 @@ import {
   GET_CABEZAL,
   GET_MEDIDA_LLANTA,
   SET_ALL_ATRIBUTES,
-  GET_UBICACIONES
+  GET_UBICACIONES,
+  GET_ATRIBUTOS
 } from "../types";
 
 export const AtributosReducer = (state, action) => {
@@ -67,6 +68,8 @@ export const AtributosReducer = (state, action) => {
       return {...state, allAtributes: payload };
     case GET_UBICACIONES:
       return {...state, ubicaciones: payload };
+    case GET_ATRIBUTOS:
+      return {...state, atributos: payload };
     default:
       return state;
   }

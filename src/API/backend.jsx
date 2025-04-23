@@ -1,4 +1,9 @@
 import GoogleSheet from "google-sheet-package";
+export const ss_atributos = new GoogleSheet({
+  sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
+  rowHead: 1,
+  nameSheet: "Atributos",
+});
 export const ss_puerta_trasera = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_ESPECIFICACIONES,
     rowHead: 1,
@@ -139,6 +144,11 @@ export const ss_puerta_trasera = new GoogleSheet({
     rowHead: 1,
     nameSheet: "Gestoría",
   });
+  export const ss_gestoria2 = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_GESTORIA_2,
+    rowHead: 1,
+    nameSheet: "Registro",
+  });
   export const ss_cambios_atributos = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_CAMBIO,
     rowHead: 1,
@@ -158,4 +168,14 @@ export const ss_puerta_trasera = new GoogleSheet({
     sheetId: import.meta.env.VITE_SS_CAMIONES,
     rowHead: 1,
     nameSheet: "Propuesta",
+  });
+  export const ss_unidadesGross2 = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_UNIDADES_GROSS2,
+    rowHead: 1,
+    nameSheet: "Registro",
+  });
+  export const ss_fechas = new GoogleSheet({
+    sheetId: import.meta.env.VITE_SS_FECHAS,
+    rowHead: 1,
+    nameSheet: "Registro",
   });

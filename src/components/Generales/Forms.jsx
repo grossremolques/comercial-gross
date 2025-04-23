@@ -73,6 +73,7 @@ export const Input = React.forwardRef(
       defaultValue,
       label = "falta label",
       no_label,
+      title
     },
     ref
   ) => {
@@ -85,7 +86,7 @@ export const Input = React.forwardRef(
           }`}
         >
           {" "}
-          {label}{" "}
+          {label}{" "}{title && <span title={title}>ℹ️</span>}{" "}
         </label>
 
         <input
@@ -120,6 +121,7 @@ export const Select = React.forwardRef(
       className,
       children,
       no_label,
+      title
     },
     ref
   ) => {
@@ -132,7 +134,7 @@ export const Select = React.forwardRef(
           }`}
         >
           {" "}
-          {label}{" "}
+          {label}{" "}{title && <span className="text-xs">{title}</span>}{" "}
         </label>
         <select
           onChange={onChange}
@@ -145,7 +147,7 @@ export const Select = React.forwardRef(
           disabled={disabled}
           className={`w-full ${stylebases}`}
         >
-          <option value="">{placeholder}</option>
+          <option value="" disabled>{placeholder}</option>
           {children}
         </select>
       </div>
@@ -157,6 +159,7 @@ export const InputGroup = ({
   className,
   children,
   no_label,
+  title
 }) => {
   return (
     <div className={`${className}`}>
@@ -166,7 +169,7 @@ export const InputGroup = ({
         }`}
       >
         {" "}
-        {label}{" "}
+        {label}{" "}{title && <span className="text-xs">{title}</span>}{" "}
       </span>
       <span className="inline-flex overflow-hidden rounded-md border bg-white shadow-xs border-gray-200 w-full">
         {children}

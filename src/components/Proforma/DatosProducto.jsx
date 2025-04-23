@@ -38,18 +38,9 @@ function DatosProducto() {
     }
   }, [fields, append]);
   const {
-    puertasTraseras,
-    capacidad,
-    piso,
-    cumbrera,
-    mecanismo,
-    cilindro,
-    getAllAtributes,
-    allAtributes,
+    modelos,
+    atributos
   } = useAtributos();
-  useEffect(() => {
-    getAllAtributes();
-  }, []);
   const handleSelection = ({ data, inputName }) => {
     const modelos = watch("modelos")[0];
     setValue(`${inputName}selectedModelo`, data);
@@ -60,9 +51,27 @@ function DatosProducto() {
         });
     }
   };
+  const RenderOptions = ({ atributo }) => {
+    return (
+      <>
+        {atributos.map(
+          (item) =>
+            item.atributo === atributo &&
+            item.active == true && (
+              <option key={item.id} value={item.valor}>
+                {item.valor}
+              </option>
+            )
+        )}
+        <option value={"N/A"}>
+                {"N/A"}
+              </option>
+      </>
+    );
+  };
   return (
     <>
-      {allAtributes ? (
+      {atributos.length>0 && modelos.length> 0 ? (
         <CardToggle
           className={"lg:max-w-[1000px] mx-auto my-4"}
           title={"Datos del Producto"}
@@ -137,11 +146,7 @@ function DatosProducto() {
                     required: true,
                   })}
                 >
-                  {capacidad.map((item) => (
-                    <option key={item.descripcion} value={item.descripcion}>
-                      {item.descripcion}
-                    </option>
-                  ))}
+                  <RenderOptions atributo={"capacidad"} />
                 </Select>
               </div>
               <h3 className="font-medium text-md mt-2 mb-2 text-indigo-700">
@@ -185,17 +190,7 @@ function DatosProducto() {
                       required: true,
                     })}
                   >
-                    {puertasTraseras.map(
-                      (item) =>
-                        item.active == true && (
-                          <option
-                            key={item.descripcion}
-                            value={item.descripcion}
-                          >
-                            {item.descripcion}
-                          </option>
-                        )
-                    )}
+                    <RenderOptions atributo={"puerta_trasera"} />
                   </Select>
                   <Select
                     label={"Piso"}
@@ -205,13 +200,7 @@ function DatosProducto() {
                     }
                     {...register(`modelos.${index}.piso`, { required: true })}
                   >
-                    {[...new Set(piso.map((item) => item.descripcion))].map(
-                      (item) => (
-                        <option key={item} value={item}>
-                          {item}
-                        </option>
-                      )
-                    )}
+                    <RenderOptions atributo={"piso"} />
                   </Select>
                   <Select
                     disabled={
@@ -223,11 +212,7 @@ function DatosProducto() {
                       required: true,
                     })}
                   >
-                    {piso.map((item) => (
-                      <option key={item.espesor} value={item.espesor}>
-                        {item.espesor}
-                      </option>
-                    ))}
+                    <RenderOptions atributo={"espesor"} />
                   </Select>
                 </div>
                 <div className="columns-5 mt-3 gap-2">
@@ -242,11 +227,7 @@ function DatosProducto() {
                       required: true,
                     })}
                   >
-                    {cumbrera.map((item) => (
-                      <option key={item.descripcion} value={item.descripcion}>
-                        {item.descripcion}
-                      </option>
-                    ))}
+                    <RenderOptions atributo={"cumbrera"} />
                   </Select>
                   <Input
                     type="number"
@@ -280,11 +261,7 @@ function DatosProducto() {
                       required: true,
                     })}
                   >
-                    {mecanismo.map((item) => (
-                      <option key={item.descripcion} value={item.descripcion}>
-                        {item.descripcion}
-                      </option>
-                    ))}
+                    <RenderOptions atributo={"mecanismo"} />
                   </Select>
 
                   <Select
@@ -297,11 +274,7 @@ function DatosProducto() {
                       required: true,
                     })}
                   >
-                    {cilindro.map((item) => (
-                      <option key={item.descripcion} value={item.descripcion}>
-                        {item.descripcion}
-                      </option>
-                    ))}
+                    <RenderOptions atributo={"cilindro"} />
                   </Select>
                 </div>
               </div>

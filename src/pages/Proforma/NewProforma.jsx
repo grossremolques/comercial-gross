@@ -14,7 +14,7 @@ export function NewProforma() {
   const { handleModalClose, handleModalShow } = useModal();
   const modalsId = { loading: "loading", success: "success" };
   const [data, setData] = useState();
-  const { client, getClientes, clientes, setClient } = useClientes();
+  const { setClient } = useClientes();
 
   const onSubmit = async ({ data }) => {
     try {

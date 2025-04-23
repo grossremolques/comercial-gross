@@ -32,7 +32,7 @@ export function Modelo({ inputName, handleSelection }) {
   }
   return (
     <>
-      {modelos.length > 0 && (
+      {filteredData.length > 0 && (
         <>
           <Input
             label={"Seleccionar modelo"}

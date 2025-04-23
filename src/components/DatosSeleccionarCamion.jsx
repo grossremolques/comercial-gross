@@ -20,8 +20,9 @@ import {
   FingerPrintIcon
 } from "@heroicons/react/24/solid";
 import Badge from "./Generales/Badge";
+import FormularioCamion from "../templates/FormularioCamion";
 
-export default function DatosSeleccionarCamion({ isDisabled }) {
+export default function DatosSeleccionarCamion({ isDisabled, modelo }) {
   const { filteredData, setSearch, setCamion, camion } = useCamiones(); // Consumir el contexto
   const { handleModalShow, handleModalClose } = useModal();
   const {
@@ -34,6 +35,7 @@ export default function DatosSeleccionarCamion({ isDisabled }) {
   const handleAddCamion = () => {
     /* Abrir Modal con formulario vacío para Agregar nuevo camion --> `FormularioCliente`*/
     setCamion({
+      trazabilidad: "",
       /* datos default */
     }); // Configura un camion vacío
     handleModalShow("modal-camion"); // Abre el modal
@@ -46,11 +48,15 @@ export default function DatosSeleccionarCamion({ isDisabled }) {
       console.error("No hay un camion seleccionado para editar.");
     }
   };
+  const id_camion = {...register("id_camion", { required: true })};
+  const centro_eje = {...register("centro_eje", { required: true })};
   const handleSelectedCamion = (data) => {
-    console.log(data)
-    setCamion(data); // Actualizar el camion seleccionado en el contexto
-    setValue("camion", `${camion.trazabilidad.toString().replace(/(\d{1})(\d{4})(\d{2})/, "$1.$2-$3")}: ${camion.marca} - ${camion.modelo}`, { shouldDirty: true }); 
     setValue("selectedCamion", data, { shouldDirty: true });
+    setValue("id_camion", data.trazabilidad, { shouldDirty: true });
+    const hasCentroEje = typeof (data?.l012_1 - data?.l102) === "number";
+    setValue("centro_eje", hasCentroEje && data?.l012_1 - data?.l102, { shouldDirty: true });
+    setValue("descripcion_camion", `${data.trazabilidad.toString().replace(/(\d{1})(\d{4})(\d{2})/, "$1.$2-$3")}: ${data.marca} - ${data.modelo}`, { shouldDirty: true }); 
+    setCamion(data)
   };
   useEffect(() => {
     const { selectedCamion } = getValues();
@@ -64,11 +70,11 @@ export default function DatosSeleccionarCamion({ isDisabled }) {
       >
         <div className="flex gap-2 justify-between">
           <Input
-            disabled={isDisabled}
+            disabled={modelo?.descripcion_camion?.type === "Fijo"}
             label={"Seleccionar camion"}
             placeholder={"Buscar Camion"}
             onClick={() => handleModalShow("findCamion")}
-            {...register("camion", {
+            {...register("descripcion_camion", {
               required: {
                 value: "Debe seleccionar un camion",
                 message: "Debe seleccionar un camion",
@@ -95,14 +101,14 @@ export default function DatosSeleccionarCamion({ isDisabled }) {
           </div>
         </div>
 
-        {errors.razon_social && (
-          <TextInvalidate message={errors.razon_social.message} />
+        {errors.id_camion && (
+          <TextInvalidate message={"Falta Seleccionar camion"} />
         )}
         <div className="mt-4 md:columns-2 mb-2">
           <DataField
             icon={<FingerPrintIcon width={"16px"} />}
             label={"Trazabilidad"}
-            value={camion?.trazabilidad.toString().replace(/(\d{1})(\d{4})(\d{2})/, "$1.$2-$3")}
+            value={camion?.trazabilidad?.toString().replace(/(\d{1})(\d{4})(\d{2})/, "$1.$2-$3")}
           />
           <DataField
             icon={<TruckIcon width={"16px"} />}
@@ -117,7 +123,7 @@ export default function DatosSeleccionarCamion({ isDisabled }) {
           <DataField
             icon={<CalculatorIcon width={"16px"} />}
             label={"Centro de Eje"}
-            value={`${camion?.l012_1 - camion?.l102} mm`}
+            value={typeof (camion?.l012_1 - camion?.l102) === "number" ? `✅ ${camion?.l012_1 - camion?.l102} mm` : "🚩 Faltan datos en el REG-016"}
           />
         </div>
         <DataField
@@ -170,7 +176,7 @@ export default function DatosSeleccionarCamion({ isDisabled }) {
           </div>
         </Modal>
       </CardToggle>
-      <FormularioCliente handleSelectedCamion={handleSelectedCamion} />
+      <FormularioCamion handleSelectedCamion={handleSelectedCamion} />
     </>
   );
 }

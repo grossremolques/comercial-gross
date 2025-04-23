@@ -15,11 +15,7 @@ function DatosPagos() {
     setValue,
     control,
   } = useFormContext();
-  const { getFormaPago, formaPago, getMedioPago, mediosPago } = useAtributos();
-  useEffect(() => {
-    getFormaPago();
-    getMedioPago();
-  }, []);
+  const { atributos } = useAtributos();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "formaPago",
@@ -38,10 +34,27 @@ function DatosPagos() {
     setValue("iva", iva.toFixed(2));
     setValue("total", total.toFixed(2));
   };
-
+  const RenderOptions = ({ atributo }) => {
+    return (
+      <>
+        {atributos.map(
+          (item) =>
+            item.atributo === atributo &&
+            item.active == true && (
+              <option key={item.id} value={item.valor}>
+                {item.valor}
+              </option>
+            )
+        )}
+        <option value={"N/A"}>
+                {"N/A"}
+              </option>
+      </>
+    );
+  };
   return (
     <>
-      {formaPago.length > 0 && mediosPago.length > 0 && (
+      {atributos.length > 0 && (
         <CardToggle
           className={"lg:max-w-[1000px] mx-auto"}
           title={"Datos de Entrega y Pago"}
@@ -167,14 +180,7 @@ function DatosPagos() {
                           required: true,
                         })}
                       >
-                        {formaPago.map((item) => (
-                          <option
-                            key={item["descripcion"]}
-                            value={item["descripcion"]}
-                          >
-                            {item["descripcion"]}
-                          </option>
-                        ))}
+                        <RenderOptions atributo={"forma_pago"} />
                       </Select>
                     </td>
                     <td className="whitespace-nowrap p-0.5 text-gray-900">
@@ -198,14 +204,7 @@ function DatosPagos() {
                             required: true,
                           })}
                         >
-                          {mediosPago.map((item) => (
-                            <option
-                              key={item["descripcion"]}
-                              value={item["descripcion"]}
-                            >
-                              {item["descripcion"]}
-                            </option>
-                          ))}
+                          <RenderOptions atributo={"medio_pago"} />
                         </Select>
                       )}
                     </td>
