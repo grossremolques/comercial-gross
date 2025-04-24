@@ -13,9 +13,10 @@ export default function LayoutSaveElement({
 }) {
   return (
     <>
-      <BoxComponentScrolling title={hedearTitle} height="calc(100vh - 10rem)">
+      <BoxComponentScrolling title={hedearTitle} height="calc(100vh - 9rem)">
         <div className="mt-4">{children}</div>
         <ModalLoading id={"modal-loading"} title={modalLoadingTitle} />
+        
       </BoxComponentScrolling>
       {response && (
         <Modal

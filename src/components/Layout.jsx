@@ -16,9 +16,7 @@ export default function Layout() {
     getAuth();
   }, []);
   useEffect(() => {
-    if (auth) {
-      getUser();
-    }
+    if (auth) getUser();
   }, [auth]);
   return (
     <>
@@ -26,7 +24,7 @@ export default function Layout() {
         <>
           <div className="fixed w-full bg-gray-100">
             <NavBar />
-            <div className="mx-auto px-4 sm:px-6 py-20 min-h-screen ">
+            <div className="mx-auto px-4 sm:px-6 py-16 min-h-screen">
               <ClientesContextProvider>
                 <CamionesContextProvider>
                   <GestoriaContextProvider2>
@@ -44,7 +42,9 @@ export default function Layout() {
                   </GestoriaContextProvider2>
                 </CamionesContextProvider>
               </ClientesContextProvider>
+              
             </div>
+            
           </div>
         </>
       )}

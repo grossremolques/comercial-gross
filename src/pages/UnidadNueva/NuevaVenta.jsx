@@ -6,6 +6,7 @@ import { useUnidadesGross2 } from "../../context/UnidadesContext/UnidadesGrossCo
 import { useAuth } from "../../context/AuthContext";
 import { useFechas } from "../../context/FechasContext/FechasContext";
 import { useGestoria2 } from "../../context/GestoriaContext/GestoriaContext2";
+import { UserIcon, TruckIcon, BanknotesIcon } from "@heroicons/react/24/solid";
 
 export default function NuevaVenta() {
   const { user } = useAuth();
@@ -117,7 +118,7 @@ export default function NuevaVenta() {
   };
 
   return (
-    <>
+    <div className="relative">
       <LayoutSaveElement
         hedearTitle={"Nueva Venta"}
         modalLoadingTitle={"Guardando..."}
@@ -132,6 +133,13 @@ export default function NuevaVenta() {
           isDisabled={state.disabled}
         />
       </LayoutSaveElement>
-    </>
+      <div className="absolute top-0 left-[-20px] h-full w-15 border-r border-gray-200 ">
+        <ul className="flex flex-col gap-10 items-center text-indigo-600 mt-6">
+          <li className="p-2 rounded-lg hover:bg-gray-200 cursor-pointer" title="Cliente"><UserIcon className="w-6"/></li>
+          <li className="p-2 rounded-lg hover:bg-gray-200 cursor-pointer" title="Datos Técnicos"><TruckIcon className="w-6"/></li>
+          <li className="p-2 rounded-lg hover:bg-gray-200 cursor-pointer" title="Forma de Pago"><BanknotesIcon className="w-6"/></li>
+        </ul>
+      </div>
+    </div>
   );
 }

@@ -65,6 +65,7 @@ export function AtributosProvider({ children }) {
       value={{
         modelos: state.modelos,
         atributos: state.atributos,
+        getModelos
       }}
     >
       {children}
